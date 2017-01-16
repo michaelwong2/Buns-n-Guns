@@ -1,4 +1,4 @@
-Game.Entity = function(template){
+Game.Item = function(template){
   template = template || {};
 
   Game.Symbol.call(this, template);
@@ -7,9 +7,9 @@ Game.Entity = function(template){
     this.attr._x = template.x || 0;
     this.attr._y = template.y || 0;
 
-    this._entityID = template.id || Game.util.randomString(32);
+    this._itemID = template.id || Game.util.randomString(32);
 
-    Game.DATASTORE.ENTITIES[this._entityID] = this;
+    Game.DATASTORE.ITEMS[this._itemID] = this;
 
     this._mixins = template.mixins || [];
     this._mixinTracker = {};
@@ -22,22 +22,22 @@ Game.Entity = function(template){
 
 }
 
-Game.Entity.extend(Game.Symbol);
+Game.Item.extend(Game.Symbol);
 
-Game.Entity.prototype.getX = function(){
+Game.Item.prototype.getX = function(){
   return this.attr._x;
 }
 
-Game.Entity.prototype.getY = function(){
+Game.Item.prototype.getY = function(){
   return this.attr._y;
 }
 
-Game.Entity.prototype.setPos = function(x,y){
+Game.Item.prototype.setPos = function(x,y){
   this.attr._x = x;
   this.attr._y = y;
 }
 
-Game.Entity.prototype.hasMixin = function(mixin) {
+Game.Item.prototype.hasMixin = function(mixin) {
     if (typeof mixin == 'object') {
       return this._mixinTracker.hasOwnProperty(mixin.META.mixinName);
     } else {
@@ -45,7 +45,7 @@ Game.Entity.prototype.hasMixin = function(mixin) {
     }
 };
 
-Game.Entity.prototype.loadMixins = function(mixinData){
+Game.Item.prototype.loadMixins = function(mixinData){
   for (var i = 0; i < mixinData.length; i++) {
     var mixin = mixinData[i];
     console.dir(mixin);
