@@ -6,7 +6,7 @@ Game.ActiveSymbol = function(template) {
   this._mixins = template.mixins || [];
   this._mixinTracker = {};
 
-  this.loadMixins(this._mixins);
+  this.loadMixins(this._mixins,template);
 };
 Game.ActiveSymbol.extend(Game.Symbol);
 
@@ -18,7 +18,7 @@ Game.ActiveSymbol.prototype.hasMixin = function(mixin) {
     }
 };
 
-Game.ActiveSymbol.prototype.loadMixins = function(mixinData){
+Game.ActiveSymbol.prototype.loadMixins = function(mixinData,template){
   for (var i = 0; i < mixinData.length; i++) {
     var mixin = mixinData[i];
     console.dir(mixin);

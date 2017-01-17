@@ -1,7 +1,7 @@
 Game.ItemTemplates = {};
 
-Game.ItemTemplates.Rock = {
-  name: 'Rock',
+Game.ItemTemplates.Key = {
+  name: 'key',
   chr:'#',
   fg:'#bbc',
   mixins:[]

@@ -117,6 +117,15 @@ Game.KeyBinding = {
     },
     CANCEL    : {action_group:'meta' ,guid :Game.util.uniqueId() ,ordering:1 ,short:'cancel'   ,long:'cancel/close the current action/screen',
       all: {label:'Esc' ,inputMatch:ROT.VK_ESCAPE     ,inputType:'keydown' ,inputMetaShift:false ,inputMetaCtrl:false}
+    },
+
+    PICKUP : {action_group:'inventory' ,guid:Game.util.uniqueId() ,ordering:5.1 ,short:'pickup'  ,long :'pick up an item on the space where I stand' ,
+      arrows: {label:'c' ,inputMatch:ROT.VK_C ,inputType:'keydown' ,inputMetaShift:false ,inputMetaCtrl:false} ,
+      wasd  : {label:'c' ,inputMatch:ROT.VK_C ,inputType:'keydown' ,inputMetaShift:false ,inputMetaCtrl:false}
     }
+    // DROP : {action_group:'inventory' ,guid:Game.util.uniqueId() ,ordering:5.1 ,short:'drop'  ,long :'drop an item on the space where I stand' ,
+    //   numpad: {label:'x' ,inputMatch:ROT.VK_G ,inputType:'keydown' ,inputMetaShift:false ,inputMetaCtrl:false} ,
+    //   wasd  : {label:'x' ,inputMatch:ROT.VK_G ,inputType:'keydown' ,inputMetaShift:false ,inputMetaCtrl:false}
+    // }
   }
 };
