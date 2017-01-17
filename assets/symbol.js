@@ -1,10 +1,10 @@
-Game.Symbol = function(properties){
-  if(!properties){properties = {}}
+Game.Symbol = function(template){
+  if(!template){template = {}}
   if(!('attr' in this)){this.attr = {}}
 
-    this.attr._char = properties.chr || '';
-    this.attr._fg = properties.fg || Game.UIMode.DEFAULT_FG;
-    this.attr._bg = properties.bg || Game.UIMode.DEFAULT_BG;
+    this.attr._char = template.chr || '';
+    this.attr._fg = template.fg || Game.UIMode.DEFAULT_FG;
+    this.attr._bg = template.bg || Game.UIMode.DEFAULT_BG;
 }
 
 Game.Symbol.prototype.getChar = function(){

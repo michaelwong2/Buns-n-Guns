@@ -30,7 +30,7 @@ Game.UIMode.gameMenu = {
 
         Game.DATASTORE.MAP = {};
         Game.DATASTORE.ENTITIES = {};
-
+        Game.DATASTORE.ITEMS = {};
         Game.UIMode.gamePlay.attr._avatar = null;
 
         Game.UIMode.gamePlay.setUpNewGame();
@@ -45,6 +45,7 @@ Game.UIMode.gameMenu = {
 
       Game.DATASTORE.MAP = {};
       Game.DATASTORE.ENTITIES = {};
+      Game.DATASTORE.ITEMS = {};
 
       // load game data
       var json_state_data = window.localStorage.getItem(Game._PERSISTENCE_NAMESPACE);
@@ -169,6 +170,14 @@ Game.UIMode.gamePlay = {
       newent.setPos(newloc.x, newloc.y);
 
       this.attr._map.addEntity(newent);
+    }
+
+    for(var k = 0; k < 50; k++){
+      var newItem = new Game.Item(Game.ItemTemplates.Rock)
+      var newloc = this.attr._map.getWalkableLocation();
+      newItem.setPos(newloc.x, newloc.y);
+
+      this.attr._map.addItem(newItem);
     }
   },
   loadPreviousMap: function(){
