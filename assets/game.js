@@ -1,4 +1,3 @@
-
 window.onload = function() {
     console.log("starting WSRL - window loaded");
     // Check if rot.js can work on this browser

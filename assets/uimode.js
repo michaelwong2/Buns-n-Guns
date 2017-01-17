@@ -155,7 +155,6 @@ Game.UIMode.gamePlay = {
     this.generateMap();
 
     this.attr._avatar = new Game.Entity(Game.EntityTemplates.Avatar);
-
     var Loc = this.attr._map.getWalkableLocation();
 
     this.attr._avatar.setPos(Loc.x,Loc.y);
@@ -165,7 +164,7 @@ Game.UIMode.gamePlay = {
     this.attr._map.addEntity(this.attr._avatar);
 
     for(var i = 0; i < 20; i++){
-      var newent = new Game.Entity(Game.EntityTemplates.Cat)
+      var newent = new Game.Entity(Game.EntityTemplates.Cat);
       var newloc = this.attr._map.getWalkableLocation();
       newent.setPos(newloc.x, newloc.y);
 
@@ -173,13 +172,14 @@ Game.UIMode.gamePlay = {
     }
 
     for(var k = 0; k < 50; k++){
-      var newItem = new Game.Item(Game.ItemTemplates.Rock)
+      var newItem = new Game.Item(Game.ItemTemplates.Rock);
       var newloc = this.attr._map.getWalkableLocation();
       newItem.setPos(newloc.x, newloc.y);
 
       this.attr._map.addItem(newItem);
     }
   },
+
   loadPreviousMap: function(){
     this.generateMap();
 
@@ -189,8 +189,8 @@ Game.UIMode.gamePlay = {
 
     this.attr.camX = this.attr._avatar.getX();
     this.attr.camY = this.attr._avatar.getY();
-
   },
+
   generateMap: function(data){
     var generator = new ROT.Map.Cellular(this.attr.height, this.attr.width);
     generator.randomize(0.5);

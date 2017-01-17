@@ -99,20 +99,13 @@ Game.Map.prototype.renderOn = function (display,camX,camY) {
         tile = Game.Tile.wallTile;
       }
 
-      var ent = this.getEntity(x + xStart,y + yStart);
+      var activeSym = this.getEntity(x + xStart,y + yStart) || this.getItem(x + xStart,y + yStart);
 
-      if(ent == null){
+
+      if(activeSym == null){
         tile.draw(display,x,y);
       } else {
-        ent.draw(display,x,y);
-      }
-
-      var item = this.getItem(x + xStart,y + yStart);
-
-      if(item == null){
-        tile.draw(display,x,y);
-      } else {
-        item.draw(display,x,y);
+        activeSym.draw(display,x,y);
       }
     }
   }

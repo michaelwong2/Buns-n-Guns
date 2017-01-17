@@ -7,7 +7,7 @@ Game.Item = function(template){
 
     this._itemID = template.id || Game.util.randomString(32);
 
-    Game.DATASTORE.ITEMS[this.itemID] = this;
+    Game.DATASTORE.ITEMS[this._itemID] = this;
 }
 Game.Item.extend(Game.ActiveSymbol);
 
