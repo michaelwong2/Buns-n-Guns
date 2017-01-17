@@ -4,7 +4,9 @@ Game.Map = function(tilesGrid){
     _width: tilesGrid.length,
     _height: tilesGrid[0].length,
     _entitiesByLocation: {},
-    _locationsByEntity: {}
+    _locationsByEntity: {},
+    _itemsByLocation: {},
+    _locationsByItem: {}
   };
 };
 
@@ -64,6 +66,24 @@ Game.Map.prototype.updateEntity = function(entity){
   this.attr._entitiesByLocation[entity.getX() + "," + entity.getY()] = entity._entityID;
 }
 
+Game.Map.prototype.addItem = function(item){
+    this.attr._itemsByLocation[item.getX() + "," + item.getY()] = item._itemID;
+    this.attr._locationsByItem[item._itemID] = item.getX() + "," + item.getY();
+}
+
+Game.Map.prototype.getItem = function(x,y){
+    var id = this.attr._itemsByLocation[x + "," + y];
+    return id != null ? Game.DATASTORE.ITEMS[id] : null;
+}
+
+Game.Map.prototype.updateItem = function(item){
+  var oldloc = this.attr._locationsByItem[item._itemID];
+  delete this.attr._itemsByLocation[oldloc];
+
+  this.attr._locationsByItem[item._itemID] = item.getX() + "," + item.getY();
+  this.attr._itemsByLocation[item.getX() + "," + item.getY()] = item._itemID;
+}
+
 Game.Map.prototype.renderOn = function (display,camX,camY) {
 
   var dispW = display._options.width;
@@ -79,12 +99,13 @@ Game.Map.prototype.renderOn = function (display,camX,camY) {
         tile = Game.Tile.wallTile;
       }
 
-      var ent = this.getEntity(x + xStart,y + yStart);
+      var activeSym = this.getEntity(x + xStart,y + yStart) || this.getItem(x + xStart,y + yStart);
 
-      if(ent == null){
+
+      if(activeSym == null){
         tile.draw(display,x,y);
       } else {
-        ent.draw(display,x,y);
+        activeSym.draw(display,x,y);
       }
     }
   }
