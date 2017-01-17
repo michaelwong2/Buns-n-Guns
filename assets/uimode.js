@@ -113,12 +113,15 @@ Game.UIMode.gamePlay = {
 
     if(abinding.actionKey == 'MOVE_U'){
       this.attr.moveY -= this.attr.speed;
-    }else if(abinding.actionKey == 'MOVE_D'){
+    } else if(abinding.actionKey == 'MOVE_D'){
       this.attr.moveY += this.attr.speed;
-    }else if(abinding.actionKey == 'MOVE_R'){
+    } else if(abinding.actionKey == 'MOVE_R'){
       this.attr.moveX += this.attr.speed;
     } else if(abinding.actionKey == 'MOVE_L'){
       this.attr.moveX -= this.attr.speed;
+    } else if(abinding.actionKey == 'PICKUP'){
+      console.log('pickup action');
+      this.attr._avatar.pickupItem(this.attr._map, this.attr._avatar.getX(), this.attr._avatar.getY());
     }else if(abinding.actionKey == 'PERSISTENCE'){
       Game.switchUIMode(Game.UIMode.persistence);
       return;
@@ -140,20 +143,20 @@ Game.UIMode.gamePlay = {
 
     this.attr._map.addEntity(this.attr._avatar);
 
+    for(var k = 0; k < 50; k++){
+      var newItem = new Game.Item(Game.ItemTemplates.Rock);
+      var newloc = this.attr._map.getEmptyLocation();
+      newItem.setPos(newloc.x, newloc.y);
+
+      this.attr._map.addItem(newItem);
+    }
+
     for(var i = 0; i < 20; i++){
       var newent = new Game.Entity(Game.EntityTemplates.Cat);
       var newloc = this.attr._map.getWalkableLocation();
       newent.setPos(newloc.x, newloc.y);
 
       this.attr._map.addEntity(newent);
-    }
-
-    for(var k = 0; k < 50; k++){
-      var newItem = new Game.Item(Game.ItemTemplates.Rock);
-      var newloc = this.attr._map.getWalkableLocation();
-      newItem.setPos(newloc.x, newloc.y);
-
-      this.attr._map.addItem(newItem);
     }
   },
 

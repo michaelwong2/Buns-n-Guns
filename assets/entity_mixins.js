@@ -72,3 +72,44 @@ Game.EntityMixin.HitPoints = {
     this.attr._HitPoints_attr.curHp = Math.min(this.attr._HitPoints_attr.curHp+amt,this.attr._HitPoints_attr.maxHp);
   }
 };
+
+Game.EntityMixin.InventoryHolder = {
+  META: {
+    mixinName: 'InventoryHolder',
+    mixinGroup: 'InventoryHolder',
+    stateNamespace: '_InventoryHolder_attr',
+    stateModel: {
+      items: {},
+      spaceAvailable: true
+    },
+    init: function (template) {
+      this.attr._InventoryHolder_attr.items = template.items || {};
+      this.attr._InventoryHolder_attr.spaceAvailable = template.spaceAvailable || true;
+    }
+  },
+
+  hasSpace: function () {
+    return this.attr._InventoryHolder_attr.spaceAvailable;
+  },
+
+  pickupItem: function (map,x,y) {
+    var item = map.getItem(x, y);
+    if ( item !== null) {
+      this.attr._InventoryHolder_attr.items[item._itemID] = item;
+      map.updateItem(item);
+    }
+    ;
+  },
+
+  getItem: function (itemId) {
+    if (this.attr._InventoryHolder_attr.items[itemId]) {
+      return Game.DATASTORE.ITEMS[itemId];
+    }
+    return null;
+  },
+
+  dropItem: function (itemId) {
+    // var index = this.attr._InventoryHolder_attr.items.indexOf(itemId);
+    // this.attr._InventoryHolder_attr.items.splice(index,1);
+  }
+};

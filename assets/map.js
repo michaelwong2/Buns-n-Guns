@@ -48,6 +48,18 @@ Game.Map.prototype.getWalkableLocation = function(){
   }
 }
 
+//Empty locations do not have an item in it
+Game.Map.prototype.getEmptyLocation = function(){
+  var nx = Math.floor(Math.random()*this.attr._width);
+  var ny = Math.floor(Math.random()*this.attr._height);
+
+  if(this.getTile(nx,ny).isEmpty()){
+    return {x: nx, y: ny};
+  }else{
+    return this.getWalkableLocation();
+  }
+}
+
 Game.Map.prototype.addEntity = function(entity){
     this.attr._entitiesByLocation[entity.getX() + "," + entity.getY()] = entity._entityID;
     this.attr._locationsByEntity[entity._entityID] = entity.getX() + "," + entity.getY();
@@ -79,9 +91,7 @@ Game.Map.prototype.getItem = function(x,y){
 Game.Map.prototype.updateItem = function(item){
   var oldloc = this.attr._locationsByItem[item._itemID];
   delete this.attr._itemsByLocation[oldloc];
-
-  this.attr._locationsByItem[item._itemID] = item.getX() + "," + item.getY();
-  this.attr._itemsByLocation[item.getX() + "," + item.getY()] = item._itemID;
+  delete this.attr._locationsByItem[item._itemID];
 }
 
 Game.Map.prototype.renderOn = function (display,camX,camY) {
