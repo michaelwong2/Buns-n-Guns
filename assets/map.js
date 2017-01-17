@@ -99,14 +99,19 @@ Game.Map.prototype.renderOn = function (display,camX,camY) {
         tile = Game.Tile.wallTile;
       }
 
-      var activeSym = this.getEntity(x + xStart,y + yStart) || this.getItem(x + xStart,y + yStart);
+      if(Game.Exit.isExit(x + xStart,y + yStart)){
+        Game.Exit.render(display, x, y, xStart, yStart);
+        continue;
+      }
 
+      var activeSym = this.getEntity(x + xStart,y + yStart) || this.getItem(x + xStart,y + yStart);
 
       if(activeSym == null){
         tile.draw(display,x,y);
       } else {
         activeSym.draw(display,x,y);
       }
+
     }
   }
 };

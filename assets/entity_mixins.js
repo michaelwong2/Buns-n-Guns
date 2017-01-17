@@ -8,11 +8,21 @@ Game.EntityMixin.WalkerCorporeal = {
   tryWalk: function (map,dx,dy) {
     var targetX = Math.min(Math.max(0,this.getX() + dx),map.getWidth());
     var targetY = Math.min(Math.max(0,this.getY() + dy),map.getHeight());
+
+    if(Game.Exit.isExit(targetX, targetY)){
+      if(Game.Exit.isOpen()){
+        // load next level
+      }else{
+        Game.Message.send("You need " + Game.Exit.attr.lockSize + " keys to open this door.");
+      }
+    }
+
     if (map.getEntity(targetX, targetY) == null && map.getTile(targetX,targetY).isWalkable()) {
       this.setPos(targetX,targetY);
       if (this.hasMixin('Chronicle')) { // NOTE: this is sub-optimal because it couple this mixin to the Chronicle one (i.e. this needs to know the Chronicle function to call) - the event system will solve this issue
         this.trackTurn();
       }
+
       return true;
     }
     return false;

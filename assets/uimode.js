@@ -148,13 +148,13 @@ Game.UIMode.gamePlay = {
       this.attr._map.addEntity(newent);
     }
 
-    for(var k = 0; k < 50; k++){
-      var newItem = new Game.Item(Game.ItemTemplates.Rock);
-      var newloc = this.attr._map.getWalkableLocation();
-      newItem.setPos(newloc.x, newloc.y);
-
-      this.attr._map.addItem(newItem);
-    }
+    // for(var k = 0; k < 50; k++){
+    //   var newItem = new Game.Item(Game.ItemTemplates.Rock);
+    //   var newloc = this.attr._map.getWalkableLocation();
+    //   newItem.setPos(newloc.x, newloc.y);
+    //
+    //   this.attr._map.addItem(newItem);
+    // }
   },
 
   load: function(seed){

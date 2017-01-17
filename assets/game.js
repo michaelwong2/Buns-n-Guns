@@ -67,7 +67,10 @@ var Game = {
         MAP: {},
         ENTITIES: {},
         ITEMS: {},
-        GAMESTATE: {} // keeps track of the items the player currently has
+        GAMESTATE: {
+          PITEMS: {},
+          MAPSETTINGS: {}
+        } // keeps track of the items the player currently has
       };
   },
   eventHandler: function(eventType, evt){

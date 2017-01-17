@@ -23,5 +23,3 @@ Game.Tile.prototype.isWalkable = function(){
 Game.Tile.nullTile = new Game.Tile({name:'nullTile'});
 Game.Tile.floorTile = new Game.Tile({name:'floorTile', chr: ' ', walkable:true});
 Game.Tile.wallTile = new Game.Tile({name:'wallTile',  chr: '?'});
-Game.Tile.playerTile = new Game.Tile({name:'playerTile',  chr: '@'});
-Game.Tile.catTile = new Game.Tile({name:'catTile',  chr: '&'});

@@ -32,6 +32,8 @@ Game.mapGen = {
       }
     });
 
+    tileArray = Game.Exit.putExit(tileArray);
+
     return new Game.Map(tileArray);
   },
   loadPreviousMap: function(seed){
