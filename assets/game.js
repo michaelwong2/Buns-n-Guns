@@ -47,16 +47,13 @@ var Game = {
   DATASTORE: {},
 
   init: function() {
-    // this._game = this;
-    // this.setRandomSeed(5 + Math.floor(ROT.RNG.getUniform()*100000));
-
-    //this._randomSeed = 76250;
-    // console.log("using random seed "+this._randomSeed);
-    // ROT.RNG.setSeed(this._randomSeed);
+    this._game = this;
 
     for(var display_key in this.display){
       this.display[display_key].o = new ROT.Display({width: this.display[display_key].w, height: this.display[display_key].h, spacing: Game._DISPLAY_SPACING});
     }
+
+    this.resetDataStore();
 
     // console.dir(this.display);
   },
@@ -65,6 +62,14 @@ var Game = {
     return this._game;
   },
 
+  resetDataStore: function(){
+      this.DATASTORE = {
+        MAP: {},
+        ENTITIES: {},
+        ITEMS: {},
+        GAMESTATE: {} // keeps track of the items the player currently has
+      };
+  },
   eventHandler: function(eventType, evt){
     if(this._currUIMode)
       this._currUIMode.handleInput(eventType, evt);
