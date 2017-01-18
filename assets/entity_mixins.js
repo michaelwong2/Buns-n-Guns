@@ -11,12 +11,12 @@ Game.EntityMixin.WalkerCorporeal = {
 
     if(Game.Exit.isExit(targetX, targetY)){
       if(Game.Exit.isOpen()){
-        // load next level
+        Game.UIMode.gamePlay.setUpLevel();
+
       }else{
         if (this.keyCount() > 0) {
           Game.Exit.unlock(this.keyCount());
-        } else {
-          Game.Message.send("You need " + Game.Exit.attr.lockSize + " keys to open this door.");
+          this.resetKeyCount();
         }
       }
     }
@@ -139,5 +139,9 @@ Game.EntityMixin.InventoryHolder = {
 
   keyCount: function () {
     return this.attr._InventoryHolder_attr.keyCount;
+  },
+
+  resetKeyCount: function () {
+    this.attr._InventoryHolder_attr.keyCount = 0;
   }
 };
