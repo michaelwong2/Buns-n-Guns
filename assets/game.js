@@ -30,6 +30,7 @@ var Game = {
   _randomSeed: 0,
   _DISPLAY_SPACING: 1.1,
   _game_started: false,
+  _loop: null,
   display: {
     main: {
       w: 73,
@@ -143,7 +144,17 @@ var Game = {
   },
   initGameLoop: function(){
     Game._running = true;
-    Game.Scheduler = new ROT.Scheduler.Action();
-    Game.TimeEngine = new ROT.Engine(Game.Scheduler);
+    Game._loop = setInterval(Game.update, 10);
+  },
+  update: function(){
+    for(var en in Game.DATASTORE.ENTITIES){
+      Game.DATASTORE.ENTITIES[en].doWork();
+      Game._currUIMode.attr._map.updateEntity(Game.DATASTORE.ENTITIES[en]);
+    }
+
+    Game.renderMain();
+  },
+  stopGameLoop: function(){
+    clearInterval(Game._loop);
   }
 };

@@ -7,7 +7,11 @@ Game.Entity = function(template){
 
     this._entityID = template.id || Game.util.randomString(32);
 
+    this._work = template.work || null;
+    this.loopingChars = template.loopingChars || {};
+
     Game.DATASTORE.ENTITIES[this._entityID] = this;
+
 }
 Game.Entity.extend(Game.ActiveSymbol);
 
@@ -22,4 +26,15 @@ Game.Entity.prototype.getY = function(){
 Game.Entity.prototype.setPos = function(x,y){
   this.attr._x = x;
   this.attr._y = y;
+}
+
+Game.Entity.prototype.doWork = function(){
+  if(this._work && this.loopingChars){
+    if(this.loopingChars.wait >= this.loopingChars.lim){
+      this._work();
+      this.loopingChars.wait = 0;
+    }else{
+      this.loopingChars.wait++;
+    }
+  }
 }

@@ -87,8 +87,8 @@ Game.UIMode.gamePlay = {
     camX: null,
     camY: null,
     speed: 1,
-    height: 100,
-    width: 100,
+    height: 40,
+    width: 40,
     moveX: 0,
     moveY: 0
   },
@@ -96,9 +96,11 @@ Game.UIMode.gamePlay = {
     console.log("entered gamePlay");
     Game._game_started = true;
     Game.KeyBinding.setKeyBinding('arrows');
+    Game.initGameLoop();
   },
   exit: function(){
     console.log("exited gamePlay");
+    Game.stopGameLoop();
   },
   render: function(display){
     this.attr._map.renderOn(display, this.attr.camX, this.attr.camY);
@@ -129,7 +131,7 @@ Game.UIMode.gamePlay = {
       return;
     }
 
-    Game.renderAll();
+    // Game.renderAll();
   },
   setUpNewGame: function () {
     this.attr._map = Game.mapGen.newMap(this.attr.height, this.attr.width);
@@ -151,7 +153,7 @@ Game.UIMode.gamePlay = {
       this.attr._map.addItem(newItem);
     }
 
-    for(var i = 0; i < 20; i++){
+    for(var i = 0; i < 3; i++){
       var newent = new Game.Entity(Game.EntityTemplates.Cat);
       var newloc = this.attr._map.getWalkableLocation();
       newent.setPos(newloc.x, newloc.y);
@@ -159,13 +161,13 @@ Game.UIMode.gamePlay = {
       this.attr._map.addEntity(newent);
     }
 
-    for(var k = 0; k < 50; k++){
-      var newItem = new Game.Item(Game.ItemTemplates.Rock);
-      var newloc = this.attr._map.getWalkableLocation();
-      newItem.setPos(newloc.x, newloc.y);
-    
-      this.attr._map.addItem(newItem);
-    }
+    // for(var k = 0; k < 50; k++){
+    //   var newItem = new Game.Item(Game.ItemTemplates.Rock);
+    //   var newloc = this.attr._map.getWalkableLocation();
+    //   newItem.setPos(newloc.x, newloc.y);
+    //
+    //   this.attr._map.addItem(newItem);
+    // }
 
   },
 

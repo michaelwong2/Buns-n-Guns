@@ -44,9 +44,9 @@ Game.Exit = {
 
     this.attr.sx = X;
 
-    if(X > 2 && Y < tileArray[X].length-1 && !tileArray[X][Y+1].isWalkable() && tileArray[X-1][Y+1].isWalkable()){
+    if(X > 2 && X < tileArray.length - 1 && Y < tileArray[X].length-1 && !tileArray[X][Y+1].isWalkable() && tileArray[X-1][Y+1].isWalkable()){
       this.attr.sy = Y+1;
-    }else if(X > 2 && Y > 0 && !tileArray[X][Y-1].isWalkable() && tileArray[X-1][Y-1].isWalkable()){
+    }else if(X > 2 && X < tileArray.length - 1 && Y > 0 && !tileArray[X][Y-1].isWalkable() && tileArray[X-1][Y-1].isWalkable()){
       this.attr.sy = Y-1;
     }else{
       return this.putExit(tileArray);
@@ -62,6 +62,6 @@ Game.Exit = {
     var nx = x+xStart - this.attr.sx;
     var ny = y+yStart - this.attr.sy;
 
-    display.drawText(x,y, this.attr.displayable[nx][ny], '#F0F', '#F00');
+    display.draw(x,y, this.attr.displayable[nx][ny], '#F0F');
   }
 }
