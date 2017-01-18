@@ -1,6 +1,6 @@
 Game.Message = {
   attr:{
-    messages: []
+    messages: [],
   },
   render: function(display){
 

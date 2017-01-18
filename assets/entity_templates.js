@@ -11,7 +11,14 @@ Game.EntityTemplates.Cat = {
   name: 'Cat',
   chr:'&',
   fg:'#f00',
-  mixins:[]
+  mixins:[],
+  loopingChars: {
+    wait: 0,
+    lim: 100
+  },
+  work: function(){
+    // this.attr._x++;
+  }
 }
 
 Game.EntityTemplates.Dog = {
