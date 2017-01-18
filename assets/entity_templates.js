@@ -3,7 +3,7 @@ Game.EntityTemplates = {};
 Game.EntityTemplates.Avatar = {
   name: 'Avatar',
   chr:'@',
-  fg:'#00f',
+  fg:'#bbc',
   mixins:[Game.EntityMixin.WalkerCorporeal, Game.EntityMixin.Chronicle, Game.EntityMixin.InventoryHolder],
 };
 
