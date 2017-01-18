@@ -149,7 +149,6 @@ var Game = {
   update: function(){
     for(var en in Game.DATASTORE.ENTITIES){
       Game.DATASTORE.ENTITIES[en].doWork();
-      Game._currUIMode.attr._map.updateEntity(Game.DATASTORE.ENTITIES[en]);
     }
 
     Game.renderMain();

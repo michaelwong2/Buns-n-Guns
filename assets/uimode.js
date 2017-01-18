@@ -161,13 +161,12 @@ Game.UIMode.gamePlay = {
       this.attr._map.addEntity(newent);
     }
 
-
-    for(var k = 0; k < 10; k++){
-      var newItem = new Game.Item(Game.ItemTemplates.Key);
+    for(var i = 0; i < 3; i++){
+      var newent = new Game.Entity(Game.EntityTemplates.Bomb);
       var newloc = this.attr._map.getWalkableLocation();
-      newItem.setPos(newloc.x, newloc.y);
+      newent.setPos(newloc.x, newloc.y);
 
-      this.attr._map.addItem(newItem);
+      this.attr._map.addEntity(newent);
     }
 
   },

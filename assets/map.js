@@ -63,6 +63,8 @@ Game.Map.prototype.getEmptyLocation = function(){
 Game.Map.prototype.addEntity = function(entity){
     this.attr._entitiesByLocation[entity.getX() + "," + entity.getY()] = entity._entityID;
     this.attr._locationsByEntity[entity._entityID] = entity.getX() + "," + entity.getY();
+
+    entity.setMap(this);
 }
 
 Game.Map.prototype.getEntity = function(x,y){
@@ -76,6 +78,12 @@ Game.Map.prototype.updateEntity = function(entity){
 
   this.attr._locationsByEntity[entity._entityID] = entity.getX() + "," + entity.getY();
   this.attr._entitiesByLocation[entity.getX() + "," + entity.getY()] = entity._entityID;
+}
+
+Game.Map.prototype.deleteEntity = function(entity){
+  var oldloc = this.attr._locationsByEntity[entity._itemID];
+  delete this.attr._entitiesByLocation[oldloc];
+  delete this.attr._locationsByEntity[entity._itemID];
 }
 
 Game.Map.prototype.addItem = function(item){
