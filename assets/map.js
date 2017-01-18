@@ -6,7 +6,9 @@ Game.Map = function(tilesGrid){
     _entitiesByLocation: {},
     _locationsByEntity: {},
     _itemsByLocation: {},
-    _locationsByItem: {}
+    _locationsByItem: {},
+
+    Game.DATASTORE.MAP = this;
   };
 };
 

@@ -145,3 +145,19 @@ Game.EntityMixin.InventoryHolder = {
     this.attr._InventoryHolder_attr.keyCount = 0;
   }
 };
+
+Game.EntityMixin.SavePoint = {
+  META: {
+    mixinName: 'SavePoint',
+    mixinGroup: 'SavePoint',
+    stateNamespace: '_SavePoint_attr',
+    stateModel: {
+    },
+    init: function (template) {
+    }
+  },
+  tryWalk: function (map,dx,dy) {
+    var targetX = Math.min(Math.max(0,this.getX() + dx),map.getWidth());
+    var targetY = Math.min(Math.max(0,this.getY() + dy),map.getHeight());
+  }
+};

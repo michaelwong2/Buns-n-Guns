@@ -20,7 +20,7 @@ Game.Exit = {
   },
 
   lock: function () {
-    this.attr.open = false
+    this.attr.open = false;
     this.attr.displayable[1][0] = '%';
     this.attr.displayable[1][1] = '%';
   },
@@ -37,10 +37,9 @@ Game.Exit = {
   },
 
   putExit: function(tileArray){
-    var len = tileArray.length - 1;
+    var X = tileArray.length - 1;
     var Y = Math.floor(Math.random()*tileArray[0].length);
 
-    var X = len;
     wallFound = false;
     while(!wallFound && X > 0){
       console.log(X);
