@@ -8,14 +8,17 @@ Game.Exit = {
     open: false,
     lockSize: 2
   },
+
   isOpen: function(){
     return this.attr.open;
   },
+
   open: function(){
     this.attr.open = true;
     this.attr.displayable[1][0] = ' ';
     this.attr.displayable[1][1] = ' ';
   },
+
   unlock: function(){
     if(this.attr.lockSize > 0){
       this.attr.lockSize--;
@@ -25,6 +28,7 @@ Game.Exit = {
       Game.Message.send("The door has been unlocked!");
     }
   },
+
   putExit: function(tileArray){
     var len = tileArray.length - 1;
     var Y = Math.floor(Math.random()*tileArray[0].length);
@@ -55,9 +59,11 @@ Game.Exit = {
     return tileArray;
 
   },
+
   isExit: function(x,y){
     return x >= this.attr.sx && x < this.attr.sx + this.attr.width && y < this.attr.sy + this.attr.height && y >= this.attr.sy;
   },
+
   render: function(display,x,y, xStart, yStart){
     var nx = x+xStart - this.attr.sx;
     var ny = y+yStart - this.attr.sy;

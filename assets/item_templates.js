@@ -2,7 +2,7 @@ Game.ItemTemplates = {};
 
 Game.ItemTemplates.Key = {
   name: 'key',
-  chr:'#',
+  chr:'Y',
   fg:'#bbc',
   mixins:[]
 };
