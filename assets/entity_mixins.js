@@ -13,7 +13,11 @@ Game.EntityMixin.WalkerCorporeal = {
       if(Game.Exit.isOpen()){
         // load next level
       }else{
-        Game.Message.send("You need " + Game.Exit.attr.lockSize + " keys to open this door.");
+        if (this.keyCount() > 0) {
+          Game.Exit.unlock(this.keyCount());
+        } else {
+          Game.Message.send("You need " + Game.Exit.attr.lockSize + " keys to open this door.");
+        }
       }
     }
 
@@ -90,10 +94,14 @@ Game.EntityMixin.InventoryHolder = {
     stateNamespace: '_InventoryHolder_attr',
     stateModel: {
       items: {},
+      keys: {},
+      keyCount: 0,
       spaceAvailable: true
     },
     init: function (template) {
       this.attr._InventoryHolder_attr.items = template.items || {};
+      this.attr._InventoryHolder_attr.keys = template.keys || {};
+      this.attr._InventoryHolder_attr.keyCount = template.keyCount || 0;
       this.attr._InventoryHolder_attr.spaceAvailable = template.spaceAvailable || true;
     }
   },
@@ -105,7 +113,13 @@ Game.EntityMixin.InventoryHolder = {
   pickupItem: function (map,x,y) {
     var item = map.getItem(x, y);
     if ( item !== null) {
-      this.attr._InventoryHolder_attr.items[item._itemID] = item;
+      if (item.attr._name == 'key') {
+        this.attr._InventoryHolder_attr.keys[item._itemID] = item;
+        this.attr._InventoryHolder_attr.keyCount++;
+        Game.Message.send('You picked up a ' + item.attr._name + '! You now have ' + this.attr._InventoryHolder_attr.keyCount + ' keys.');
+      } else {
+        this.attr._InventoryHolder_attr.items[item._itemID] = item;
+      }
       map.updateItem(item);
     }
     ;
@@ -121,5 +135,9 @@ Game.EntityMixin.InventoryHolder = {
   dropItem: function (itemId) {
     // var index = this.attr._InventoryHolder_attr.items.indexOf(itemId);
     // this.attr._InventoryHolder_attr.items.splice(index,1);
+  },
+
+  keyCount: function () {
+    return this.attr._InventoryHolder_attr.keyCount;
   }
 };
