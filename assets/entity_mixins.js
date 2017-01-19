@@ -18,6 +18,7 @@ Game.EntityMixin.WalkerCorporeal = {
         } else {
           Game.Message.send("You need " + Game.Exit.attr.lockSize + " keys to open this door.");
         }
+        return;
       }
     }
 

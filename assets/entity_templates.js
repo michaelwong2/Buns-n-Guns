@@ -4,6 +4,7 @@ Game.EntityTemplates.Avatar = {
   name: 'Avatar',
   chr:'@',
   fg:'#bbc',
+  dir: 0,
   mixins:[Game.EntityMixin.WalkerCorporeal, Game.EntityMixin.Chronicle, Game.EntityMixin.InventoryHolder],
 };
 
@@ -30,37 +31,56 @@ Game.EntityTemplates.Dog = {
 
 Game.EntityTemplates.Bomb = {
   name: 'Bomb',
-  chr:'=',
+  chr:'o',
   fg:'#bcc',
   mixins:[],
   loopingChars: {
     wait: 0,
-    lim: 100,
+    lim: 10,
     count: 0,
     trigger: 10,
-    radius: 10,
+    radius: 5,
     explode: function(map, ox, oy){
-      //
-      // var xStart = camX-Math.round(dispW/2);
-      // var yStart = camY-Math.round(dispH/2);
-      //
-      // var tar = map.getTileGrid();
-      //
-      // var sx = ox - this.radius;
-      // var sy = oy - this.radius;
-      //
-      // for(var x = sx; x < this.radius*2; x++){
-      //   if(x <= 0 || x >= tar.length)
-      //     continue;
-      //
-      //   for(var y = sy; y < this.radius*2; y++){
-      //
-      //     if(y <= 0 || y >= tar[x].length)
-      //       continue;
-      //
-      //     tar[x][y] = Game.Tile.floorTile;
-      //   }
-      // }
+      var tar = map.getTileGrid();
+
+      var sx = ox - this.radius;
+      var sy = oy - this.radius;
+
+      if(sx < 0){
+        sx = 0;
+      }
+
+      if(sy < 0){
+        sy = 0;
+      }
+
+      console.log("starting coords: " + sx + ", " + sy + ", radius: " + this.radius);
+
+      for(var x = 0; x < this.radius*2; x++){
+
+        var nx = x + sx;
+
+        if(nx <= 2 || nx >= tar.length-2){
+          continue;
+        }
+
+        for(var y = 0; y < this.radius*2 - 3; y++){
+          var ny = y + sy;
+
+          if(Game.util.liesOnCorners(x,y,this.radius*2, this.radius*2) || ny <= 2 || ny >= tar[x].length-2){
+            continue;
+          }
+
+          tar[nx][ny] = Game.Tile.floorTile;
+
+          var entid = map.attr._entitiesByLocation[nx + "," + ny];
+
+          if(entid != null && Game.DATASTORE.ENTITIES[entid]){
+            Game.DATASTORE.ENTITIES[entid].expire();
+          }
+
+        }
+      }
     }
   },
   work: function(){
@@ -76,5 +96,51 @@ Game.EntityTemplates.Bomb = {
 
       this.loopingChars.count++;
     }
+  }
+}
+
+Game.EntityTemplates.Bullet = {
+  name: 'Bullet',
+  chr:'.',
+  fg:'#f00',
+  mixins:[],
+  loopingChars: {
+    wait: 0,
+    lim: 10,
+    dir: 0,
+    speed: 1,
+    count: 0,
+    lifespan: 10
+  },
+  work: function(){
+    var sp = this.loopingChars.speed;
+
+    var cx = 0;
+    var cy = 0;
+
+    if(this.attr._x <= 2 || this.attr._x >= this.attr.map.getWidth() - 2 || this.attr._y <= 2 || this.attr._y >= this.attr.map.getHeight() - 2){
+      this.attr._char = '*';
+      this.expire();
+      return;
+    }
+
+    switch(this.loopingChars.dir){
+      case 0: cx -= sp; break;
+      case 1: cy -= sp; break;
+      case 2: cx += sp; break;
+      case 3: cy += sp; break;
+    }
+
+    this.attr._x += cx;
+    this.attr._y += cy;
+
+    if(this.loopingChars.count > this.loopingChars.lifespan){
+      this.expire();
+      return;
+    }else if(this.loopingChars.count == this.loopingChars.lifespan){
+      this.attr._char = '*';
+    }
+      this.loopingChars.count++;
+
   }
 }

@@ -25,6 +25,36 @@ Game.util = {
   uniqueId: function() {
      Game.util.ID_SEQUENCE++;
      return Date.now()+'-'+Game.util.ID_SEQUENCE+'-'+Game.util.randomString(24);
+  },
+
+  liesOnCorners: function(x,y,w,h){
+    if(x == 0 && y == 0){
+      return true;
+    }else if(x == 1 && y == 0){
+      return true;
+    }else if(x == 0 && y == 1){
+      return true;
+    }else if(x == 0 && y == h-1){
+      return true;
+    }else if(x == 0 && y == h-2){
+      return true;
+    }else if(x == 1 && y == h-1){
+      return true;
+    }else if(x == w-1 && y == 0){
+      return true;
+    }else if(x == w-2 && y == 0){
+      return true;
+    }else if(x == w-1 && y == 1){
+      return true;
+    }else if(x == w-1 && y == h-2){
+      return true;
+    }else if(x == w-1 && y == h-1){
+      return true;
+    }else if(x == w-1 && y == h-2){
+      return true;
+    }else{
+      return false;
+    }
   }
 
 };
