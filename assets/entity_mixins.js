@@ -10,6 +10,7 @@ Game.EntityMixin.WalkerCorporeal = {
     var targetY = Math.min(Math.max(0,this.getY() + dy),map.getHeight());
 
     if(Game.SavePoint.isSavePoint(targetX, targetY)){
+      Game.SavePoint.saveGame();
       return;
     }
 

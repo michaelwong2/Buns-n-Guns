@@ -55,5 +55,5 @@ Game.ActiveSymbol.prototype.loadSavedState = function(sattr, template){
       this.attr[i] = sattr[i];
   }
 
-  this.loadMixins(template.mixins);
+  this.loadMixins(template.mixins,template);
 }

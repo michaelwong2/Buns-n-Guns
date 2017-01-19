@@ -8,6 +8,29 @@ Game.SavePoint = {
     return x === this.attr._x && y === this.attr._y;
   },
 
+  saveGame: function() {
+    console.log(JSON.stringify(Game.getGame()));
+    if(Game.localStorageAvailable()){
+      //window.localStorage.setItem(Game._PERSISTENCE_NAMESPACE, JSON.stringify(Game.getGame()));
+      // window.localStorage.setItem();
+      window.localStorage.setItem('randomSeed',JSON.stringify(Game.getRandomSeed()));
+
+      //save map
+      window.localStorage.setItem('savedmap',JSON.stringify(Game.DATASTORE.MAP));
+
+      //save entities
+      var storableEntities = {};
+      for(var k in Game.DATASTORE.ENTITIES){
+        var thisEnt = Game.DATASTORE.ENTITIES[k];
+        storableEntities[thisEnt._entityID] = thisEnt.attr;
+      }
+
+      window.localStorage.setItem("savedentities", JSON.stringify(storableEntities));
+      window.localStorage.setItem("savedmessages", JSON.stringify(Game.Message.attr
+      ));
+    }
+  },
+
   putSavePoint: function(tileArray){
     var X = Math.floor(Math.random()*tileArray.length);
     var Y = Math.floor(Math.random()*tileArray[0].length);

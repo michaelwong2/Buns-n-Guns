@@ -1,8 +1,8 @@
 Game.Map = function(tilesGrid){
   this._tiles = tilesGrid;
+  this._width = tilesGrid.length;
+  this._height = tilesGrid[0].length;
   this.attr = {
-    _width: tilesGrid.length,
-    _height: tilesGrid[0].length,
     _entitiesByLocation: {},
     _locationsByEntity: {},
     _itemsByLocation: {},
@@ -12,15 +12,15 @@ Game.Map = function(tilesGrid){
 };
 
 Game.Map.prototype.getWidth = function () {
-  return this.attr._width;
+  return this._width;
 };
 
 Game.Map.prototype.getHeight = function () {
-  return this.attr._height;
+  return this._height;
 };
 
 Game.Map.prototype.getTile = function (x,y) {
-  if ((x < 0) || (x >= this.attr._width) || (y<0) || (y >= this.attr._height)) {
+  if ((x < 0) || (x >= this._width) || (y<0) || (y >= this._height)) {
     return Game.Tile.nullTile;
   }
   return this._tiles[x][y] || Game.Tile.nullTile;
@@ -31,7 +31,7 @@ Game.Map.prototype.getTileGrid = function(){
 }
 
 Game.Map.prototype.setTile = function(x,y, tile){
-  if ((x < 0) || (x >= this.attr._width) || (y<0) || (y >= this.attr._height)) {
+  if ((x < 0) || (x >= this._width) || (y<0) || (y >= this._height)) {
     return;
   }
 
@@ -39,8 +39,8 @@ Game.Map.prototype.setTile = function(x,y, tile){
 }
 
 Game.Map.prototype.getWalkableLocation = function(){
-  var nx = Math.floor(Math.random()*this.attr._width);
-  var ny = Math.floor(Math.random()*this.attr._height);
+  var nx = Math.floor(Math.random()*this._width);
+  var ny = Math.floor(Math.random()*this._height);
 
   if(this.getTile(nx,ny).isWalkable()){
     return {x: nx, y: ny};
@@ -51,8 +51,8 @@ Game.Map.prototype.getWalkableLocation = function(){
 
 //Empty locations do not have an item in it
 Game.Map.prototype.getEmptyLocation = function(){
-  var nx = Math.floor(Math.random()*this.attr._width);
-  var ny = Math.floor(Math.random()*this.attr._height);
+  var nx = Math.floor(Math.random()*this._width);
+  var ny = Math.floor(Math.random()*this._height);
 
   if(this.getTile(nx,ny).isEmpty()){
     return {x: nx, y: ny};
@@ -127,7 +127,6 @@ Game.Map.prototype.renderOn = function (display,camX,camY) {
       } else {
         activeSym.draw(display,x,y);
       }
-
     }
   }
 };

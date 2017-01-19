@@ -33,48 +33,34 @@ Game.UIMode.gameMenu = {
         Game.UIMode.gamePlay.setUpNewGame();
     }else if(abinding.actionKey == 'PERSISTENCE_LOAD'){
 
-      if(window.localStorage.getItem(Game._PERSISTENCE_NAMESPACE) == null || window.localStorage.getItem("savedentities") == null){
+      if(window.localStorage.getItem('randomSeed') == null || window.localStorage.getItem("savedentities") == null){
         Game.Message.send("No saved file data");
         return;
       }
 
       // load game data
-      var json_state_data = window.localStorage.getItem(Game._PERSISTENCE_NAMESPACE);
-      var state_data = JSON.parse(json_state_data);
+      // var json_state_data = window.localStorage.getItem(Game._PERSISTENCE_NAMESPACE);
+      // var state_data = JSON.parse(json_state_data);
+
+      //get randomSeed
+      var randomSeed = JSON.parse(window.localStorage.getItem('randomSeed'));
+
+      //load map
+      var map_data = JSON.parse(window.localStorage.getItem('savedmap'));
 
       // load entity data
       var entity_data = JSON.parse(window.localStorage.getItem("savedentities"));
 
       for(var k in entity_data){
-        var loadedent = new Game.Entity({id: entity_data[k]._entityID});
-        loadedent.loadSavedState(entity_data[k], Game.EntityTemplates[entity_data[k]._name]);
+        var loadedEnt = new Game.Entity({id: entity_data[k]._entityID});
+        loadedEnt.loadSavedState(entity_data[k], Game.EntityTemplates[entity_data[k]._name]);
 
-        if(loadedent.attr._name == "Avatar")
-          Game.UIMode.gamePlay.attr._avatar = loadedent;
-
+        if(loadedEnt.attr._name == "Avatar")
+          Game.UIMode.gamePlay.attr._avatar = loadedEnt;
       }
 
-      Game.UIMode.gamePlay.load(state_data._randomSeed);
-
-    }else if(abinding.actionKey == 'PERSISTENCE_SAVE'){
-      // console.log(JSON.stringify(Game.getGame()));
-      // if(Game.localStorageAvailable()){
-      //   window.localStorage.setItem(Game._PERSISTENCE_NAMESPACE, JSON.stringify(Game.getGame()));
-      //   // window.localStorage.setItem();
-      //
-      //   var storableAttrs = {};
-      //
-      //   for(var k in Game.DATASTORE.ENTITIES){
-      //     var thisent = Game.DATASTORE.ENTITIES[k];
-      //     storableAttrs[thisent._entityID] = thisent.attr;
-      //   }
-      //
-      //   window.localStorage.setItem("savedentities", JSON.stringify(storableAttrs));
-      //   window.localStorage.setItem("savedmessages", JSON.stringify(Game.Message.attr
-      //   ));
-      // }
-    }else{
-      return;
+      Game.setRandomSeed(randomSeed);
+      Game.UIMode.gamePlay.load(randomSeed,map_data);
     }
 
     Game.switchUIMode(Game.UIMode.gamePlay);
@@ -165,8 +151,8 @@ Game.UIMode.gamePlay = {
     }
   },
 
-  load: function(seed){
-    this.attr._map = Game.mapGen.loadPreviousMap(seed);
+  load: function(seed,map_data){
+    this.attr._map = Game.mapGen.loadPreviousMap(seed, map_data, this.attr.height, this.attr.width);
 
     this.attr.camX = this.attr._avatar.getX();
     this.attr.camY = this.attr._avatar.getY();

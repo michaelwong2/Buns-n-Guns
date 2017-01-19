@@ -23,6 +23,7 @@ Game.Exit = {
     this.attr.open = false;
     this.attr.displayable[1][0] = '%';
     this.attr.displayable[1][1] = '%';
+    this.attr.lockSize = 2;
   },
 
   unlock: function(keyCount) {

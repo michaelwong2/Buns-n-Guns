@@ -40,9 +40,14 @@ Game.mapGen = {
     return new Game.Map(tileArray);
   },
 
-  loadPreviousMap: function(seed){
+  loadPreviousMap: function(seed,map_data,x,y){
     this.setSeed(seed);
-    var oldmap = this.newMap();
+    var oldmap = this.newMap(x,y);
+
+    for (var i in map_data) {
+      if (map_data.hasOwnProperty(i))
+      oldmap.attr[i] = map_data[i];
+    }
 
     for(var k in Game.DATASTORE.ENTITIES){
       oldmap.addEntity(Game.DATASTORE.ENTITIES[k]);
