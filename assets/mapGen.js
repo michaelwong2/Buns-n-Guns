@@ -53,6 +53,10 @@ Game.mapGen = {
       oldmap.addEntity(Game.DATASTORE.ENTITIES[k]);
     }
 
+    for(var k in Game.DATASTORE.ITEMS){
+      oldmap.addItem(Game.DATASTORE.ITEMS[k]);
+    }
+
     return oldmap;
   },
 }

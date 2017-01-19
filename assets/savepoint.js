@@ -24,8 +24,16 @@ Game.SavePoint = {
         var thisEnt = Game.DATASTORE.ENTITIES[k];
         storableEntities[thisEnt._entityID] = thisEnt.attr;
       }
-
       window.localStorage.setItem("savedentities", JSON.stringify(storableEntities));
+
+      //save items
+      var storableItems = {};
+      for(var k in Game.DATASTORE.ITEMS){
+        var thisItem = Game.DATASTORE.ITEMS[k];
+        storableItems[thisItem._itemID] = thisItem.attr;
+      }
+      window.localStorage.setItem("saveditems", JSON.stringify(storableItems));
+
       window.localStorage.setItem("savedmessages", JSON.stringify(Game.Message.attr
       ));
     }

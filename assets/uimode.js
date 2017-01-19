@@ -59,6 +59,14 @@ Game.UIMode.gameMenu = {
           Game.UIMode.gamePlay.attr._avatar = loadedEnt;
       }
 
+      // load item data
+      var item_data = JSON.parse(window.localStorage.getItem("saveditems"));
+
+      for(var k in item_data){
+        var loadedItem = new Game.Item({id: item_data[k]._itemID});
+        loadedItem.loadSavedState(item_data[k], Game.ItemTemplates[item_data[k]._name]);
+      }
+
       Game.setRandomSeed(randomSeed);
       Game.UIMode.gamePlay.load(randomSeed,map_data);
     }
