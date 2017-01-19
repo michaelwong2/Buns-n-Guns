@@ -1,15 +1,14 @@
 Game.Map = function(tilesGrid){
+  this._tiles = tilesGrid;
   this.attr = {
-    _tiles: tilesGrid,
     _width: tilesGrid.length,
     _height: tilesGrid[0].length,
     _entitiesByLocation: {},
     _locationsByEntity: {},
     _itemsByLocation: {},
-    _locationsByItem: {},
-
-    Game.DATASTORE.MAP = this;
+    _locationsByItem: {}
   };
+  Game.DATASTORE.MAP = this.attr;
 };
 
 Game.Map.prototype.getWidth = function () {
@@ -24,11 +23,11 @@ Game.Map.prototype.getTile = function (x,y) {
   if ((x < 0) || (x >= this.attr._width) || (y<0) || (y >= this.attr._height)) {
     return Game.Tile.nullTile;
   }
-  return this.attr._tiles[x][y] || Game.Tile.nullTile;
+  return this._tiles[x][y] || Game.Tile.nullTile;
 };
 
 Game.Map.prototype.getTileGrid = function(){
-  return this.attr._tiles;
+  return this._tiles;
 }
 
 Game.Map.prototype.setTile = function(x,y, tile){
@@ -36,7 +35,7 @@ Game.Map.prototype.setTile = function(x,y, tile){
     return;
   }
 
-  this.attr._tiles[x][y] = tile;
+  this._tiles[x][y] = tile;
 }
 
 Game.Map.prototype.getWalkableLocation = function(){
@@ -113,6 +112,11 @@ Game.Map.prototype.renderOn = function (display,camX,camY) {
 
       if(Game.Exit.isExit(x + xStart,y + yStart)){
         Game.Exit.render(display, x, y, xStart, yStart);
+        continue;
+      }
+
+      if(Game.SavePoint.isSavePoint(x + xStart,y + yStart)){
+        Game.SavePoint.render(display, x, y, xStart, yStart);
         continue;
       }
 

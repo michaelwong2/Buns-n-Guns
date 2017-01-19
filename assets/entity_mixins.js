@@ -9,15 +9,19 @@ Game.EntityMixin.WalkerCorporeal = {
     var targetX = Math.min(Math.max(0,this.getX() + dx),map.getWidth());
     var targetY = Math.min(Math.max(0,this.getY() + dy),map.getHeight());
 
+    if(Game.SavePoint.isSavePoint(targetX, targetY)){
+      return;
+    }
+
     if(Game.Exit.isExit(targetX, targetY)){
       if(Game.Exit.isOpen()){
         Game.UIMode.gamePlay.setUpLevel();
-
       }else{
         if (this.keyCount() > 0) {
           Game.Exit.unlock(this.keyCount());
           this.resetKeyCount();
         }
+        return;
       }
     }
 
@@ -143,21 +147,5 @@ Game.EntityMixin.InventoryHolder = {
 
   resetKeyCount: function () {
     this.attr._InventoryHolder_attr.keyCount = 0;
-  }
-};
-
-Game.EntityMixin.SavePoint = {
-  META: {
-    mixinName: 'SavePoint',
-    mixinGroup: 'SavePoint',
-    stateNamespace: '_SavePoint_attr',
-    stateModel: {
-    },
-    init: function (template) {
-    }
-  },
-  tryWalk: function (map,dx,dy) {
-    var targetX = Math.min(Math.max(0,this.getX() + dx),map.getWidth());
-    var targetY = Math.min(Math.max(0,this.getY() + dy),map.getHeight());
   }
 };

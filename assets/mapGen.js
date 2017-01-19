@@ -10,6 +10,7 @@ Game.mapGen = {
   genNewRandomSeed: function(){
      this.setSeed(5 + Math.floor(ROT.RNG.getUniform()*100000));
   },
+
   newMap: function(h, w){
     if(this._currSeed == null){
         this.genNewRandomSeed();
@@ -33,10 +34,12 @@ Game.mapGen = {
     });
 
     tileArray = Game.Exit.putExit(tileArray);
+    Game.SavePoint.putSavePoint(tileArray);
     Game.Exit.lock();
-    
+
     return new Game.Map(tileArray);
   },
+
   loadPreviousMap: function(seed){
     this.setSeed(seed);
     var oldmap = this.newMap();
