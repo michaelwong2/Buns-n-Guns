@@ -36,7 +36,7 @@ Game.EntityTemplates.Bomb = {
   mixins:[],
   loopingChars: {
     wait: 0,
-    lim: 10,
+    lim: 20,
     count: 0,
     trigger: 10,
     radius: 5,
@@ -102,7 +102,7 @@ Game.EntityTemplates.Bomb = {
 Game.EntityTemplates.Bullet = {
   name: 'Bullet',
   chr:'.',
-  fg:'#f00',
+  fg:'#aaf',
   mixins:[],
   loopingChars: {
     wait: 0,
@@ -118,12 +118,6 @@ Game.EntityTemplates.Bullet = {
     var cx = 0;
     var cy = 0;
 
-    if(this.attr._x <= 2 || this.attr._x >= this.attr.map.getWidth() - 2 || this.attr._y <= 2 || this.attr._y >= this.attr.map.getHeight() - 2){
-      this.attr._char = '*';
-      this.expire();
-      return;
-    }
-
     switch(this.loopingChars.dir){
       case 0: cx -= sp; break;
       case 1: cy -= sp; break;
@@ -134,13 +128,35 @@ Game.EntityTemplates.Bullet = {
     this.attr._x += cx;
     this.attr._y += cy;
 
+    var entity = this.attr.map.attr._entitiesByLocation[this.attr._x + "," + this.attr._y];
+
+    if(entity != null && Game.DATASTORE.ENTITIES[entity]){
+      Game.DATASTORE.ENTITIES[entity].expire();
+      this.attr._char = "#";
+      this.expire();
+      return;
+    }
+
+    if(!this.attr.map.getTileGrid()[this.attr._x][this.attr._y].isWalkable()){
+      // this.attr.map.getTileGrid()[this.attr._x][this.attr._y] = Game.Tile.floorTile;
+      this.attr._char = "#";
+      this.expire();
+      return;
+    }
+
+    if(this.attr._x <= 2 || this.attr._x >= this.attr.map.getWidth() - 2 || this.attr._y <= 2 || this.attr._y >= this.attr.map.getHeight() - 2){
+      this.attr._char = '*';
+      this.expire();
+      return;
+    }
+
     if(this.loopingChars.count > this.loopingChars.lifespan){
       this.expire();
       return;
     }else if(this.loopingChars.count == this.loopingChars.lifespan){
       this.attr._char = '*';
     }
-      this.loopingChars.count++;
 
+    this.loopingChars.count++;
   }
 }

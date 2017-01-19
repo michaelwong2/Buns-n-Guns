@@ -182,13 +182,13 @@ Game.UIMode.gamePlay = {
       this.attr._map.addEntity(newent);
     }
 
-    // for(var i = 0; i < 10; i++){
-    //   var newent = new Game.Entity(Game.EntityTemplates.Bomb);
-    //   var newloc = this.attr._map.getWalkableLocation();
-    //   newent.setPos(newloc.x, newloc.y);
-    //
-    //   this.attr._map.addEntity(newent);
-    // }
+    for(var i = 0; i < 2; i++){
+      var newent = new Game.Entity(Game.EntityTemplates.Bomb);
+      var newloc = this.attr._map.getWalkableLocation();
+      newent.setPos(newloc.x, newloc.y);
+
+      this.attr._map.addEntity(newent);
+    }
 
   },
 

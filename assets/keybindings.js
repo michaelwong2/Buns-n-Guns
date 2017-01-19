@@ -125,7 +125,7 @@ Game.KeyBinding = {
     },
 
     SHOOT: {action_group:'movement' ,guid:Game.util.uniqueId() ,ordering:5.1 ,short:'shoot'  ,long :'shoot please' ,
-      arrows: {label:'l' ,inputMatch:ROT.VK_L ,inputType:'keydown' ,inputMetaShift:false ,inputMetaCtrl:false} ,
+      arrows: {label:'a' ,inputMatch:ROT.VK_A ,inputType:'keydown' ,inputMetaShift:false ,inputMetaCtrl:false} ,
       wasd  : {label:'l' ,inputMatch:ROT.VK_L ,inputType:'keydown' ,inputMetaShift:false ,inputMetaCtrl:false}
     }
 
