@@ -5,7 +5,33 @@ Game.EntityTemplates.Avatar = {
   chr:'@',
   fg:'#bbc',
   dir: 0,
-  mixins:[Game.EntityMixin.WalkerCorporeal, Game.EntityMixin.Chronicle, Game.EntityMixin.InventoryHolder],
+  mixins:[Game.EntityMixin.WalkerCorporeal, Game.EntityMixin.Chronicle, Game.EntityMixin.InventoryHolder, Game.EntityMixin.HitPoints, Game.EntityMixin.runnable],
+  workattrs:{
+    wait:0,
+    lim: 1
+  },
+  work: function(){
+    var map = this.getMap();
+    var x = this.getX();
+    var y = this.getY();
+
+    var ent = [];
+
+    ent[0] = map.getEntity(x+1,y);
+    ent[1] = map.getEntity(x-1,y);
+    ent[2] = map.getEntity(x,y+1);
+    ent[3] = map.getEntity(x,y-1);
+
+    for(var i = 0; i < ent.length; i++){
+      if(ent[i] != null){
+        var thisent = Game.DATASTORE.ENTITIES[ent[i]];
+
+        
+
+      }
+    }
+
+  }
 };
 
 Game.EntityTemplates.Cat = {
@@ -26,7 +52,7 @@ Game.EntityTemplates.MeleeBunny = {
   name: 'MeleeBunny',
   chr:'$',
   fg:'#0f0',
-  mixins:[Game.EntityMixin.runnable],
+  mixins:[Game.EntityMixin.runnable, Game.EntityMixin.HitPoints],
   workattrs: {
     wait: 0,
     lim: 10,
@@ -40,35 +66,42 @@ Game.EntityTemplates.MeleeBunny = {
     var dir = this.attr.loopingChars.dir;
     var sp = this.attr.loopingChars.sp;
 
+    var cx = 0;
+    var cy = 0;
+
     if(this.attr.loopingChars.passive){
 
-        var cx = 0;
-        var cy = 0;
-
-        switch(dir){
-          case 0: cx -= sp; break;
-          case 1: cy -= sp; break;
-          case 2: cx += sp; break;
-          case 3: cy += sp; break;
-        }
-
-        if(Game.util.outOfBounds(this.attr._x + cx, this.attr._y + cy, this.getMap().getWidth(), this.getMap().getHeight()) || !this.attr.map.getTileGrid()[this.attr._x + cx][this.attr._y + cy].isWalkable()){
-          dir += Math.floor(Math.random()*100) > 50 ? 1 : -1;
-
-          if(dir == 4)
-            dir = 0;
-          else if(dir == -1)
-            dir = 3;
-
-          this.attr.loopingChars.dir = dir;
-
-          return;
-        }
-        this.attr._x += cx;
-        this.attr._y += cy;
-    }else{
-      
     }
+
+    switch(dir){
+      case 0: cx -= sp; break;
+      case 1: cy -= sp; break;
+      case 2: cx += sp; break;
+      case 3: cy += sp; break;
+    }
+
+    if(Game.util.outOfBounds(this.attr._x + cx, this.attr._y + cy, this.getMap().getWidth(), this.getMap().getHeight()) || !this.attr.map.getTileGrid()[this.attr._x + cx][this.attr._y + cy].isWalkable()){
+      dir += Math.floor(Math.random()*100) > 50 ? 1 : -1;
+
+      if(dir == 4)
+        dir = 0;
+      else if(dir == -1)
+        dir = 3;
+
+      this.attr.loopingChars.dir = dir;
+
+      return;
+    }
+
+    var entity = this.getMap().getEntity(this.attr._x + cx, this.attr._y + cy);
+
+    if(entity != null && Game.DATASTORE.ENTITIES[entity] && Game.DATASTORE.ENTITIES[entity]._name == "Avatar"){
+      return;
+    }
+
+    this.attr._x += cx;
+    this.attr._y += cy;
+
   }
 };
 
@@ -111,7 +144,9 @@ Game.EntityTemplates.Bullet = {
     dir: 0,
     speed: 1,
     count: 0,
-    lifespan: 10
+    lifespan: 10,
+    avatarDec: 0,
+    entityDec: 0
   },
   work: function(){
     var sp = this.attr.loopingChars.speed;

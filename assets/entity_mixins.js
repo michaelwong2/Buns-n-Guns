@@ -60,8 +60,8 @@ Game.EntityMixin.HitPoints = {
     mixinGroup: 'HitPoints',
     stateNamespace: '_HitPoints_attr',
     stateModel:  {
-      maxHp: 1,
-      curHp: 1
+      maxHp: 10,
+      curHp: 10
     },
     init: function (template) {
       this.attr._HitPoints_attr.maxHp = template.maxHp || 1;
