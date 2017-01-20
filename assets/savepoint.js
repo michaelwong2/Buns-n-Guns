@@ -15,8 +15,10 @@ Game.SavePoint = {
       // window.localStorage.setItem();
       window.localStorage.setItem('randomSeed',JSON.stringify(Game.getRandomSeed()));
 
-      //save map
+      //save map & locations of exit and savepoint
       window.localStorage.setItem('savedmap',JSON.stringify(Game.DATASTORE.MAP));
+      window.localStorage.setItem('savePointLocation',JSON.stringify(this.attr));
+      window.localStorage.setItem('exitLocation',JSON.stringify(Game.Exit.getLocation()));
 
       //save entities
       var storableEntities = {};

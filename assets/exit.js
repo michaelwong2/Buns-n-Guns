@@ -71,6 +71,10 @@ Game.Exit = {
     return x >= this.attr.sx && x < this.attr.sx + this.attr.width && y < this.attr.sy + this.attr.height && y >= this.attr.sy;
   },
 
+  getLocation: function () {
+    return {_x: this.attr.sx, _y: this.attr.sy};
+  },
+
   render: function(display,x,y, xStart, yStart){
     var nx = x+xStart - this.attr.sx;
     var ny = y+yStart - this.attr.sy;

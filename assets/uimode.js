@@ -47,6 +47,8 @@ Game.UIMode.gameMenu = {
 
       //load map
       var map_data = JSON.parse(window.localStorage.getItem('savedmap'));
+      var savePointLocation = JSON.parse(window.localStorage.getItem('savePointLocation'));
+      var exitLocation = JSON.parse(window.localStorage.getItem('exitLocation'));
 
       // load entity data
       var entity_data = JSON.parse(window.localStorage.getItem("savedentities"));
