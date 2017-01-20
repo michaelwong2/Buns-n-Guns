@@ -90,7 +90,7 @@ Game.UIMode.gamePlay = {
     height: 40,
     width: 40,
     moveX: 0,
-    moveY: 0
+    moveY: 0,
   },
   enter: function(){
     console.log("entered gamePlay");
@@ -115,19 +115,40 @@ Game.UIMode.gamePlay = {
 
     if(abinding.actionKey == 'MOVE_U'){
       this.attr.moveY -= this.attr.speed;
+      this.attr._avatar.setDir(1);
     } else if(abinding.actionKey == 'MOVE_D'){
       this.attr.moveY += this.attr.speed;
+      this.attr._avatar.setDir(3);
     } else if(abinding.actionKey == 'MOVE_R'){
       this.attr.moveX += this.attr.speed;
+      this.attr._avatar.setDir(2);
     } else if(abinding.actionKey == 'MOVE_L'){
       this.attr.moveX -= this.attr.speed;
+      this.attr._avatar.setDir(0);
     } else if(abinding.actionKey == 'PICKUP'){
       console.log('pickup action');
       this.attr._avatar.pickupItem(this.attr._map, this.attr._avatar.getX(), this.attr._avatar.getY());
     }else if(abinding.actionKey == 'PERSISTENCE'){
       Game.switchUIMode(Game.UIMode.persistence);
       return;
-    }else {
+    }else if(abinding.actionKey == 'SHOOT'){
+      var bullet = new Game.Entity(Game.EntityTemplates.Bullet);
+
+      var xoff = 0;
+      var yoff = 0;
+
+      switch(this.attr._avatar.attr.dir){
+        case 0: xoff = -1; break;
+        case 1: yoff = -1; break;
+        case 2: xoff = 1; break;
+        case 3: yoff = 1; break;
+      }
+
+      bullet.setPos(this.attr._avatar.getX() + xoff, this.attr._avatar.getY() + yoff);
+      bullet.loopingChars.dir = this.attr._avatar.attr.dir;
+
+      this.attr._map.addEntity(bullet);
+    }else{
       return;
     }
 
@@ -163,6 +184,16 @@ Game.UIMode.gamePlay = {
 
       this.attr._map.addEntity(newent);
     }
+
+    for(var i = 0; i < 2; i++){
+      var newent = new Game.Entity(Game.EntityTemplates.Bomb);
+      var newloc = this.attr._map.getWalkableLocation();
+      newent.setPos(newloc.x, newloc.y);
+
+      this.attr._map.addEntity(newent);
+    }
+
+
   },
 
   load: function(seed){

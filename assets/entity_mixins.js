@@ -18,6 +18,7 @@ Game.EntityMixin.WalkerCorporeal = {
           Game.Exit.unlock(this.keyCount());
           this.resetKeyCount();
         }
+        return;
       }
     }
 
