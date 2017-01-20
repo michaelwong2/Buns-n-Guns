@@ -2,6 +2,9 @@ Game.Entity = function(template){
   template = template || {};
 
   Game.ActiveSymbol.call(this, template);
+    this.attr.workattrs = template.workattrs || {};
+    this.loadWorkAttributes();
+
     this.attr._x = template.x || 0;
     this.attr._y = template.y || 0;
 
@@ -12,13 +15,6 @@ Game.Entity = function(template){
     this._entityID = template.id || Game.util.randomString(32);
 
     this._work = template.work || null;
-    this.loopingChars = {};
-
-    if(template.loopingChars){
-      for(var key in template.loopingChars){
-        this.loopingChars[key] = template.loopingChars[key];
-      }
-    }
 
     Game.DATASTORE.ENTITIES[this._entityID] = this;
 
@@ -52,13 +48,15 @@ Game.Entity.prototype.setDir = function(d){
 
 Game.Entity.prototype.doWork = function(){
   if(this._work && this.loopingChars){
-    if(this.loopingChars.wait >= this.loopingChars.lim){
-      this._work();
-      this.loopingChars.wait = 0;
-    }else{
-      this.loopingChars.wait++;
+
+  }
+}
+
+Game.Entity.prototype.loadWorkAttributes = function(){
+  if(this.hasMixin('runnable') && this.attr.workattrs != null){
+    for(var k in this.attr.workattrs){
+      this.attr.loopingChars[k] = this.attr.workattrs[k];
     }
-    this.getMap().updateEntity(this);
   }
 }
 

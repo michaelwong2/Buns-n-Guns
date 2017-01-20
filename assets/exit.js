@@ -43,8 +43,6 @@ Game.Exit = {
     var X = len;
     wallFound = false;
     while(!wallFound && X > 0){
-      console.log(X);
-
       if(tileArray[X][Y].isWalkable()){
         wallFound = true;
         X++;

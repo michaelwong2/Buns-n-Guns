@@ -145,7 +145,7 @@ Game.UIMode.gamePlay = {
       }
 
       bullet.setPos(this.attr._avatar.getX() + xoff, this.attr._avatar.getY() + yoff);
-      bullet.loopingChars.dir = this.attr._avatar.attr.dir;
+      bullet.attr.loopingChars.dir = this.attr._avatar.attr.dir;
 
       this.attr._map.addEntity(bullet);
     }else{
@@ -177,8 +177,8 @@ Game.UIMode.gamePlay = {
       this.attr._map.addItem(newItem);
     }
 
-    for(var i = 0; i < 3; i++){
-      var newent = new Game.Entity(Game.EntityTemplates.Cat);
+    for(var i = 0; i < 5; i++){
+      var newent = new Game.Entity(Game.EntityTemplates.MeleeBunny);
       var newloc = this.attr._map.getWalkableLocation();
       newent.setPos(newloc.x, newloc.y);
 

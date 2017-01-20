@@ -11,90 +11,91 @@ Game.EntityTemplates.Avatar = {
 Game.EntityTemplates.Cat = {
   name: 'Cat',
   chr:'&',
-  fg:'#f00',
+  fg:'#fff',
   mixins:[],
-  loopingChars: {
+  workattrs: {
     wait: 0,
     lim: 100
   },
   work: function(){
     //this.attr._x++;
   }
-}
+};
 
-Game.EntityTemplates.Dog = {
-  name: 'Dog',
+Game.EntityTemplates.MeleeBunny = {
+  name: 'MeleeBunny',
   chr:'$',
-  fg:'#f00',
-  mixins:[]
-}
+  fg:'#0f0',
+  mixins:[Game.EntityMixin.runnable],
+  workattrs: {
+    wait: 0,
+    lim: 10,
+    passive: true,
+    dir: Math.floor(Math.random()*3),
+    sp: 1
+  },
+  work: function(){
+    //passive
+
+    var dir = this.attr.loopingChars.dir;
+    var sp = this.attr.loopingChars.sp;
+
+    if(this.attr.loopingChars.passive){
+
+        var cx = 0;
+        var cy = 0;
+
+        switch(dir){
+          case 0: cx -= sp; break;
+          case 1: cy -= sp; break;
+          case 2: cx += sp; break;
+          case 3: cy += sp; break;
+        }
+
+        if(Game.util.outOfBounds(this.attr._x + cx, this.attr._y + cy, this.getMap().getWidth(), this.getMap().getHeight()) || !this.attr.map.getTileGrid()[this.attr._x + cx][this.attr._y + cy].isWalkable()){
+          dir += Math.floor(Math.random()*100) > 50 ? 1 : -1;
+
+          if(dir == 4)
+            dir = 0;
+          else if(dir == -1)
+            dir = 3;
+
+          this.attr.loopingChars.dir = dir;
+
+          return;
+        }
+        this.attr._x += cx;
+        this.attr._y += cy;
+    }else{
+      
+    }
+  }
+};
 
 Game.EntityTemplates.Bomb = {
   name: 'Bomb',
   chr:'o',
   fg:'#bcc',
-  mixins:[],
-  loopingChars: {
+  mixins:[Game.EntityMixin.runnable, Game.EntityMixin.explode],
+  workattrs: {
     wait: 0,
     lim: 20,
     count: 0,
     trigger: 10,
     radius: 5,
-    explode: function(map, ox, oy){
-      var tar = map.getTileGrid();
-
-      var sx = ox - this.radius;
-      var sy = oy - this.radius;
-
-      if(sx < 0){
-        sx = 0;
-      }
-
-      if(sy < 0){
-        sy = 0;
-      }
-
-      console.log("starting coords: " + sx + ", " + sy + ", radius: " + this.radius);
-
-      for(var x = 0; x < this.radius*2; x++){
-
-        var nx = x + sx;
-
-        if(nx <= 2 || nx >= tar.length-2){
-          continue;
-        }
-
-        for(var y = 0; y < this.radius*2 - 3; y++){
-          var ny = y + sy;
-
-          if(Game.util.liesOnCorners(x,y,this.radius*2, this.radius*2) || ny <= 2 || ny >= tar[x].length-2){
-            continue;
-          }
-
-          tar[nx][ny] = Game.Tile.floorTile;
-
-          var entid = map.attr._entitiesByLocation[nx + "," + ny];
-
-          if(entid != null && Game.DATASTORE.ENTITIES[entid]){
-            Game.DATASTORE.ENTITIES[entid].expire();
-          }
-
-        }
-      }
-    }
   },
   work: function(){
-    if(this.loopingChars.count >= this.loopingChars.trigger){
-      this.loopingChars.explode(this.getMap(), this.getX(), this.getY());
+    if(this.attr.loopingChars.count >= this.attr.loopingChars.trigger){
+      this.explode(this.getMap(), this.getX(), this.getY());
       this.expire();
     }else{
-      if(this.loopingChars.count % 2 == 0){
+      if(this.attr.loopingChars.count % 2 == 0){
         this.attr._fg = '#f00';
       }else{
         this.attr._fg = '#fff';
       }
 
-      this.loopingChars.count++;
+      this.attr.loopingChars.count++;
     }
   }
 }
@@ -103,8 +104,8 @@ Game.EntityTemplates.Bullet = {
   name: 'Bullet',
   chr:'.',
   fg:'#aaf',
-  mixins:[],
-  loopingChars: {
+  mixins:[Game.EntityMixin.runnable],
+  workattrs: {
     wait: 0,
     lim: 10,
     dir: 0,
@@ -113,12 +114,12 @@ Game.EntityTemplates.Bullet = {
     lifespan: 10
   },
   work: function(){
-    var sp = this.loopingChars.speed;
+    var sp = this.attr.loopingChars.speed;
 
     var cx = 0;
     var cy = 0;
 
-    switch(this.loopingChars.dir){
+    switch(this.attr.loopingChars.dir){
       case 0: cx -= sp; break;
       case 1: cy -= sp; break;
       case 2: cx += sp; break;
@@ -137,7 +138,7 @@ Game.EntityTemplates.Bullet = {
       return;
     }
 
-    if(!this.attr.map.getTileGrid()[this.attr._x][this.attr._y].isWalkable()){
+    if(Game.util.outOfBounds(this.attr._x, this.attr._y, this.getMap().getWidth(), this.getMap().getHeight()) || !this.attr.map.getTileGrid()[this.attr._x][this.attr._y].isWalkable()){
       // this.attr.map.getTileGrid()[this.attr._x][this.attr._y] = Game.Tile.floorTile;
       this.attr._char = "#";
       this.expire();
@@ -150,13 +151,13 @@ Game.EntityTemplates.Bullet = {
       return;
     }
 
-    if(this.loopingChars.count > this.loopingChars.lifespan){
+    if(this.attr.loopingChars.count > this.attr.loopingChars.lifespan){
       this.expire();
       return;
-    }else if(this.loopingChars.count == this.loopingChars.lifespan){
+    }else if(this.attr.loopingChars.count == this.attr.loopingChars.lifespan){
       this.attr._char = '*';
     }
 
-    this.loopingChars.count++;
+    this.attr.loopingChars.count++;
   }
-}
+};

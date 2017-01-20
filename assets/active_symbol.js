@@ -21,7 +21,6 @@ Game.ActiveSymbol.prototype.hasMixin = function(mixin) {
 Game.ActiveSymbol.prototype.loadMixins = function(mixinData,template){
   for (var i = 0; i < mixinData.length; i++) {
     var mixin = mixinData[i];
-    console.dir(mixin);
     this._mixinTracker[mixin.META.mixinName] = true;
     this._mixinTracker[mixin.META.mixinGroup] = true;
     for (var mixinProp in mixinProp != 'META' && mixin) {

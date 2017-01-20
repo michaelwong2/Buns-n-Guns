@@ -55,6 +55,10 @@ Game.util = {
     }else{
       return false;
     }
+  },
+
+  outOfBounds(x,y,bx,by){
+    return x <= 0 || x >= bx - 1 || y <= 0 || y >= by-1;
   }
 
 };
