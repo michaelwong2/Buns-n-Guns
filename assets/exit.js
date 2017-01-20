@@ -64,7 +64,6 @@ Game.Exit = {
     }
 
     return tileArray;
-
   },
 
   isExit: function(x,y){
@@ -73,6 +72,11 @@ Game.Exit = {
 
   getLocation: function () {
     return {_x: this.attr.sx, _y: this.attr.sy};
+  },
+
+  updateExit: function(pos){
+    this.attr.sx = pos._x;
+    this.attr.sy = pos._y;
   },
 
   render: function(display,x,y, xStart, yStart){

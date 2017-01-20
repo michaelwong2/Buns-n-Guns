@@ -13,7 +13,7 @@ Game.SavePoint = {
     if(Game.localStorageAvailable()){
       //window.localStorage.setItem(Game._PERSISTENCE_NAMESPACE, JSON.stringify(Game.getGame()));
       // window.localStorage.setItem();
-      window.localStorage.setItem('randomSeed',JSON.stringify(Game.getRandomSeed()));
+      window.localStorage.setItem('randomSeed',JSON.stringify(Game.mapGen.getSeed()));
 
       //save map & locations of exit and savepoint
       window.localStorage.setItem('savedmap',JSON.stringify(Game.DATASTORE.MAP));
@@ -51,6 +51,11 @@ Game.SavePoint = {
     } else {
       this.putSavePoint(tileArray);
     }
+  },
+
+  updateSavePoint: function(pos){
+    this.attr._x = pos._x;
+    this.attr._y = pos._y;
   },
 
   render: function(display,x,y){

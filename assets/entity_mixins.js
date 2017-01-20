@@ -103,11 +103,14 @@ Game.EntityMixin.InventoryHolder = {
       keyCount: 0,
       spaceAvailable: true
     },
+
     init: function (template) {
-      this.attr._InventoryHolder_attr.items = template.items || {};
-      this.attr._InventoryHolder_attr.keys = template.keys || {};
-      this.attr._InventoryHolder_attr.keyCount = template.keyCount || 0;
-      this.attr._InventoryHolder_attr.spaceAvailable = template.spaceAvailable || true;
+      // this.attr._InventoryHolder_attr.items = template.items || {};
+      // console.log(template.id);
+      // console.log(template.items);
+      // this.attr._InventoryHolder_attr.keys = template.keys || {};
+      // this.attr._InventoryHolder_attr.keyCount = template.keyCount || 0;
+      // this.attr._InventoryHolder_attr.spaceAvailable = template.spaceAvailable || true;
     }
   },
 
@@ -118,7 +121,7 @@ Game.EntityMixin.InventoryHolder = {
   pickupItem: function (map,x,y) {
     var item = map.getItem(x, y);
     if ( item !== null) {
-      if (item.attr._name == 'key') {
+      if (item.attr._name == 'Key') {
         this.attr._InventoryHolder_attr.keys[item._itemID] = item;
         this.attr._InventoryHolder_attr.keyCount++;
         Game.Message.send('You picked up a ' + item.attr._name + '! You now have ' + this.attr._InventoryHolder_attr.keyCount + ' keys.');

@@ -1,17 +1,20 @@
 Game.mapGen = {
   _currSeed: null,
+
   setSeed: function(s){
     this._currSeed = s;
     ROT.RNG.setSeed(this._currSeed);
   },
+
   getSeed: function(){
     return this._currSeed;
   },
+
   genNewRandomSeed: function(){
      this.setSeed(5 + Math.floor(ROT.RNG.getUniform()*100000));
   },
 
-  newMap: function(h, w){
+  createMap: function(h,w) {
     if(this._currSeed == null){
         this.genNewRandomSeed();
     }
@@ -33,6 +36,12 @@ Game.mapGen = {
       }
     });
 
+    return tileArray;
+  },
+
+  newMap: function(h, w){
+    var tileArray = this.createMap(h,w);
+
     tileArray = Game.Exit.putExit(tileArray);
     Game.SavePoint.putSavePoint(tileArray);
     Game.Exit.lock();
@@ -40,22 +49,25 @@ Game.mapGen = {
     return new Game.Map(tileArray);
   },
 
-  loadPreviousMap: function(seed,map_data,x,y){
+  loadPreviousMap: function(seed,map_data,exit,savepoint,x,y){
     this.setSeed(seed);
-    var oldmap = this.newMap(x,y);
+    var oldmap = new Game.Map(this.createMap(x,y));
+    Game.Exit.updateExit(exit);
+    Game.Exit.lock();
+    Game.SavePoint.updateSavePoint(savepoint);
 
     for (var i in map_data) {
       if (map_data.hasOwnProperty(i))
       oldmap.attr[i] = map_data[i];
     }
 
-    for(var k in Game.DATASTORE.ENTITIES){
-      oldmap.addEntity(Game.DATASTORE.ENTITIES[k]);
-    }
-
-    for(var k in Game.DATASTORE.ITEMS){
-      oldmap.addItem(Game.DATASTORE.ITEMS[k]);
-    }
+    // for(var k in Game.DATASTORE.ENTITIES){
+    //   oldmap.addEntity(Game.DATASTORE.ENTITIES[k]);
+    // }
+    //
+    // for(var k in Game.DATASTORE.ITEMS){
+    //   oldmap.addItem(Game.DATASTORE.ITEMS[k]);
+    // }
 
     return oldmap;
   },

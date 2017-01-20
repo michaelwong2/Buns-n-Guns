@@ -6,3 +6,10 @@ Game.ItemTemplates.Key = {
   fg:'#bbc',
   mixins:[]
 };
+
+Game.ItemTemplates.Carrot = {
+  name: 'Carrot',
+  chr:'A',
+  fg:'#bbc',
+  mixins:[]
+};
