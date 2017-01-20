@@ -20,9 +20,10 @@ Game.Exit = {
   },
 
   lock: function () {
-    this.attr.open = false
+    this.attr.open = false;
     this.attr.displayable[1][0] = '%';
     this.attr.displayable[1][1] = '%';
+    this.attr.lockSize = 2;
   },
 
   unlock: function(keyCount) {
@@ -37,10 +38,9 @@ Game.Exit = {
   },
 
   putExit: function(tileArray){
-    var len = tileArray.length - 1;
+    var X = tileArray.length - 1;
     var Y = Math.floor(Math.random()*tileArray[0].length);
 
-    var X = len;
     wallFound = false;
     while(!wallFound && X > 0){
       if(tileArray[X][Y].isWalkable()){
@@ -62,11 +62,19 @@ Game.Exit = {
     }
 
     return tileArray;
-
   },
 
   isExit: function(x,y){
     return x >= this.attr.sx && x < this.attr.sx + this.attr.width && y < this.attr.sy + this.attr.height && y >= this.attr.sy;
+  },
+
+  getLocation: function () {
+    return {_x: this.attr.sx, _y: this.attr.sy};
+  },
+
+  updateExit: function(pos){
+    this.attr.sx = pos._x;
+    this.attr.sy = pos._y;
   },
 
   render: function(display,x,y, xStart, yStart){
