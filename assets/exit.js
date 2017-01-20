@@ -19,13 +19,20 @@ Game.Exit = {
     this.attr.displayable[1][1] = ' ';
   },
 
+  lock: function () {
+    this.attr.open = false
+    this.attr.displayable[1][0] = '%';
+    this.attr.displayable[1][1] = '%';
+  },
+
   unlock: function(keyCount) {
     if(this.attr.lockSize > 0){
       this.attr.lockSize -= keyCount;
       Game.Message.send("You used " + keyCount + " key(s) on the door. The door requires " + this.attr.lockSize + " more keys to open.");
-    }else if(this.attr.lockSize === 0){
-      this.open();
-      Game.Message.send("The door has been unlocked!");
+      if(this.attr.lockSize === 0){
+        this.open();
+        Game.Message.send("The door has been unlocked!");
+      }
     }
   },
 

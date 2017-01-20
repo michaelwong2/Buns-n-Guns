@@ -154,21 +154,24 @@ Game.UIMode.gamePlay = {
 
     // Game.renderAll();
   },
+
   setUpNewGame: function () {
+    this.attr._avatar = new Game.Entity(Game.EntityTemplates.Avatar);
+    this.setUpLevel();
+  },
+
+  setUpLevel: function () {
     this.attr._map = Game.mapGen.newMap(this.attr.height, this.attr.width);
 
-    this.attr._avatar = new Game.Entity(Game.EntityTemplates.Avatar);
     var Loc = this.attr._map.getWalkableLocation();
-
     this.attr._avatar.setPos(Loc.x,Loc.y);
     this.attr.camX = Loc.x;
     this.attr.camY = Loc.y;
-
     this.attr._map.addEntity(this.attr._avatar);
 
     for(var k = 0; k < 10; k++){
-      var newItem = new Game.Item(Game.ItemTemplates.Rock);
-      var newloc = this.attr._map.getEmptyLocation();
+      var newItem = new Game.Item(Game.ItemTemplates.Key);
+      var newloc = this.attr._map.getWalkableLocation();
       newItem.setPos(newloc.x, newloc.y);
 
       this.attr._map.addItem(newItem);
@@ -189,6 +192,7 @@ Game.UIMode.gamePlay = {
 
       this.attr._map.addEntity(newent);
     }
+
 
   },
 
