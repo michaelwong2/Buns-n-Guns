@@ -1,6 +1,12 @@
 Game.Entity = function(template){
   template = template || {};
 
+  this._entityID = template.id || Game.util.randomString(32);
+
+  if(template.loadTemplateAgain != null){
+    template = template.loadTemplateAgain;
+  }
+
   Game.ActiveSymbol.call(this, template);
     this.attr.workattrs = template.workattrs || {};
     this.loadWorkAttributes();
@@ -11,8 +17,6 @@ Game.Entity = function(template){
     this.attr.map = null;
 
     this.attr.dir = template.dir || 0;
-
-    this._entityID = template.id || Game.util.randomString(32);
 
     this._work = template.work || null;
 

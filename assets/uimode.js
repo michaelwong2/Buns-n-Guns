@@ -54,7 +54,7 @@ Game.UIMode.gameMenu = {
       var entity_data = JSON.parse(window.localStorage.getItem("savedentities"));
 
       for(var k in entity_data){
-        var loadedEnt = new Game.Entity({id: k});
+        var loadedEnt = new Game.Entity({id: k, loadTemplateAgain: Game.EntityTemplates[entity_data[k]._name]});
         loadedEnt.loadSavedState(entity_data[k], Game.EntityTemplates[entity_data[k]._name]);
 
         if(loadedEnt.attr._name == "Avatar"){

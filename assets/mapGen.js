@@ -58,7 +58,16 @@ Game.mapGen = {
 
     for (var i in map_data) {
       if (map_data.hasOwnProperty(i))
-      oldmap.attr[i] = map_data[i];
+        oldmap.attr[i] = map_data[i];
+    }
+
+    // console.log(oldmap.attr._locationsByEntity);
+
+    for(var k in oldmap.attr._locationsByEntity){
+      if(oldmap.attr._locationsByEntity.hasOwnProperty(k) && Game.DATASTORE.ENTITIES[k]){
+
+        Game.DATASTORE.ENTITIES[k].attr.map = oldmap;
+      }
     }
 
     // for(var k in Game.DATASTORE.ENTITIES){
