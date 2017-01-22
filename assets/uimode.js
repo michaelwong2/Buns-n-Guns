@@ -103,6 +103,8 @@ Game.UIMode.gamePlay = {
   render: function(display){
     this.attr._map.renderOn(display, this.attr.camX, this.attr.camY);
     this.renderAvatar(display);
+    Game.PlayerStats.update(this.attr._avatar);
+    Game.PlayerStats.render(display);
 
   },
   handleInput: function(inputType, inputData){

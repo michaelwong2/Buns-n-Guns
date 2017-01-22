@@ -142,10 +142,12 @@ var Game = {
       return false;
     }
   },
+
   initGameLoop: function(){
     Game._running = true;
     Game._loop = setInterval(Game.update, 10);
   },
+
   update: function(){
     for(var en in Game.DATASTORE.ENTITIES){
       Game.DATASTORE.ENTITIES[en].doWork();
@@ -153,6 +155,7 @@ var Game = {
 
     Game.renderMain();
   },
+
   stopGameLoop: function(){
     clearInterval(Game._loop);
   }

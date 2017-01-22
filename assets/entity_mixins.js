@@ -65,8 +65,10 @@ Game.EntityMixin.HitPoints = {
       curHp: 10
     },
     init: function (template) {
-      this.attr._HitPoints_attr.maxHp = template.maxHp || 10;
-      this.attr._HitPoints_attr.curHp = template.curHp || this.attr._HitPoints_attr.maxHp;
+
+      // this.attr._HitPoints_attr.maxHp = template.maxHp || 1;
+      // this.attr._HitPoints_attr.curHp = template.curHp || this.attr._HitPoints_attr.maxHp;
+
     }
   },
   getMaxHp: function () {
@@ -102,6 +104,9 @@ Game.EntityMixin.InventoryHolder = {
     stateModel: {
       items: {},
       keys: {},
+      gun: 'PeaShooter',
+      bomb: 'Melon Bomb',
+      bombCount: 5,
       keyCount: 0,
       spaceAvailable: true
     },
@@ -127,6 +132,7 @@ Game.EntityMixin.InventoryHolder = {
         this.attr._InventoryHolder_attr.keys[item._itemID] = item;
         this.attr._InventoryHolder_attr.keyCount++;
         Game.Message.send('You picked up a ' + item.attr._name + '! You now have ' + this.attr._InventoryHolder_attr.keyCount + ' keys.');
+        // Game.PlayerStats.update('_keyCount',this.attr._InventoryHolder_attr.keyCount);
       } else {
         this.attr._InventoryHolder_attr.items[item._itemID] = item;
       }
@@ -153,6 +159,7 @@ Game.EntityMixin.InventoryHolder = {
 
   resetKeyCount: function () {
     this.attr._InventoryHolder_attr.keyCount = 0;
+    // Game.PlayerStats.update('_keyCount',this.attr._InventoryHolder_attr.keyCount);
   }
 };
 
