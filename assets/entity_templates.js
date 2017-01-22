@@ -5,32 +5,12 @@ Game.EntityTemplates.Avatar = {
   chr:'@',
   fg:'#bbc',
   dir: 0,
-  mixins:[Game.EntityMixin.WalkerCorporeal, Game.EntityMixin.Chronicle, Game.EntityMixin.InventoryHolder, Game.EntityMixin.HitPoints, Game.EntityMixin.runnable],
+  mixins:[Game.EntityMixin.WalkerCorporeal, Game.EntityMixin.Chronicle, Game.EntityMixin.InventoryHolder, Game.EntityMixin.HitPoints],
   workattrs:{
     wait:0,
     lim: 1
   },
   work: function(){
-    var map = this.getMap();
-    var x = this.getX();
-    var y = this.getY();
-
-    var ent = [];
-
-    ent[0] = map.getEntity(x+1,y);
-    ent[1] = map.getEntity(x-1,y);
-    ent[2] = map.getEntity(x,y+1);
-    ent[3] = map.getEntity(x,y-1);
-
-    for(var i = 0; i < ent.length; i++){
-      if(ent[i] != null){
-        var thisent = Game.DATASTORE.ENTITIES[ent[i]];
-
-        
-
-      }
-    }
-
   }
 };
 
@@ -58,7 +38,8 @@ Game.EntityTemplates.MeleeBunny = {
     lim: 10,
     passive: true,
     dir: Math.floor(Math.random()*3),
-    sp: 1
+    sp: 1,
+    damage: 1
   },
   work: function(){
     //passive
@@ -80,6 +61,7 @@ Game.EntityTemplates.MeleeBunny = {
       case 3: cy += sp; break;
     }
 
+    // if the tile in front is out of bounds or not walkable, turn left or right
     if(Game.util.outOfBounds(this.attr._x + cx, this.attr._y + cy, this.getMap().getWidth(), this.getMap().getHeight()) || !this.attr.map.getTileGrid()[this.attr._x + cx][this.attr._y + cy].isWalkable()){
       dir += Math.floor(Math.random()*100) > 50 ? 1 : -1;
 
@@ -95,7 +77,11 @@ Game.EntityTemplates.MeleeBunny = {
 
     var entity = this.getMap().getEntity(this.attr._x + cx, this.attr._y + cy);
 
-    if(entity != null && Game.DATASTORE.ENTITIES[entity] && Game.DATASTORE.ENTITIES[entity]._name == "Avatar"){
+    if(entity != null && entity.attr._name == "Avatar"){
+
+      Game.Message.send("You took " + this.attr.loopingChars.damage + " damage");
+      entity.takeHits(this.attr.loopingChars.damage);
+
       return;
     }
 
@@ -167,7 +153,17 @@ Game.EntityTemplates.Bullet = {
     var entity = this.attr.map.attr._entitiesByLocation[this.attr._x + "," + this.attr._y];
 
     if(entity != null && Game.DATASTORE.ENTITIES[entity]){
-      Game.DATASTORE.ENTITIES[entity].expire();
+
+      if(Game.DATASTORE.ENTITIES[entity].hasMixin("HitPoints")){
+          if(Game.DATASTORE.ENTITIES[entity].attr._name == "Avatar"){
+            Game.DATASTORE.ENTITIES[entity].takeHits(this.attr.loopingChars.avatarDec);
+            Game.Message.send("You took " + this.attr.loopingChars.entityDec + " damage");
+          }else{
+            Game.DATASTORE.ENTITIES[entity].takeHits(this.attr.loopingChars.entityDec);
+            Game.Message.send("You did " + this.attr.loopingChars.entityDec + " damage");
+          }
+      }
+
       this.attr._char = "#";
       this.expire();
       return;

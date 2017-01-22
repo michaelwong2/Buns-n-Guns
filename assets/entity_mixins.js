@@ -28,9 +28,6 @@ Game.EntityMixin.WalkerCorporeal = {
 
     if (map.getEntity(targetX, targetY) == null && map.getTile(targetX,targetY).isWalkable()) {
       this.setPos(targetX,targetY);
-      if (this.hasMixin('Chronicle')) { // NOTE: this is sub-optimal because it couple this mixin to the Chronicle one (i.e. this needs to know the Chronicle function to call) - the event system will solve this issue
-        this.trackTurn();
-      }
 
       return true;
     }
@@ -68,8 +65,10 @@ Game.EntityMixin.HitPoints = {
       curHp: 10
     },
     init: function (template) {
+
       // this.attr._HitPoints_attr.maxHp = template.maxHp || 1;
       // this.attr._HitPoints_attr.curHp = template.curHp || this.attr._HitPoints_attr.maxHp;
+
     }
   },
   getMaxHp: function () {
@@ -86,6 +85,11 @@ Game.EntityMixin.HitPoints = {
   },
   takeHits: function (amt) {
     this.attr._HitPoints_attr.curHp -= amt;
+
+    if(this.attr._HitPoints_attr.curHp <= 0){
+      Game.Message.send("You killed the bunny");
+      this.expire();
+    }
   },
   recoverHits: function (amt) {
     this.attr._HitPoints_attr.curHp = Math.min(this.attr._HitPoints_attr.curHp+amt,this.attr._HitPoints_attr.maxHp);
@@ -212,7 +216,7 @@ Game.EntityMixin.explode = {
         sy = 0;
       }
 
-      console.log("starting coords: " + sx + ", " + sy + ", radius: " + rad);
+      // console.log("starting coords: " + sx + ", " + sy + ", radius: " + rad);
 
       for(var x = 0; x < rad*2; x++){
 
@@ -233,8 +237,8 @@ Game.EntityMixin.explode = {
 
           var entid = map.attr._entitiesByLocation[nx + "," + ny];
 
-          if(entid != null && Game.DATASTORE.ENTITIES[entid]){
-            Game.DATASTORE.ENTITIES[entid].expire();
+          if(entid != null && Game.DATASTORE.ENTITIES[entid] && Game.DATASTORE.ENTITIES[entid].hasMixin("HitPoints")){
+            Game.DATASTORE.ENTITIES[entid].takeHits(7);
           }
 
         }
