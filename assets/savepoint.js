@@ -36,8 +36,7 @@ Game.SavePoint = {
       }
       window.localStorage.setItem("saveditems", JSON.stringify(storableItems));
 
-      window.localStorage.setItem("savedmessages", JSON.stringify(Game.Message.attr
-      ));
+      window.localStorage.setItem("savedmessages", JSON.stringify(Game.Message.attr));
     }
   },
 

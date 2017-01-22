@@ -68,8 +68,8 @@ Game.EntityMixin.HitPoints = {
       curHp: 10
     },
     init: function (template) {
-      this.attr._HitPoints_attr.maxHp = template.maxHp || 1;
-      this.attr._HitPoints_attr.curHp = template.curHp || this.attr._HitPoints_attr.maxHp;
+      // this.attr._HitPoints_attr.maxHp = template.maxHp || 1;
+      // this.attr._HitPoints_attr.curHp = template.curHp || this.attr._HitPoints_attr.maxHp;
     }
   },
   getMaxHp: function () {
