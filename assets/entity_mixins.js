@@ -16,6 +16,7 @@ Game.EntityMixin.WalkerCorporeal = {
 
     if(Game.Exit.isExit(targetX, targetY)){
       if(Game.Exit.isOpen()){
+        Game.mapGen.genNewRandomSeed();
         Game.UIMode.gamePlay.setUpLevel(Game.UIMode.gamePlay.nextLevel());
       }else{
         if (this.keyCount() > 0) {

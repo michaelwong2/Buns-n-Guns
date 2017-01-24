@@ -1,14 +1,16 @@
 Game.Levels = {
   attr:{
-    width: 15,
-    height: 15,
+    width: 0,
+    height: 0,
     mob: []
   },
 
   //map size is arithmetic series*10
   update: function(level) {
-    this.attr.width += (level * 10);
-    this.attr.height += (level * 10);
+    this.attr.width = 15 + (level * 10);
+    this.attr.height = 15 + (level * 10);
+    console.log('map dimension:');
+    console.log(this.attr.width + this.attr.height);
     this.attr.mob = this.changeMob(level);
     Game.Exit.changeLockSize(level);
   },

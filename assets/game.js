@@ -67,8 +67,7 @@ var Game = {
       this.DATASTORE = {
         MAP: {},
         ENTITIES: {},
-        ITEMS: {},
-        LEVELS: {}
+        ITEMS: {}
       };
   },
   eventHandler: function(eventType, evt){

@@ -18,6 +18,8 @@ Game.mapGen = {
     if(this._currSeed == null){
         this.genNewRandomSeed();
     }
+    console.log("Map seed:");
+    console.log(this._currSeed);
 
     var generator = new ROT.Map.Cellular(h, w);
     generator.randomize(0.5);
@@ -46,7 +48,9 @@ Game.mapGen = {
     Game.SavePoint.putSavePoint(tileArray);
     Game.Exit.lock();
 
-    return new Game.Map(tileArray);
+    var map = new Game.Map(tileArray);
+    return map;
+
   },
 
   loadPreviousMap: function(seed,map_data,exit,savepoint,x,y){
@@ -62,7 +66,6 @@ Game.mapGen = {
     }
 
     // console.log(oldmap.attr._locationsByEntity);
-
 
     for(var k in oldmap.attr._locationsByEntity){
       if(oldmap.attr._locationsByEntity.hasOwnProperty(k) && Game.DATASTORE.ENTITIES[k]){
