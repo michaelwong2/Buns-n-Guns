@@ -174,7 +174,12 @@ Game.UIMode.gamePlay = {
 
   setUpLevel: function (level) {
     Game.Levels.update(level);
-    this.attr._map = Game.mapGen.newMap(Game.Levels.getHeight(), Game.Levels.getWidth());
+    Game.resetDataStore();
+    Game.DATASTORE.ENTITIES[this.attr._avatar.getID()] = this.attr._avatar;
+
+    var map = Game.mapGen.newMap(Game.Levels.getHeight(), Game.Levels.getWidth());
+    this.attr._map = map;
+    console.log(map);
     console.log("Map before populating:");
     console.log(this.attr._map);
 
@@ -212,14 +217,6 @@ Game.UIMode.gamePlay = {
     //
     //   this.attr._map.addEntity(newent);
     // }
-
-    for(var i = 0; i < 2; i++){
-      var newent = new Game.Entity(Game.EntityTemplates.Bomb);
-      var newloc = this.attr._map.getWalkableLocation();
-      newent.setPos(newloc.x, newloc.y);
-
-      this.attr._map.addEntity(newent);
-    }
 
     console.log("Map after populating:");
     console.log(this.attr._map);
