@@ -14,11 +14,12 @@ Game.SavePoint = {
       //window.localStorage.setItem(Game._PERSISTENCE_NAMESPACE, JSON.stringify(Game.getGame()));
       // window.localStorage.setItem();
       window.localStorage.setItem('randomSeed',JSON.stringify(Game.mapGen.getSeed()));
-
-      //save map & locations of exit and savepoint
+      console.log(Game.mapGen.getSeed());
+      //save map & locations of exit and savepoint, level
       window.localStorage.setItem('savedmap',JSON.stringify(Game.DATASTORE.MAP));
       window.localStorage.setItem('savePointLocation',JSON.stringify(this.attr));
       window.localStorage.setItem('exitLocation',JSON.stringify(Game.Exit.getLocation()));
+      window.localStorage.setItem('level',JSON.stringify(Game.UIMode.gamePlay.getLevel()));
 
       //save entities
       var storableEntities = {};

@@ -44,11 +44,13 @@ Game.UIMode.gameMenu = {
 
       //get randomSeed
       var randomSeed = JSON.parse(window.localStorage.getItem('randomSeed'));
+      console.log(randomSeed);
 
       //load map
       var map_data = JSON.parse(window.localStorage.getItem('savedmap'));
       var savePointLocation = JSON.parse(window.localStorage.getItem('savePointLocation'));
       var exitLocation = JSON.parse(window.localStorage.getItem('exitLocation'));
+      var level = JSON.parse(window.localStorage.getItem('level'));
 
       // load entity data
       var entity_data = JSON.parse(window.localStorage.getItem("savedentities"));
@@ -74,7 +76,7 @@ Game.UIMode.gameMenu = {
       }
 
       Game.setRandomSeed(randomSeed);
-      Game.UIMode.gamePlay.load(randomSeed,map_data,exitLocation,savePointLocation);
+      Game.UIMode.gamePlay.load(randomSeed,map_data,exitLocation,savePointLocation,level);
     }
 
     Game.switchUIMode(Game.UIMode.gamePlay);
@@ -163,6 +165,10 @@ Game.UIMode.gamePlay = {
     return ++this.attr.level;
   },
 
+  getLevel: function() {
+    return this.attr.level;
+  },
+
   setUpNewGame: function () {
     this.attr._avatar = new Game.Entity(Game.EntityTemplates.Avatar);
     this.setUpLevel(this.attr.level);
@@ -218,7 +224,9 @@ Game.UIMode.gamePlay = {
     }
   },
 
-  load: function(seed,map_data,exit,savepoint){
+  load: function(seed,map_data,exit,savepoint,level){
+    this.attr.level = level;
+    console.log(level);
     this.attr._map = Game.mapGen.loadPreviousMap(seed, map_data, exit, savepoint, Game.Levels.getHeight(), Game.Levels.getWidth());
 
     this.attr.camX = this.attr._avatar.getX();
