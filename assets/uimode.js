@@ -91,7 +91,7 @@ Game.UIMode.gamePlay = {
     width: 30,
     moveX: 0,
     moveY: 0,
-    level: 1
+    level: 4
   },
   enter: function(){
     console.log("entered gamePlay");
@@ -209,7 +209,7 @@ Game.UIMode.gamePlay = {
     //   this.attr._map.addEntity(newent);
     // }
 
-    for(var i = 0; i < 2; i++){
+    for(var i = 0; i < 3; i++){
       var newent = new Game.Entity(Game.EntityTemplates.Bomb);
       var newloc = this.attr._map.getWalkableLocation();
       newent.setPos(newloc.x, newloc.y);
