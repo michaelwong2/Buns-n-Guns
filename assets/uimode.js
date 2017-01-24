@@ -89,10 +89,11 @@ Game.UIMode.gamePlay = {
     camX: null,
     camY: null,
     speed: 1,
-    height: 40,
-    width: 40,
+    height: 30,
+    width: 30,
     moveX: 0,
     moveY: 0,
+    level: 1
   },
   enter: function(){
     console.log("entered gamePlay");
@@ -160,13 +161,18 @@ Game.UIMode.gamePlay = {
     // Game.renderAll();
   },
 
-  setUpNewGame: function () {
-    this.attr._avatar = new Game.Entity(Game.EntityTemplates.Avatar);
-    this.setUpLevel();
+  nextLevel: function() {
+    return ++this.attr.level;
   },
 
-  setUpLevel: function () {
-    this.attr._map = Game.mapGen.newMap(this.attr.height, this.attr.width);
+  setUpNewGame: function () {
+    this.attr._avatar = new Game.Entity(Game.EntityTemplates.Avatar);
+    this.setUpLevel(this.attr.level);
+  },
+
+  setUpLevel: function (level) {
+    Game.Levels.update(level);
+    this.attr._map = Game.mapGen.newMap(Game.Levels.getHeight(), Game.Levels.getWidth());
 
     var Loc = this.attr._map.getWalkableLocation();
     this.attr._avatar.setPos(Loc.x,Loc.y);
@@ -182,13 +188,28 @@ Game.UIMode.gamePlay = {
       this.attr._map.addItem(newItem);
     }
 
-    for(var i = 0; i < 5; i++){
-      var newent = new Game.Entity(Game.EntityTemplates.MeleeBunny);
-      var newloc = this.attr._map.getWalkableLocation();
-      newent.setPos(newloc.x, newloc.y);
+    var mob = Game.Levels.getMob();
+    console.log(mob);
+    var entType = null;
 
-      this.attr._map.addEntity(newent);
+    for(var i = 0; i < mob.length;i++) {
+      entType = mob[i];
+      console.log()
+      for(var pop = 0; pop < entType.no; pop++) {
+        newEnt = new Game.Entity(Game.EntityTemplates[entType.name]);
+        var newloc = this.attr._map.getWalkableLocation();
+        newEnt.setPos(newloc.x, newloc.y);
+
+        this.attr._map.addEntity(newEnt);
+      }
     }
+    // for(var i = 0; i < 5; i++){
+    //   var newent = new Game.Entity(Game.EntityTemplates.MeleeBunny);
+    //   var newloc = this.attr._map.getWalkableLocation();
+    //   newent.setPos(newloc.x, newloc.y);
+    //
+    //   this.attr._map.addEntity(newent);
+    // }
 
     for(var i = 0; i < 2; i++){
       var newent = new Game.Entity(Game.EntityTemplates.Bomb);
@@ -197,21 +218,16 @@ Game.UIMode.gamePlay = {
 
       this.attr._map.addEntity(newent);
     }
-
-
   },
 
   load: function(seed,map_data,exit,savepoint){
-    this.attr._map = Game.mapGen.loadPreviousMap(seed, map_data, exit, savepoint, this.attr.height, this.attr.width);
+    this.attr._map = Game.mapGen.loadPreviousMap(seed, map_data, exit, savepoint, Game.Levels.getHeight(), Game.Levels.getWidth());
 
     this.attr.camX = this.attr._avatar.getX();
     this.attr.camY = this.attr._avatar.getY();
 
   },
   renderAvatar: function(display){
-    // var cen = this.attr._map.center(display, this.attr.camX, this.attr.camY, this.attr.height, this.attr.width);
-    // this.attr._avatar.draw(display, this.attr._avatar.attr._x, this.attr._avatar.attr._y);
-
     this.attr._avatar.tryWalk(this.attr._map, this.attr.moveX, this.attr.moveY);
 
     this.moveCamera(this.attr._avatar.getX(), this.attr._avatar.getY());

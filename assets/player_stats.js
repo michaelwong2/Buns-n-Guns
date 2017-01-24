@@ -2,24 +2,12 @@ Game.PlayerStats = {
   avatar: null,
   attr:{
     _h: 6,
-    _w: 15,
-    // _maxHp: 1,
-    // _curHp: 1,
-    // _gun: 'PeaShooter',
-    // _bomb: 'Melon Bomb',
-    // _bombCount: 5,
-    // _keyCount: 0
+    _w: 15
   },
 
   update: function(avatar) {
     this.avatar = avatar;
   },
-
-  // update: function(attrName,attrData) {
-  //   if (this.attr.hasOwnProperty(attrName)) {
-  //     this.attr[attrName] = attrData;
-  //   }
-  // },
 
   render: function(display){
     x = 1;
@@ -37,14 +25,4 @@ Game.PlayerStats = {
     display.drawText(x,y+2, this.avatar.attr._InventoryHolder_attr.bomb + ": " + this.avatar.attr._InventoryHolder_attr.bombCount);
     display.drawText(x,y+3, "Keys: " + this.avatar.attr._InventoryHolder_attr.keyCount);
   },
-  // send: function(msg){
-  //   this.set(msg);
-  //   this.render(Game.getDisplay("message"));
-  // },
-  // set: function(msg){
-  //   this.attr.messages.push(msg);
-  // },
-  // clear: function(){
-  //   this.attr.messages = [];
-  // }
 }
