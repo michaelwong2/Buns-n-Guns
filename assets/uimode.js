@@ -57,11 +57,15 @@ Game.UIMode.gameMenu = {
         var loadedEnt = new Game.Entity({id: k, loadTemplateAgain: Game.EntityTemplates[entity_data[k]._name]});
         loadedEnt.loadSavedState(entity_data[k], Game.EntityTemplates[entity_data[k]._name]);
 
+        loadedEnt.setMap(null);
+
         if(loadedEnt.attr._name == "Avatar"){
           loadedEnt.attr._InventoryHolder_attr = entity_data[k]._InventoryHolder_attr;
           Game.UIMode.gamePlay.attr._avatar = loadedEnt;
         }
       }
+
+      console.log(Game.DATASTORE.ENTITIES);
 
       // load item data
       var item_data = JSON.parse(window.localStorage.getItem("saveditems"));

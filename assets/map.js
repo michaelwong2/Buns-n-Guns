@@ -82,9 +82,9 @@ Game.Map.prototype.updateEntity = function(entity){
 }
 
 Game.Map.prototype.deleteEntity = function(entity){
-  var oldloc = this.attr._locationsByEntity[entity._itemID];
+  var oldloc = this.attr._locationsByEntity[entity._entityID];
   delete this.attr._entitiesByLocation[oldloc];
-  delete this.attr._locationsByEntity[entity._itemID];
+  delete this.attr._locationsByEntity[entity._entityID];
 }
 
 Game.Map.prototype.addItem = function(item){

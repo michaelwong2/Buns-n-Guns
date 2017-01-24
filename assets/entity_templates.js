@@ -61,6 +61,7 @@ Game.EntityTemplates.MeleeBunny = {
       case 3: cy += sp; break;
     }
 
+
     // if the tile in front is out of bounds or not walkable, turn left or right
     if(Game.util.outOfBounds(this.attr._x + cx, this.attr._y + cy, this.getMap().getWidth(), this.getMap().getHeight()) || !this.attr.map.getTileGrid()[this.attr._x + cx][this.attr._y + cy].isWalkable()){
       dir += Math.floor(Math.random()*100) > 50 ? 1 : -1;
