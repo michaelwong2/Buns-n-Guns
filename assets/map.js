@@ -50,6 +50,20 @@ Game.Map.prototype.getWalkableLocation = function(){
   }
 }
 
+Game.Map.prototype.getNearWalkableLocation = function(x,y,r){
+  var nx = Math.floor(Math.random()*r);
+  var ny = Math.floor(Math.random()*r);
+
+  nx = x + (Math.floor(Math.random()*2) == 1 ? nx : -nx);
+  ny = y + (Math.floor(Math.random()*2) == 1 ? ny : -ny);
+
+  if(!Game.util.outOfBounds(nx, ny, this._width, this._height) && this.getTile(nx,ny).isWalkable()){
+    return {x: nx, y: ny};
+  }else{
+    return this.getNearWalkableLocation(x,y,r);
+  }
+}
+
 //Empty locations do not have an item in it
 Game.Map.prototype.getEmptyLocation = function(){
   var nx = Math.floor(Math.random()*this._width);

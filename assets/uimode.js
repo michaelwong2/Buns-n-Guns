@@ -201,13 +201,6 @@ Game.UIMode.gamePlay = {
         this.attr._map.addEntity(newEnt);
       }
     }
-    // for(var i = 0; i < 5; i++){
-    //   var newent = new Game.Entity(Game.EntityTemplates.MeleeBunny);
-    //   var newloc = this.attr._map.getWalkableLocation();
-    //   newent.setPos(newloc.x, newloc.y);
-    //
-    //   this.attr._map.addEntity(newent);
-    // }
 
     for(var i = 0; i < 3; i++){
       var newent = new Game.Entity(Game.EntityTemplates.Bomb);
