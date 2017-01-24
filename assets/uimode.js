@@ -57,8 +57,6 @@ Game.UIMode.gameMenu = {
         var loadedEnt = new Game.Entity({id: k, loadTemplateAgain: Game.EntityTemplates[entity_data[k]._name]});
         loadedEnt.loadSavedState(entity_data[k], Game.EntityTemplates[entity_data[k]._name]);
 
-        loadedEnt.setMap(null);
-
         if(loadedEnt.attr._name == "Avatar"){
           loadedEnt.attr._InventoryHolder_attr = entity_data[k]._InventoryHolder_attr;
           Game.UIMode.gamePlay.attr._avatar = loadedEnt;
@@ -182,7 +180,7 @@ Game.UIMode.gamePlay = {
       this.attr._map.addItem(newItem);
     }
 
-    for(var i = 0; i < 5; i++){
+    for(var i = 0; i < 1; i++){
       var newent = new Game.Entity(Game.EntityTemplates.MeleeBunny);
       var newloc = this.attr._map.getWalkableLocation();
       newent.setPos(newloc.x, newloc.y);

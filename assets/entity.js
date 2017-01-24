@@ -64,6 +64,16 @@ Game.Entity.prototype.loadWorkAttributes = function(){
   }
 }
 
+Game.Entity.prototype.distanceTo = function(ent){
+  if(ent == null)
+    return 100;
+
+  var x = ent.getX();
+  var y = ent.getY();
+
+  return Math.sqrt(Math.pow(Math.abs(this.getX() - x), 2), Math.pow(Math.abs(this.getY() - y), 2));
+}
+
 Game.Entity.prototype.expire = function(){
   if(this.attr._name == "Avatar"){
     this.attr._char = 'X';

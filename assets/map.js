@@ -23,6 +23,7 @@ Game.Map.prototype.getTile = function (x,y) {
   if ((x < 0) || (x >= this._width) || (y<0) || (y >= this._height)) {
     return Game.Tile.nullTile;
   }
+
   return this._tiles[x][y] || Game.Tile.nullTile;
 };
 
@@ -66,6 +67,10 @@ Game.Map.prototype.addEntity = function(entity){
     this.attr._locationsByEntity[entity._entityID] = entity.getX() + "," + entity.getY();
 
     entity.setMap(this);
+}
+
+Game.Map.prototype.pointTraversable = function(x,y){
+  return Game.UIMode.gamePlay.attr._map.getTile(x,y).attr._name == "floorTile"; //&& Game.UIMode.gamePlay.attr._map.attr._entitiesByLocation[x+","+y] == null;
 }
 
 Game.Map.prototype.getEntity = function(x,y){
