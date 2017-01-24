@@ -57,9 +57,11 @@ Game.EntityTemplates.MeleeBunny = {
     if(this.distanceTo(avatar) < 3){
       this.attr._fg = "#f00";
       this.attr.loopingChars.passive = false;
+      this.attr.loopingChars.lim = 50;
     }else{
       this.attr._fg = "#0f0";
       this.attr.loopingChars.passive = true;
+      this.attr.loopingChars.lim = 10;
     }
 
     if(this.attr.loopingChars.passive){
@@ -70,17 +72,20 @@ Game.EntityTemplates.MeleeBunny = {
         case 3: cy += sp; break;
       }
     }else{
-      // var astar = new ROT.Path.AStar(this.getX(), this.getY(), this.getMap().pointTraversable);
-      // astar.compute(avatar.getX(), avatar.getY(), function(x, y) {
-      // });
 
-      // if(astar == null){
-        this.attr.loopingChars.passive = true;
-        return;
-      // }
-      //
-      // rx += this.getX() - astar._todo[0].x;
-      // ry += this.getY() - astar._todo[0].y;
+      if(this.getX() < avatar.getX()){
+        cx++;
+      }else if(this.getX() > avatar.getX()){
+        cx--;
+      }
+
+      if(this.getY() < avatar.getY()){
+        cy++;
+      }else if(this.getY() > avatar.getY()){
+        cy--;
+      }
+
+      console.log(cx + ", " + cy);
 
     }
 
@@ -109,8 +114,141 @@ Game.EntityTemplates.MeleeBunny = {
       return;
     }
 
-    this.attr._x += this.attr.loopingChars.passive ? cx : rx;
-    this.attr._y += this.attr.loopingChars.passive ? cy : rx;
+    this.attr._x += cx;
+    this.attr._y += cy;
+
+  }
+};
+
+Game.EntityTemplates.ShooterBunny = {
+  name: 'ShooterBunny',
+  chr:'$',
+  fg:'#00f',
+  mixins:[Game.EntityMixin.runnable, Game.EntityMixin.HitPoints],
+  workattrs: {
+    wait: 0,
+    lim: 10,
+    passive: true,
+    dir: Math.floor(Math.random()*3),
+    sdir: 0,
+    sp: 1,
+    damage: 1
+  },
+  work: function(){
+    //passive
+    var dir = this.attr.loopingChars.dir;
+    var sp = this.attr.loopingChars.sp;
+
+    var cx = 0;
+    var cy = 0;
+
+    var rx = 0;
+    var ry = 0;
+
+    var avatar = Game.UIMode.gamePlay.attr._avatar;
+
+    // when to attack
+    if(Math.abs(this.getX() - avatar.getX()) < 3 || Math.abs(this.getY() - avatar.getY()) < 3){
+      this.attr.loopingChars.passive = false;
+      this.attr.loopingChars.lim = 35;
+    }else{
+      this.attr.loopingChars.passive = true;
+      this.attr.loopingChars.lim = 10;
+    }
+
+    if(this.attr.loopingChars.passive){
+      switch(dir){
+        case 0: cx -= sp; break;
+        case 1: cy -= sp; break;
+        case 2: cx += sp; break;
+        case 3: cy += sp; break;
+      }
+    }else{
+
+      var gx = Math.abs(this.getX() - avatar.getX()) < 3;
+      var gy = Math.abs(this.getY() - avatar.getY()) < 3;
+
+      var xoff = 0;
+      var yoff = 0;
+      var dir = 0;
+
+      var shoot = false;
+
+      // shoot toward avatar
+      if(gx){
+        if(this.getX() < avatar.getX()){
+          cx++;
+        }else if(this.getX() > avatar.getX()){
+          cx--;
+        }else if(this.getX() == avatar.getX()){
+          shoot = true;
+        }
+
+        if(this.getY() > avatar.getY()){
+          dir = 1;
+          yoff = -1;
+        }else{
+          dir = 3;
+          yoff = 1;
+        }
+      }else if(gy){
+        if(this.getY() < avatar.getY()){
+          cy++;
+        }else if(this.getY() > avatar.getY()){
+          cy--;
+        }else if(this.getY() == avatar.getY()){
+          shoot = true;
+        }
+
+        if(this.getX() < avatar.getX()){
+          dir = 2;
+          xoff = 1;
+        }else{
+          dir = 0;
+          xoff = -1;
+        }
+      }else{
+        this.attr.loopingChars.passive = true;
+        return;
+      }
+
+      if(shoot){
+        var bullet = new Game.Entity(Game.EntityTemplates.Bullet);
+        bullet.attr.loopingChars.avatarDec = 1;
+
+        bullet.setPos(this.getX() + xoff, this.getY() + yoff);
+        bullet.attr.loopingChars.dir = dir;
+
+        this.getMap().addEntity(bullet);
+      }
+    }
+
+    // if the tile in front is out of bounds or not walkable, turn left or right
+    if(Game.util.outOfBounds(this.attr._x + cx, this.attr._y + cy, this.getMap().getWidth(), this.getMap().getHeight()) || !this.attr.map.getTileGrid()[this.attr._x + cx][this.attr._y + cy].isWalkable()){
+      dir += Math.floor(Math.random()*100) > 50 ? 1 : -1;
+
+      if(dir == 4)
+        dir = 0;
+      else if(dir == -1)
+        dir = 3;
+
+      this.attr.loopingChars.dir = dir;
+
+      return;
+    }
+
+    var entity = this.getMap().getEntity(this.attr._x + cx, this.attr._y + cy);
+
+    if(entity != null && entity.attr._name == "Avatar"){
+
+      Game.Message.send("You took " + this.attr.loopingChars.damage + " damage");
+      entity.takeHits(this.attr.loopingChars.damage);
+
+      return;
+    }
+
+    this.attr._x += cx;
+    this.attr._y += cy;
 
   }
 };

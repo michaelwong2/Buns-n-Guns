@@ -31,12 +31,14 @@ Game.Levels = {
     var newMob = [];
     switch(level){
       case 1:
-        newMob[0] = {name: 'Bun', no: 2};
-        newMob[1] = {name: 'MeleeBunny', no: 1};
+        newMob[0] = {name: 'Bun', no: 0};
+        newMob[1] = {name: 'MeleeBunny', no: 0};
+        newMob[2] = {name: 'ShooterBunny', no: 0};
         break;
       case 2:
-        newMob[0] = {name: 'Bun', no: 5};
+        newMob[0] = {name: 'Bun', no: 0};
         newMob[1] = {name: 'MeleeBunny', no: 2};
+        newMob[2] = {name: 'ShooterBunny', no: 3};
         break;
       case 3:
         break;

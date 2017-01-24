@@ -135,7 +135,7 @@ Game.UIMode.gamePlay = {
       return;
     }else if(abinding.actionKey == 'SHOOT'){
       var bullet = new Game.Entity(Game.EntityTemplates.Bullet);
-      bullet.attr.loopingChars.entityDec = 2;
+      bullet.attr.loopingChars.entityDec = 4;
 
       var xoff = 0;
       var yoff = 0;
@@ -210,6 +210,7 @@ Game.UIMode.gamePlay = {
         this.attr._map.addEntity(newEnt);
       }
     }
+
     // for(var i = 0; i < 5; i++){
     //   var newent = new Game.Entity(Game.EntityTemplates.MeleeBunny);
     //   var newloc = this.attr._map.getWalkableLocation();
@@ -217,9 +218,6 @@ Game.UIMode.gamePlay = {
     //
     //   this.attr._map.addEntity(newent);
     // }
-
-    console.log("Map after populating:");
-    console.log(this.attr._map);
   },
 
   load: function(seed,map_data,exit,savepoint,level){
