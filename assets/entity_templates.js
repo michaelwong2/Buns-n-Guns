@@ -57,9 +57,11 @@ Game.EntityTemplates.MeleeBunny = {
     if(this.distanceTo(avatar) < 3){
       this.attr._fg = "#f00";
       this.attr.loopingChars.passive = false;
+      this.attr.loopingChars.lim = 50;
     }else{
       this.attr._fg = "#0f0";
       this.attr.loopingChars.passive = true;
+      this.attr.loopingChars.lim = 10;
     }
 
     if(this.attr.loopingChars.passive){
@@ -70,17 +72,20 @@ Game.EntityTemplates.MeleeBunny = {
         case 3: cy += sp; break;
       }
     }else{
-      // var astar = new ROT.Path.AStar(this.getX(), this.getY(), this.getMap().pointTraversable);
-      // astar.compute(avatar.getX(), avatar.getY(), function(x, y) {
-      // });
 
-      // if(astar == null){
-        this.attr.loopingChars.passive = true;
-        return;
-      // }
-      //
-      // rx += this.getX() - astar._todo[0].x;
-      // ry += this.getY() - astar._todo[0].y;
+      if(this.getX() < avatar.getX()){
+        cx++;
+      }else if(this.getX() > avatar.getX()){
+        cx--;
+      }
+
+      if(this.getY() < avatar.getY()){
+        cy++;
+      }else if(this.getY() > avatar.getY()){
+        cy--;
+      }
+
+      console.log(cx + ", " + cy);
 
     }
 
@@ -109,8 +114,8 @@ Game.EntityTemplates.MeleeBunny = {
       return;
     }
 
-    this.attr._x += this.attr.loopingChars.passive ? cx : rx;
-    this.attr._y += this.attr.loopingChars.passive ? cy : rx;
+    this.attr._x += cx;
+    this.attr._y += cy;
 
   }
 };
