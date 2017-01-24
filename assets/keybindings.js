@@ -127,6 +127,11 @@ Game.KeyBinding = {
     SHOOT: {action_group:'movement' ,guid:Game.util.uniqueId() ,ordering:5.1 ,short:'shoot'  ,long :'shoot please' ,
       arrows: {label:'a' ,inputMatch:ROT.VK_A ,inputType:'keydown' ,inputMetaShift:false ,inputMetaCtrl:false} ,
       wasd  : {label:'l' ,inputMatch:ROT.VK_L ,inputType:'keydown' ,inputMetaShift:false ,inputMetaCtrl:false}
+    },
+
+    BOMB: {action_group:'movement' ,guid:Game.util.uniqueId() ,ordering:5.1 ,short:'bomb'  ,long :'bomb please' ,
+      arrows: {label:'s' ,inputMatch:ROT.VK_S ,inputType:'keydown' ,inputMetaShift:false ,inputMetaCtrl:false} ,
+      wasd  : {label:'k' ,inputMatch:ROT.VK_K ,inputType:'keydown' ,inputMetaShift:false ,inputMetaCtrl:false}
     }
 
     // DROP : {action_group:'inventory' ,guid:Game.util.uniqueId() ,ordering:5.1 ,short:'drop'  ,long :'drop an item on the space where I stand' ,

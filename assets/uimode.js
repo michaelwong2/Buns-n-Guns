@@ -152,6 +152,22 @@ Game.UIMode.gamePlay = {
       bullet.attr.loopingChars.dir = this.attr._avatar.attr.dir;
 
       this.attr._map.addEntity(bullet);
+    }else if(abinding.actionKey == 'BOMB'){
+      var bomb = new Game.Entity(Game.EntityTemplates.Bomb);
+
+      var xoff = 0;
+      var yoff = 0;
+
+      switch(this.attr._avatar.attr.dir){
+        case 0: xoff = -1; break;
+        case 1: yoff = -1; break;
+        case 2: xoff = 1; break;
+        case 3: yoff = 1; break;
+      }
+
+      bomb.setPos(this.attr._avatar.getX() + xoff, this.attr._avatar.getY() + yoff);
+
+      this.attr._map.addEntity(bomb);
     }else{
       return;
     }
@@ -200,14 +216,6 @@ Game.UIMode.gamePlay = {
 
         this.attr._map.addEntity(newEnt);
       }
-    }
-
-    for(var i = 0; i < 3; i++){
-      var newent = new Game.Entity(Game.EntityTemplates.Bomb);
-      var newloc = this.attr._map.getWalkableLocation();
-      newent.setPos(newloc.x, newloc.y);
-
-      this.attr._map.addEntity(newent);
     }
   },
 
