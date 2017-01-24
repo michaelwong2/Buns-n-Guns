@@ -27,13 +27,12 @@ Game.UIMode.gameMenu = {
 
     if(abinding.actionKey == 'PERSISTENCE_NEW'){
         Game.setRandomSeed(5 + Math.floor(ROT.RNG.getUniform()*100000));
-
         Game.UIMode.gamePlay.attr._avatar = null;
-
         Game.UIMode.gamePlay.setUpNewGame();
+
     }else if(abinding.actionKey == 'PERSISTENCE_LOAD'){
 
-      if(window.localStorage.getItem('randomSeed') == null || window.localStorage.getItem("savedentities") == null){
+      if(window.localStorage.getItem('mapSeed') == null || window.localStorage.getItem("savedentities") == null){
         Game.Message.send("No saved file data");
         return;
       }
@@ -42,9 +41,9 @@ Game.UIMode.gameMenu = {
       // var json_state_data = window.localStorage.getItem(Game._PERSISTENCE_NAMESPACE);
       // var state_data = JSON.parse(json_state_data);
 
-      //get randomSeed
-      var randomSeed = JSON.parse(window.localStorage.getItem('randomSeed'));
-      console.log(randomSeed);
+      //get mapSeed
+      var mapSeed = JSON.parse(window.localStorage.getItem('mapSeed'));
+      console.log(mapSeed);
 
       //load map
       var map_data = JSON.parse(window.localStorage.getItem('savedmap'));
@@ -64,8 +63,7 @@ Game.UIMode.gameMenu = {
           Game.UIMode.gamePlay.attr._avatar = loadedEnt;
         }
       }
-
-      console.log(Game.DATASTORE.ENTITIES);
+      //console.log(Game.DATASTORE.ENTITIES);
 
       // load item data
       var item_data = JSON.parse(window.localStorage.getItem("saveditems"));
@@ -75,8 +73,7 @@ Game.UIMode.gameMenu = {
         loadedItem.loadSavedState(item_data[k], Game.ItemTemplates[item_data[k]._name]);
       }
 
-      Game.setRandomSeed(randomSeed);
-      Game.UIMode.gamePlay.load(randomSeed,map_data,exitLocation,savePointLocation,level);
+      Game.UIMode.gamePlay.load(mapSeed,map_data,exitLocation,savePointLocation,level);
     }
 
     Game.switchUIMode(Game.UIMode.gamePlay);
@@ -171,12 +168,15 @@ Game.UIMode.gamePlay = {
 
   setUpNewGame: function () {
     this.attr._avatar = new Game.Entity(Game.EntityTemplates.Avatar);
+    localStorage.clear();
     this.setUpLevel(this.attr.level);
   },
 
   setUpLevel: function (level) {
     Game.Levels.update(level);
     this.attr._map = Game.mapGen.newMap(Game.Levels.getHeight(), Game.Levels.getWidth());
+    console.log("Map before populating:");
+    console.log(this.attr._map);
 
     var Loc = this.attr._map.getWalkableLocation();
     this.attr._avatar.setPos(Loc.x,Loc.y);
@@ -193,12 +193,10 @@ Game.UIMode.gamePlay = {
     }
 
     var mob = Game.Levels.getMob();
-    console.log(mob);
     var entType = null;
 
     for(var i = 0; i < mob.length;i++) {
       entType = mob[i];
-      console.log()
       for(var pop = 0; pop < entType.no; pop++) {
         newEnt = new Game.Entity(Game.EntityTemplates[entType.name]);
         var newloc = this.attr._map.getWalkableLocation();
@@ -222,11 +220,15 @@ Game.UIMode.gamePlay = {
 
       this.attr._map.addEntity(newent);
     }
+
+    console.log("Map after populating:");
+    console.log(this.attr._map);
   },
 
   load: function(seed,map_data,exit,savepoint,level){
     this.attr.level = level;
-    console.log(level);
+    console.log('level: ' + level);
+    Game.Levels.update(level);
     this.attr._map = Game.mapGen.loadPreviousMap(seed, map_data, exit, savepoint, Game.Levels.getHeight(), Game.Levels.getWidth());
 
     this.attr.camX = this.attr._avatar.getX();
