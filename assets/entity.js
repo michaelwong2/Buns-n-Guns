@@ -41,6 +41,10 @@ Game.Entity.prototype.getY = function(){
   return this.attr._y;
 }
 
+Game.Entity.prototype.getID = function() {
+  return this._entityID;
+}
+
 Game.Entity.prototype.setPos = function(x,y){
   this.attr._x = x;
   this.attr._y = y;
