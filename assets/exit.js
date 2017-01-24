@@ -6,7 +6,7 @@ Game.Exit = {
     width: 3,
     displayable: [['/', '\\'],['%', '%'],['\\','/']],
     open: false,
-    lockSize: 2
+    lockSize: 1
   },
 
   isOpen: function(){
@@ -23,7 +23,14 @@ Game.Exit = {
     this.attr.open = false;
     this.attr.displayable[1][0] = '%';
     this.attr.displayable[1][1] = '%';
-    this.attr.lockSize = 2;
+  },
+
+  changeLockSize: function(level) {
+    this.attr.lockSize = 1 + level;
+  },
+
+  getLockSize: function() {
+    return this.attr.lockSize;
   },
 
   unlock: function(keyCount) {

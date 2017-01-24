@@ -16,11 +16,13 @@ Game.EntityMixin.WalkerCorporeal = {
 
     if(Game.Exit.isExit(targetX, targetY)){
       if(Game.Exit.isOpen()){
-        Game.UIMode.gamePlay.setUpLevel();
+        Game.UIMode.gamePlay.setUpLevel(Game.UIMode.gamePlay.nextLevel());
       }else{
         if (this.keyCount() > 0) {
           Game.Exit.unlock(this.keyCount());
           this.resetKeyCount();
+        } else {
+          Game.Message.send('You need ' + Game.Exit.getLockSize() + ' key(s) to unlock this door.');
         }
         return;
       }

@@ -14,8 +14,8 @@ Game.EntityTemplates.Avatar = {
   }
 };
 
-Game.EntityTemplates.Cat = {
-  name: 'Cat',
+Game.EntityTemplates.Bun = {
+  name: 'Bun',
   chr:'&',
   fg:'#fff',
   mixins:[],

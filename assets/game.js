@@ -68,10 +68,7 @@ var Game = {
         MAP: {},
         ENTITIES: {},
         ITEMS: {},
-        GAMESTATE: {
-          PITEMS: {},
-          MAPSETTINGS: {}
-        } // keeps track of the items the player currently has
+        LEVELS: {}
       };
   },
   eventHandler: function(eventType, evt){
