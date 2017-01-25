@@ -68,9 +68,8 @@ Game.EntityMixin.HitPoints = {
       curHp: 10
     },
     init: function (template) {
-
-      // this.attr._HitPoints_attr.maxHp = template.maxHp || 1;
-      // this.attr._HitPoints_attr.curHp = template.curHp || this.attr._HitPoints_attr.maxHp;
+      this.attr._HitPoints_attr.maxHp = template.maxHp || 1;
+      this.attr._HitPoints_attr.curHp = template.curHp || this.attr._HitPoints_attr.maxHp;
 
     }
   },
@@ -228,7 +227,6 @@ Game.EntityMixin.explode = {
       // console.log("starting coords: " + sx + ", " + sy + ", radius: " + rad);
 
       for(var x = 0; x < rad*2; x++){
-
         var nx = x + sx;
 
         if(nx <= 2 || nx >= tar.length-2){
@@ -251,6 +249,14 @@ Game.EntityMixin.explode = {
           }
 
         }
+      }
+
+      for(var i = 0; i < 10; i++){
+        var particle = new Game.Entity(Game.EntityTemplates.SmokeParticle);
+        particle.setPos(ox, oy);
+        particle.attr.loopingChars.dx = ox + Math.floor(Math.random()*5) - Math.floor(Math.random()*10);
+        particle.attr.loopingChars.dy = oy + Math.floor(Math.random()*5) - Math.floor(Math.random()*10);
+        this.getMap().addEntity(particle);
       }
     }
 };

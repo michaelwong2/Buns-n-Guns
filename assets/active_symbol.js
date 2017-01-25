@@ -8,6 +8,7 @@ Game.ActiveSymbol = function(template) {
 
   this.loadMixins(this._mixins,template);
 };
+
 Game.ActiveSymbol.extend(Game.Symbol);
 
 Game.ActiveSymbol.prototype.hasMixin = function(mixin) {

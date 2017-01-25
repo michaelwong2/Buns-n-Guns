@@ -138,7 +138,7 @@ Game.UIMode.gamePlay = {
       return;
     }else if(abinding.actionKey == 'SHOOT'){
       var bullet = new Game.Entity(Game.EntityTemplates.Bullet);
-      bullet.attr.loopingChars.entityDec = 4;
+      bullet.attr.loopingChars.entityDec = 5;
 
       var xoff = 0;
       var yoff = 0;

@@ -5,6 +5,7 @@ Game.EntityTemplates.Avatar = {
   chr:'@',
   fg:'#bbc',
   dir: 0,
+  maxHp: 20,
   mixins:[Game.EntityMixin.WalkerCorporeal, Game.EntityMixin.Chronicle, Game.EntityMixin.InventoryHolder, Game.EntityMixin.HitPoints],
   workattrs:{
     wait:0,
@@ -33,6 +34,7 @@ Game.EntityTemplates.MeleeBunny = {
   chr:'$',
   fg:'#0f0',
   mixins:[Game.EntityMixin.runnable, Game.EntityMixin.HitPoints],
+  maxHp: 10,
   workattrs: {
     wait: 0,
     lim: 10,
@@ -55,11 +57,9 @@ Game.EntityTemplates.MeleeBunny = {
     var avatar = Game.UIMode.gamePlay.attr._avatar;
 
     if(this.distanceTo(avatar) < 3){
-      this.attr._fg = "#f00";
       this.attr.loopingChars.passive = false;
       this.attr.loopingChars.lim = 50;
     }else{
-      this.attr._fg = "#0f0";
       this.attr.loopingChars.passive = true;
       this.attr.loopingChars.lim = 10;
     }
@@ -84,9 +84,6 @@ Game.EntityTemplates.MeleeBunny = {
       }else if(this.getY() > avatar.getY()){
         cy--;
       }
-
-      console.log(cx + ", " + cy);
-
     }
 
 
@@ -123,8 +120,9 @@ Game.EntityTemplates.MeleeBunny = {
 Game.EntityTemplates.ShooterBunny = {
   name: 'ShooterBunny',
   chr:'$',
-  fg:'#00f',
+  fg:'#fbf',
   mixins:[Game.EntityMixin.runnable, Game.EntityMixin.HitPoints],
+  maxHp: 15,
   workattrs: {
     wait: 0,
     lim: 10,
@@ -141,9 +139,6 @@ Game.EntityTemplates.ShooterBunny = {
 
     var cx = 0;
     var cy = 0;
-
-    var rx = 0;
-    var ry = 0;
 
     var avatar = Game.UIMode.gamePlay.attr._avatar;
 
@@ -253,10 +248,107 @@ Game.EntityTemplates.ShooterBunny = {
   }
 };
 
+Game.EntityTemplates.BomberBunny = {
+  name: 'BomberBunny',
+  chr:'$',
+  fg:'#fc4',
+  mixins:[Game.EntityMixin.runnable, Game.EntityMixin.HitPoints, Game.EntityMixin.explode],
+  maxHp: 20,
+  workattrs: {
+    wait: 0,
+    lim: 10,
+    passive: true,
+    dir: Math.floor(Math.random()*3),
+    sp: 1,
+    triggered: false,
+    radius: 7,
+    countdown: 0
+  },
+  work: function(){
+
+    var dir = this.attr.loopingChars.dir;
+    var sp = this.attr.loopingChars.sp;
+
+    var cx = 0;
+    var cy = 0;
+
+    var avatar = Game.UIMode.gamePlay.attr._avatar;
+
+    if(this.distanceTo(avatar) < 3){
+      this.attr.loopingChars.passive = false;
+      this.attr.loopingChars.lim = 50;
+      this.attr._fg = '#f00';
+    }else{
+      this.attr.loopingChars.passive = true;
+      this.attr.loopingChars.lim = 10;
+      this.attr._fg = '#fc4';
+    }
+
+    if(this.attr.loopingChars.passive){
+      switch(dir){
+        case 0: cx -= sp; break;
+        case 1: cy -= sp; break;
+        case 2: cx += sp; break;
+        case 3: cy += sp; break;
+      }
+    }else{
+
+      if(this.getX() < avatar.getX()){
+        cx++;
+      }else if(this.getX() > avatar.getX()){
+        cx--;
+      }
+
+      if(this.getY() < avatar.getY()){
+        cy++;
+      }else if(this.getY() > avatar.getY()){
+        cy--;
+      }
+
+      if(Math.abs(this.getX() - avatar.getX()) < 3 && Math.abs(this.getY() - avatar.getY()) < 3){
+        this.attr.loopingChars.triggered = true;
+        this.explode(this.getMap(), this.getX(), this.getY());
+            this.expire();
+        return;
+      }
+
+    }
+
+
+    // if the tile in front is out of bounds or not walkable, turn left or right
+    if(Game.util.outOfBounds(this.attr._x + cx, this.attr._y + cy, this.getMap().getWidth(), this.getMap().getHeight()) || !this.attr.map.getTileGrid()[this.attr._x + cx][this.attr._y + cy].isWalkable()){
+      dir += Math.floor(Math.random()*100) > 50 ? 1 : -1;
+
+      if(dir == 4)
+        dir = 0;
+      else if(dir == -1)
+        dir = 3;
+
+      this.attr.loopingChars.dir = dir;
+
+      return;
+    }
+
+    var entity = this.getMap().getEntity(this.attr._x + cx, this.attr._y + cy);
+
+    if(entity != null && entity.attr._name == "Avatar"){
+
+      Game.Message.send("You took " + this.attr.loopingChars.damage + " damage");
+      entity.takeHits(this.attr.loopingChars.damage);
+
+      return;
+    }
+
+    this.attr._x += cx;
+    this.attr._y += cy;
+
+  }
+};
+
 Game.EntityTemplates.Bomb = {
   name: 'Bomb',
   chr:'o',
-  fg:'#bcc',
+  fg:'#fa0',
   mixins:[Game.EntityMixin.runnable, Game.EntityMixin.explode],
   workattrs: {
     wait: 0,
@@ -271,7 +363,7 @@ Game.EntityTemplates.Bomb = {
       this.expire();
     }else{
       if(this.attr.loopingChars.count % 2 == 0){
-        this.attr._fg = '#f00';
+        this.attr._fg = '#ffa500';
       }else{
         this.attr._fg = '#fff';
       }
@@ -284,7 +376,7 @@ Game.EntityTemplates.Bomb = {
 Game.EntityTemplates.Bullet = {
   name: 'Bullet',
   chr:'.',
-  fg:'#aaf',
+  fg:'#8f8',
   mixins:[Game.EntityMixin.runnable],
   workattrs: {
     wait: 0,
@@ -354,3 +446,46 @@ Game.EntityTemplates.Bullet = {
     this.attr.loopingChars.count++;
   }
 };
+
+Game.EntityTemplates.SmokeParticle = {
+  name: 'Bomb',
+  chr:'#',
+  fg:'#fa0',
+  mixins:[Game.EntityMixin.runnable],
+  workattrs: {
+    wait: 0,
+    lim: 4,
+    state: Math.floor(Math.random()*1),
+    dx: 0,
+    dy: 0
+  },
+  work: function(){
+    // # * + .
+    if(this.attr.loopingChars.state > 2){
+      this.expire();
+    }else{
+      this.attr.loopingChars.state++;
+
+      switch(this.attr.loopingChars.state){
+        case 1: this.attr._char = '*'; break;
+        case 2: this.attr._char = '+'; break;
+        case 3: this.attr._char = '.'; break;
+      }
+
+      var targetX = this.attr.loopingChars.dx;
+      var targetY = this.attr.loopingChars.dy;
+
+      if(this.getX() < targetX){
+        this.attr._x++;
+      }else{
+        this.attr._x--;
+      }
+
+      if(this.getY() < targetY){
+        this.attr._y++;
+      }else{
+        this.attr._y--;
+      }
+    }
+  }
+}
