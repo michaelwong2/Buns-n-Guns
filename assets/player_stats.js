@@ -10,19 +10,30 @@ Game.PlayerStats = {
   },
 
   render: function(display){
-    x = 1;
-    y = display._options.height - 2;
-    for (var w = 0; w < this.attr._w; w++) {
-      for (var h = 0; h < this.attr._h; h++) {
-        display.draw(x+w,y-h,'.');
-      }
+    var x = 1;
+    var y = display._options.height - 1;
+    for (var w = 0; w < display._options.width; w++) {
+      display.draw(w,y,' ');
     }
 
-    x++;
-    y -= 4;
+
+
+    // for (var w = 0; w < this.attr._w; w++) {
+    //   for (var h = 0; h < this.attr._h; h++) {
+    //     display.draw(x+w,y-h,'.');
+    //   }
+    // }
+
+    // x++;
+    // y -= 4;
+    // display.drawText(x,y, 'HP: ' + this.avatar.attr._HitPoints_attr.curHp + '/' + this.avatar.attr._HitPoints_attr.maxHp);
+    // display.drawText(x,y+1, this.avatar.attr._InventoryHolder_attr.gun);
+    // display.drawText(x,y+2, this.avatar.attr._InventoryHolder_attr.bomb);
+    // display.drawText(x,y+3, "Keys: " + this.avatar.attr._InventoryHolder_attr.keyCount);
+
     display.drawText(x,y, 'HP: ' + this.avatar.attr._HitPoints_attr.curHp + '/' + this.avatar.attr._HitPoints_attr.maxHp);
-    display.drawText(x,y+1, this.avatar.attr._InventoryHolder_attr.gun);
-    display.drawText(x,y+2, this.avatar.attr._InventoryHolder_attr.bomb + ": " + this.avatar.attr._InventoryHolder_attr.bombCount);
-    display.drawText(x,y+3, "Keys: " + this.avatar.attr._InventoryHolder_attr.keyCount);
+    display.drawText(x+15,y, 'GUN: ' + this.avatar.attr._InventoryHolder_attr.gun);
+    display.drawText(x+35,y, 'BOMB: ' + this.avatar.attr._InventoryHolder_attr.bomb);
+    display.drawText(x+55,y, "KEYS: " + this.avatar.attr._InventoryHolder_attr.keyCount);
   },
 }

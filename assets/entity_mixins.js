@@ -109,7 +109,6 @@ Game.EntityMixin.InventoryHolder = {
       keys: {},
       gun: 'PeaShooter',
       bomb: 'Melon Bomb',
-      bombCount: 5,
       keyCount: 0,
       spaceAvailable: true
     },

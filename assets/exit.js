@@ -26,7 +26,7 @@ Game.Exit = {
   },
 
   changeLockSize: function(level) {
-    this.attr.lockSize = 1 + level;
+    this.attr.lockSize = level;
   },
 
   getLockSize: function() {
