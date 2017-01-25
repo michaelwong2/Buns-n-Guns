@@ -20,7 +20,8 @@ Game.Map.prototype.getHeight = function () {
 };
 
 Game.Map.prototype.getTile = function (x,y) {
-  if ((x < 0) || (x >= this._width) || (y<0) || (y >= this._height)) {
+
+  if ((x < 0) || (x >= this._tiles.length -1) || (y<0) || (y >= this._tiles[x].length -1)) {
     return Game.Tile.nullTile;
   }
 

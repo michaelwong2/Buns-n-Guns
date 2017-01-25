@@ -3,7 +3,7 @@ Game.ItemTemplates = {};
 Game.ItemTemplates.Key = {
   name: 'Key',
   chr:'Y',
-  fg:'#dcdcdc',
+  fg:'#ffd700',
   mixins:[]
 };
 
@@ -28,7 +28,7 @@ Game.ItemTemplates.PeaShooter = {
 Game.ItemTemplates.PotatoPistol = {
   name: 'PotatoPistol',
   chr:'P',
-  fg:'#3cb371',
+  fg:'#ffaa 00',
   description: 'Shoots peas for damage. Peas hurt.',
   equipment: true,
   gun: true,

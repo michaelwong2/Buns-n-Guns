@@ -13,7 +13,7 @@ Game.UIMode.gameMenu = {
   },
   render: function(display){
 
-    display.draw(35,7,"Buns n' Guns", "#ff6600");
+    display.draw(35,8,"Buns n' Guns", "#ff6600");
     display.draw(35,14,"New   [n]");
     display.draw(35,15,"Load  [l]");
 
@@ -265,7 +265,7 @@ Game.UIMode.gamePlay = {
     this.attr.camY = Loc.y;
     this.attr._map.addEntity(this.attr._avatar);
 
-    for(var k = 0; k < 10; k++){
+    for(var k = 0; k < level; k++){
       var newItem = new Game.Item(Game.ItemTemplates.Key);
       var newloc = this.attr._map.getWalkableLocation();
       newItem.setPos(newloc.x, newloc.y);
@@ -273,22 +273,21 @@ Game.UIMode.gamePlay = {
       this.attr._map.addItem(newItem);
     }
 
-    for(var k = 0; k < 10; k++){
-      var carrot = new Game.Item(Game.ItemTemplates.Carrot);
+    if(level == 4){
+      var cuc = new Game.Item(Game.ItemTemplates.Cucumberer);
       var loc = this.attr._map.getWalkableLocation();
-      carrot.setPos(loc.x, loc.y);
-      this.attr._map.addItem(carrot);
+      cuc.setPos(loc.x, loc.y);
+      this.attr._map.addItem(cuc);
+    }else if(level == 7){
+      var pot = new Game.Item(Game.ItemTemplates.PotatoPistol);
+      var loc = this.attr._map.getWalkableLocation();
+      pot.setPos(loc.x, loc.y);
+      this.attr._map.addItem(pot);
     }
-
-    var cuc = new Game.Item(Game.ItemTemplates.Cucumberer);
-    var loc = this.attr._map.getWalkableLocation();
-    cuc.setPos(loc.x, loc.y);
-    this.attr._map.addItem(cuc);
-
-    var melon = new Game.Item(Game.ItemTemplates.MelonBomb);
-    var loc1 = this.attr._map.getWalkableLocation();
-    melon.setPos(loc1.x, loc1.y);
-    this.attr._map.addItem(melon);
+    // var melon = new Game.Item(Game.ItemTemplates.MelonBomb);
+    // var loc1 = this.attr._map.getWalkableLocation();
+    // melon.setPos(loc1.x, loc1.y);
+    // this.attr._map.addItem(melon);
 
     var mob = Game.Levels.getMob();
     var entType = null;
@@ -330,6 +329,52 @@ Game.UIMode.gamePlay = {
   moveCamera: function(x,y){
     this.attr.camX = x;
     this.attr.camY = y;
+  },
+
+  finalLevel: function(){
+    Game.Levels.update(10);
+    Game.resetDataStore();
+    Game.DATASTORE.ENTITIES[this.attr._avatar.getID()] = this.attr._avatar;
+
+    var map = Game.mapGen.finalMap();
+    this.attr._map = map;
+
+    var Loc = this.attr._map.getWalkableLocation();
+    this.attr._avatar.setPos(Loc.x,Loc.y);
+    this.attr.camX = Loc.x;
+    this.attr.camY = Loc.y;
+    this.attr._map.addEntity(this.attr._avatar);
+
+    var keyloc;
+
+    for(var k = 0; k < 1; k++){
+      var newItem = new Game.Item(Game.ItemTemplates.Key);
+      keyloc = this.attr._map.getWalkableLocation();
+      newItem.setPos(keyloc.x, keyloc.y);
+
+      this.attr._map.addItem(newItem);
+    }
+
+    Game.Levels.changeMob(10);
+
+    // var melon = new Game.Item(Game.ItemTemplates.MelonBomb);
+    // var loc1 = this.attr._map.getWalkableLocation();
+    // melon.setPos(loc1.x, loc1.y);
+    // this.attr._map.addItem(melon);
+
+    var mob = Game.Levels.getMob();
+    var entType = null;
+
+    for(var i = 0; i < mob.length;i++) {
+      entType = mob[i];
+      for(var pop = 0; pop < entType.no; pop++) {
+        newEnt = new Game.Entity(Game.EntityTemplates[entType.name]);
+        var newloc = this.attr._map.getNearWalkableLocation(keyloc.x, keyloc.y, 2*i);
+        newEnt.setPos(newloc.x, newloc.y);
+
+        this.attr._map.addEntity(newEnt);
+      }
+    }
   }
 };
 

@@ -53,6 +53,39 @@ Game.mapGen = {
 
   },
 
+  finalMap: function(){
+    var h = 60;
+    var w = 60;
+
+    if(this._currSeed == null){
+        this.genNewRandomSeed();
+    }
+
+    var generator = new ROT.Map.Cellular(h, w);
+    generator.randomize(0.5);
+
+    for(var i = 0; i < 50; i++){
+      generator.create();
+    }
+
+    var tileArray = Game.util.init2DArray(h,w,Game.Tile.nullTile);
+
+    generator.create(function(x,y,val){
+      if(val === 0){
+        tileArray[x][y] = Game.Tile.wallTile;
+      }else{
+        tileArray[x][y] = Game.Tile.floorTile;
+      }
+    });
+
+    tileArray = Game.Exit.putExit(tileArray);
+    Game.SavePoint.putSavePoint(tileArray);
+    Game.Exit.lock();
+
+    var map = new Game.Map(tileArray);
+    return map;
+  },
+
   loadPreviousMap: function(seed,map_data,exit,savepoint,x,y){
     this.setSeed(seed);
     var oldmap = new Game.Map(this.createMap(x,y));
