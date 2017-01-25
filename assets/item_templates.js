@@ -25,9 +25,28 @@ Game.ItemTemplates.PeaShooter = {
   mixins:[]
 };
 
+Game.ItemTemplates.PotatoPistol = {
+  name: 'PotatoPistol',
+  chr:'P',
+  fg:'#3cb371',
+  description: 'Shoots peas for damage. Peas hurt.',
+  equipment: true,
+  gun: true,
+  mixins:[]
+};
+
 Game.ItemTemplates.MelonBomb = {
-  name: 'Melon Bomb',
+  name: 'MelonBomb',
   chr:'M',
+  fg:'#ff6347',
+  description: 'Melon seed shrapnels! More juicy than deadly tbh.',
+  equipment: true,
+  mixins:[]
+};
+
+Game.ItemTemplates.Bombkin = {
+  name: 'Bombkin',
+  chr:'O',
   fg:'#ff6347',
   description: 'Melon seed shrapnels! More juicy than deadly tbh.',
   equipment: true,

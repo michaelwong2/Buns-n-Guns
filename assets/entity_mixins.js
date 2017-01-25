@@ -111,10 +111,23 @@ Game.EntityMixin.InventoryHolder = {
     mixinGroup: 'InventoryHolder',
     stateNamespace: '_InventoryHolder_attr',
     stateModel: {
-      keyCount: 0
+      //inventory: [],
+      //keys: {},
+      gun: 'PeaShooter',
+      bomb: 'Melon Bomb',
+      keyCount: 0,
+      //invSize: 8
     },
     init: function (template) {
     }
+  },
+
+  hasSpace: function () {
+    return this.attr._InventoryHolder_attr.spaceAvailable;
+  },
+
+  renderInv: function(display) {
+
   },
 
   pickupItem: function (map,x,y) {
@@ -254,5 +267,36 @@ Game.EntityMixin.explode = {
         particle.attr.loopingChars.dy = oy + Math.floor(Math.random()*5) - Math.floor(Math.random()*10);
         this.getMap().addEntity(particle);
       }
+    }
+};
+
+Game.EntityMixin.pexplode = {
+  META: {
+      mixinName: 'pexplode',
+      mixinGroup: 'pexplode',
+      stateNamespace: 'pexplode_data',
+      stateModel: {
+      },
+      init: function () {
+      },
+    },
+    pexplode: function(map,ox,oy){
+      var tar = map.getTileGrid();
+
+      var cenbomb = new Game.Entity(Game.EntityTemplates.Bomb);
+
+      cenbomb.setPos(ox, oy);
+      cenbomb.attr.loopingChars.trigger = 0;
+
+      map.addEntity(cenbomb);
+
+      for(var i = 0; i < 5; i++){
+        var exbomb = new Game.Entity(Game.EntityTemplates.Bomb);
+        exbomb.setPos(Math.ceil(Math.random()*10) - Math.ceil(Math.random()*20) + ox, Math.ceil(Math.random()*8) - Math.ceil(Math.random()*20) + oy);
+        exbomb.attr.loopingChars.trigger = 1;
+
+        map.addEntity(exbomb);
+      }
+
     }
 };
