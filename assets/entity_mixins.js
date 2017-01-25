@@ -157,11 +157,6 @@ Game.EntityMixin.InventoryHolder = {
     return null;
   },
 
-  dropItem: function (itemId) {
-    // var index = this.attr._InventoryHolder_attr.inventory.indexOf(itemId);
-    // this.attr._InventoryHolder_attr.inventory.splice(index,1);
-  },
-
   keyCount: function () {
     return this.attr._InventoryHolder_attr.keyCount;
   },
