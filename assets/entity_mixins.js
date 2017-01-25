@@ -90,6 +90,13 @@ Game.EntityMixin.HitPoints = {
 
     if(this.attr._HitPoints_attr.curHp <= 0){
       Game.Message.send("You killed the bunny");
+
+      if(this.attr._name == "ShooterBunny" && Math.floor(Math.random()*100) > 50){
+          var carrot = new Game.Item(Game.ItemTemplates.Carrot);
+          carrot.setPos(this.getX(), this.getY());
+          this.getMap().addItem(carrot);
+      }
+
       this.expire();
     }
   },
@@ -258,7 +265,7 @@ Game.EntityMixin.explode = {
         }
       }
 
-      for(var i = 0; i < 10; i++){
+      for(var i = 0; i < 15; i++){
         var particle = new Game.Entity(Game.EntityTemplates.SmokeParticle);
         particle.setPos(ox, oy);
         particle.attr.loopingChars.dx = ox + Math.floor(Math.random()*5) - Math.floor(Math.random()*10);

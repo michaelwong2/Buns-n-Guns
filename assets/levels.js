@@ -42,9 +42,9 @@ Game.Levels = {
         break;
       case 3:
         newMob[0] = {name: 'Bun', no: 0};
-        newMob[1] = {name: 'MeleeBunny', no: 5};
+        newMob[1] = {name: 'MeleeBunny', no: 3};
         newMob[2] = {name: 'ShooterBunny', no: 4};
-        newMob[3] = {name: 'BomberBunny', no: 1};
+        newMob[3] = {name: 'BomberBunny', no: 2};
         break;
       case 4:
         newMob[0] = {name: 'Bun', no: 0};

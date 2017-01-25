@@ -13,9 +13,9 @@ Game.UIMode.gameMenu = {
   },
   render: function(display){
 
-
-    display.drawText(10,6,"New   [n]");
-    display.drawText(10,7,"Load  [l]");
+    display.draw(35,7,"Buns n' Guns", "#ff6600");
+    display.draw(35,14,"New   [n]");
+    display.draw(35,15,"Load  [l]");
 
   },
   handleInput: function(inputType, inputData){
@@ -80,6 +80,35 @@ Game.UIMode.gameMenu = {
   }
 };
 
+Game.UIMode.gamePause = {
+  enter: function(){
+    console.log("entered pause");
+    Game.KeyBinding.setKeyBinding('pause');
+  },
+  exit: function(){
+    console.log("exited pause");
+  },
+  render: function(display){
+
+    display.draw(35,12,"Quit      [ q ]");
+    display.draw(35,13,"Continue  [esc]");
+
+  },
+  handleInput: function(inputType, inputData){
+
+    var abinding = Game.KeyBinding.getInputBinding(inputType,inputData);
+
+    if(!abinding)
+      return false;
+
+    if(abinding.actionKey == 'QUIT'){
+        Game.switchUIMode(Game.UIMode.gameMenu);
+    }else if(abinding.actionKey == 'CANCEL'){
+        Game.switchUIMode(Game.UIMode.gamePlay);
+    }
+  }
+};
+
 Game.UIMode.gamePlay = {
   attr:{
     _map: null,
@@ -134,7 +163,7 @@ Game.UIMode.gamePlay = {
       console.log('open inventory');
       Game.switchUIMode(Game.UIMode.gameInventory);
     } else if(abinding.actionKey == 'PERSISTENCE'){
-      Game.switchUIMode(Game.UIMode.persistence);
+      Game.switchUIMode(Game.UIMode.gamePause);
       return;
     }else if(abinding.actionKey == 'SHOOT'){
       var bullet = new Game.Entity(Game.EntityTemplates.Bullet);
@@ -216,19 +245,19 @@ Game.UIMode.gamePlay = {
       this.attr._map.addItem(newItem);
     }
 
-    for(var k = 0; k < 10; k++){
-      var carrot = new Game.Item(Game.ItemTemplates.Carrot);
-      var loc = this.attr._map.getWalkableLocation();
-      carrot.setPos(loc.x, loc.y);
-      this.attr._map.addItem(carrot);
-    }
+    // for(var k = 0; k < 10; k++){
+    //   var carrot = new Game.Item(Game.ItemTemplates.Carrot);
+    //   var loc = this.attr._map.getWalkableLocation();
+    //   carrot.setPos(loc.x, loc.y);
+    //   this.attr._map.addItem(carrot);
+    // }
 
-    for(var k = 0; k < 10; k++){
-      var carrot = new Game.Item(Game.ItemTemplates.Cucumberer);
-      var loc = this.attr._map.getWalkableLocation();
-      carrot.setPos(loc.x, loc.y);
-      this.attr._map.addItem(carrot);
-    }
+    // for(var k = 0; k < 10; k++){
+    //   var carrot = new Game.Item(Game.ItemTemplates.Cucumberer);
+    //   var loc = this.attr._map.getWalkableLocation();
+    //   carrot.setPos(loc.x, loc.y);
+    //   this.attr._map.addItem(carrot);
+    // }
 
     var mob = Game.Levels.getMob();
     var entType = null;

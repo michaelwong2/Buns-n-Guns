@@ -468,8 +468,8 @@ Game.EntityTemplates.SmokeParticle = {
 
       switch(this.attr.loopingChars.state){
         case 1: this.attr._char = '*'; break;
-        case 2: this.attr._char = '+'; break;
-        case 3: this.attr._char = '.'; break;
+        case 2: this.attr._char = '.'; break;
+        case 3: this.attr._char = ' '; break;
       }
 
       var targetX = this.attr.loopingChars.dx;
