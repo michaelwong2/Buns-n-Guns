@@ -131,7 +131,7 @@ Game.UIMode.gamePlay = {
       console.log('pickup action');
       this.attr._avatar.pickupItem(this.attr._map, this.attr._avatar.getX(), this.attr._avatar.getY());
     }else if(abinding.actionKey == 'PERSISTENCE'){
-      Game.switchUIMode(Game.UIMode.persistence);
+      Game.switchUIMode(Game.UIMode.gameMenu);
       return;
     }else if(abinding.actionKey == 'SHOOT'){
       var bullet = new Game.Entity(Game.EntityTemplates.Bullet);
