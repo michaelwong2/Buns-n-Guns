@@ -216,6 +216,20 @@ Game.UIMode.gamePlay = {
       this.attr._map.addItem(newItem);
     }
 
+    for(var k = 0; k < 10; k++){
+      var carrot = new Game.Item(Game.ItemTemplates.Carrot);
+      var loc = this.attr._map.getWalkableLocation();
+      carrot.setPos(loc.x, loc.y);
+      this.attr._map.addItem(carrot);
+    }
+
+    for(var k = 0; k < 10; k++){
+      var carrot = new Game.Item(Game.ItemTemplates.Cucumberer);
+      var loc = this.attr._map.getWalkableLocation();
+      carrot.setPos(loc.x, loc.y);
+      this.attr._map.addItem(carrot);
+    }
+
     var mob = Game.Levels.getMob();
     var entType = null;
 
@@ -260,10 +274,11 @@ Game.UIMode.gamePlay = {
 };
 
 Game.UIMode.gameInventory = {
+  display: null,
   attr:{
-    inventory: {},
-    curLoad: 0,
-    maxLoad: 9
+    inventory: [],
+    maxLoad: 9,
+    selected: 0
   },
   enter: function(){
     console.log("entered gameInventory");
@@ -275,12 +290,31 @@ Game.UIMode.gameInventory = {
 
   render: function(display){
     Game.UIMode.gamePlay.render(display);
+    this.display = display;
     var y = display._options.height - 2;
+
     for (var w = 0; w < display._options.width; w++) {
-      display.draw(w,y,' ');
+      for (var h = 0; h < 3; h++) {
+        display.draw(w,y-h,' ','#2f4f4f','#2f4f4f');
+      }
     }
 
-    
+    y--;
+    for (var i = 0; i < 9; i++) {
+      display.draw(7 + 7*i,y,' ');
+    }
+    display.drawText(30,y-1,'%c{#f5f5dc}%b{#2f4f4f}Inventory');
+
+    if(this.attr.inventory.length != 0) {
+      var item = null;
+      for(var k = 0; k < this.attr.inventory.length; k++) {
+        item = this.attr.inventory[k];
+        display.draw(7+7*k,y,item.attr._char,item.attr._fg);
+      }
+
+      display.draw(7,y+1,'^','#f5f5dc','#2f4f4f');
+      Game.Message.send(this.attr.inventory[this.attr.selected].attr._name + ': ' + this.attr.inventory[this.attr.selected].attr.description);
+    }
   },
 
   handleInput: function(inputType, inputData){
@@ -289,62 +323,63 @@ Game.UIMode.gameInventory = {
       return false;
 
     if(abinding.actionKey == 'INVENTORY'){
+      Game.Message.send('');
+      this.attr.selected = 0;
       Game.switchUIMode(Game.UIMode.gamePlay);
-    } //else if(abinding.actionKey == 'MOVE_D'){
-  //     this.attr.moveY += this.attr.speed;
-  //     this.attr._avatar.setDir(3);
-  //   } else if(abinding.actionKey == 'MOVE_R'){
-  //     this.attr.moveX += this.attr.speed;
-  //     this.attr._avatar.setDir(2);
-  //   } else if(abinding.actionKey == 'MOVE_L'){
-  //     this.attr.moveX -= this.attr.speed;
-  //     this.attr._avatar.setDir(0);
-  //   } else if(abinding.actionKey == 'PICKUP'){
-  //     console.log('pickup action');
-  //     this.attr._avatar.pickupItem(this.attr._map, this.attr._avatar.getX(), this.attr._avatar.getY());
-  //   }else if(abinding.actionKey == 'PERSISTENCE'){
-  //     Game.switchUIMode(Game.UIMode.persistence);
-  //     return;
-  //   }else if(abinding.actionKey == 'SHOOT'){
-  //     var bullet = new Game.Entity(Game.EntityTemplates.Bullet);
-  //     bullet.attr.loopingChars.entityDec = 4;
-  //
-  //     var xoff = 0;
-  //     var yoff = 0;
-  //
-  //     switch(this.attr._avatar.attr.dir){
-  //       case 0: xoff = -1; break;
-  //       case 1: yoff = -1; break;
-  //       case 2: xoff = 1; break;
-  //       case 3: yoff = 1; break;
-  //     }
-  //
-  //     bullet.setPos(this.attr._avatar.getX() + xoff, this.attr._avatar.getY() + yoff);
-  //     bullet.attr.loopingChars.dir = this.attr._avatar.attr.dir;
-  //
-  //     this.attr._map.addEntity(bullet);
-  //   }else if(abinding.actionKey == 'BOMB'){
-  //     var bomb = new Game.Entity(Game.EntityTemplates.Bomb);
-  //
-  //     var xoff = 0;
-  //     var yoff = 0;
-  //
-  //     switch(this.attr._avatar.attr.dir){
-  //       case 0: xoff = -1; break;
-  //       case 1: yoff = -1; break;
-  //       case 2: xoff = 1; break;
-  //       case 3: yoff = 1; break;
-  //     }
-  //
-  //     bomb.setPos(this.attr._avatar.getX() + xoff, this.attr._avatar.getY() + yoff);
-  //
-  //     this.attr._map.addEntity(bomb);
-  //   }else{
-  //     return;
-  //   }
-  //
-  //   // Game.renderAll();
+    } else if(abinding.actionKey == 'MOVE_R'){
+      if (this.attr.selected == this.attr.inventory.length-1 || this.attr.inventory.length == 0) {
+        return;
+      } else {
+        this.display.draw(7+7*this.attr.selected,this.display._options.height - 2,' ','#f5f5dc','#2f4f4f');
+        this.attr.selected++;
+        this.display.draw(7+7*this.attr.selected,this.display._options.height - 2,'^','#f5f5dc','#2f4f4f');
+        Game.Message.send(this.attr.inventory[this.attr.selected].attr._name + ': ' + this.attr.inventory[this.attr.selected].attr.description);
+      }
+    } else if(abinding.actionKey == 'MOVE_L'){
+      if (this.attr.selected == 0) {
+        return;
+      } else {
+        this.display.draw(7+7*this.attr.selected,this.display._options.height - 2,' ','#f5f5dc','#2f4f4f');
+        this.attr.selected--;
+        this.display.draw(7+7*this.attr.selected,this.display._options.height - 2,'^','#f5f5dc','#2f4f4f');
+        Game.Message.send(this.attr.inventory[this.attr.selected].attr._name + ': ' + this.attr.inventory[this.attr.selected].attr.description);
+      }
+    } else if(abinding.actionKey == 'BOMB'){
+      var selected = this.attr.selected;
+      if (this.attr.inventory.length != 0) {
+        Game.UIMode.gamePlay.attr._avatar.consume(this.attr.inventory[selected]);
+        this.attr.inventory.splice(selected, 1);
+
+        if (this.attr.inventory.length == 0) {
+          this.display.draw(7+7*selected,this.display._options.height - 2,' ','#f5f5dc','#2f4f4f');
+          this.display.draw(7+7*selected,this.display._options.height - 3,' ');
+        } else if (selected == this.attr.inventory.length) {
+          this.display.draw(7+7*selected,this.display._options.height - 2,' ','#f5f5dc','#2f4f4f');
+          this.display.draw(7+7*selected,this.display._options.height - 3,' ');
+          this.attr.selected = --selected;
+          this.display.draw(7+7*selected,this.display._options.height - 2,'^','#f5f5dc','#2f4f4f');
+        } else {
+          for(var i = selected; i < this.attr.inventory.length; i++) {
+            item = this.attr.inventory[i];
+            this.display.draw(7+7*i,this.display._options.height - 3,item.attr._char,item.attr._fg);
+          }
+          this.display.draw(7+7*(selected+1),this.display._options.height - 3,' ');
+        }
+      } else {
+        return;
+      }
+    }
   },
+
+  putItem: function(item) {
+    this.attr.inventory.push(item);
+  },
+
+  isFull: function() {
+    return this.attr.inventory.length === this.attr.maxLoad;
+  }
+
+
 };
 
 Game.UIMode.gameWin = {
@@ -362,7 +397,6 @@ Game.UIMode.gameWin = {
     console.log("input for gameWin");
   }
 };
-
 
 Game.UIMode.gameLose = {
   enter: function(){

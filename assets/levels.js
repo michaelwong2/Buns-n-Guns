@@ -32,7 +32,7 @@ Game.Levels = {
     switch(level){
       case 1:
         newMob[0] = {name: 'Bun', no: 0};
-        newMob[1] = {name: 'MeleeBunny', no: 1};
+        newMob[1] = {name: 'MeleeBunny', no: 0};
         newMob[2] = {name: 'ShooterBunny', no: 0};
         break;
       case 2:

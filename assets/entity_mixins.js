@@ -127,25 +127,32 @@ Game.EntityMixin.InventoryHolder = {
     var item = map.getItem(x, y);
     if ( item !== null) {
       if (item.attr._name == 'Key') {
-        //this.attr._InventoryHolder_attr.keys[item._itemID] = item;
         this.attr._InventoryHolder_attr.keyCount++;
         Game.Message.send('You picked up a ' + item.attr._name + '! You now have ' + this.attr._InventoryHolder_attr.keyCount + ' keys.');
-        // Game.PlayerStats.update('_keyCount',this.attr._InventoryHolder_attr.keyCount);
       } else {
-        this.attr._InventoryHolder_attr.inventory[item._itemID] = item;
+        if (Game.UIMode.gameInventory.isFull()) {
+          Game.Message.send('My bag is full! But my life is still so empty...');
+          return;
+        } else {
+          Game.UIMode.gameInventory.putItem(item);
+        }
       }
       map.updateItem(item);
     }
   },
 
-  useItem: function(itemId) {
-    item = this.getItem(itemId);
-    if (item.attr._name === 'Carrot') {
-      var newHp = this.attr._HitPoints_attr.curHp + 5;
-      if (newHp < this.attr._HitPoints_attr.maxHp)
-        return newHp;
-      else
-        return this.attr._HitPoints_attr.maxHp;
+  consume: function(item) {
+    switch(item.attr._name) {
+      case 'Carrot':
+        var newHp = this.attr._HitPoints_attr.curHp + 5;
+        if (newHp < this.attr._HitPoints_attr.maxHp) {
+          this.attr._HitPoints_attr.curHp = newHp;
+        } else {
+          this.attr._HitPoints_attr.curHp = this.attr._HitPoints_attr.maxHp;
+        }
+        Game.PlayerStats.render(Game.getDisplay('main'));
+        break;
+      default:
     }
   },
 
