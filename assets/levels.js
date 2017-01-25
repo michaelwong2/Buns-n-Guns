@@ -34,6 +34,7 @@ Game.Levels = {
         newMob[0] = {name: 'Bun', no: 0};
         newMob[1] = {name: 'MeleeBunny', no: 0};
         newMob[2] = {name: 'ShooterBunny', no: 0};
+        newMob[3] = {name: 'BomberBunny', no: 1};
         break;
       case 2:
         newMob[0] = {name: 'Bun', no: 0};

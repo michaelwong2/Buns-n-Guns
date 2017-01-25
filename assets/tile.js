@@ -27,5 +27,5 @@ Game.Tile.prototype.isEmpty = function(){
 
 Game.Tile.nullTile = new Game.Tile({name:'nullTile'});
 Game.Tile.floorTile = new Game.Tile({name:'floorTile', chr: ' ', walkable:true, empty:true});
-Game.Tile.wallTile = new Game.Tile({name:'wallTile',  chr: '?'});
+Game.Tile.wallTile = new Game.Tile({name:'wallTile',  chr: ' ', bg: '#823a3a'});
 Game.Tile.smokeTile = new Game.Tile({name:'smokeTile',  chr: '*'});

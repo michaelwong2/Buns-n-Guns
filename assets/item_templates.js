@@ -3,13 +3,13 @@ Game.ItemTemplates = {};
 Game.ItemTemplates.Key = {
   name: 'Key',
   chr:'Y',
-  fg:'#bbc',
+  fg:'#0a0',
   mixins:[]
 };
 
 Game.ItemTemplates.Carrot = {
   name: 'Carrot',
   chr:'A',
-  fg:'#bbc',
+  fg:'#fe2',
   mixins:[]
 };
