@@ -19,7 +19,7 @@ Game.ItemTemplates.PeaShooter = {
   name: 'PeaShooter',
   chr:'P',
   fg:'#3cb371',
-  description: 'Shoots peas for damage. Peas hurt.',
+  description: 'Shoots peas for 5 damages. Peas hurt.',
   equipment: true,
   gun: true,
   mixins:[]
