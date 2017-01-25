@@ -130,8 +130,11 @@ Game.UIMode.gamePlay = {
     } else if(abinding.actionKey == 'PICKUP'){
       console.log('pickup action');
       this.attr._avatar.pickupItem(this.attr._map, this.attr._avatar.getX(), this.attr._avatar.getY());
-    }else if(abinding.actionKey == 'PERSISTENCE'){
-      Game.switchUIMode(Game.UIMode.gameMenu);
+    } else if(abinding.actionKey == 'INVENTORY'){
+      console.log('open inventory');
+      Game.switchUIMode(Game.UIMode.gameInventory);
+    } else if(abinding.actionKey == 'PERSISTENCE'){
+      Game.switchUIMode(Game.UIMode.persistence);
       return;
     }else if(abinding.actionKey == 'SHOOT'){
       var bullet = new Game.Entity(Game.EntityTemplates.Bullet);
@@ -254,6 +257,94 @@ Game.UIMode.gamePlay = {
     this.attr.camX = x;
     this.attr.camY = y;
   }
+};
+
+Game.UIMode.gameInventory = {
+  attr:{
+    inventory: {},
+    curLoad: 0,
+    maxLoad: 9
+  },
+  enter: function(){
+    console.log("entered gameInventory");
+  },
+
+  exit: function(){
+    console.log("exited gameInventory");
+  },
+
+  render: function(display){
+    Game.UIMode.gamePlay.render(display);
+    var y = display._options.height - 2;
+    for (var w = 0; w < display._options.width; w++) {
+      display.draw(w,y,' ');
+    }
+
+    
+  },
+
+  handleInput: function(inputType, inputData){
+    var abinding = Game.KeyBinding.getInputBinding(inputType,inputData);
+    if(!abinding)
+      return false;
+
+    if(abinding.actionKey == 'INVENTORY'){
+      Game.switchUIMode(Game.UIMode.gamePlay);
+    } //else if(abinding.actionKey == 'MOVE_D'){
+  //     this.attr.moveY += this.attr.speed;
+  //     this.attr._avatar.setDir(3);
+  //   } else if(abinding.actionKey == 'MOVE_R'){
+  //     this.attr.moveX += this.attr.speed;
+  //     this.attr._avatar.setDir(2);
+  //   } else if(abinding.actionKey == 'MOVE_L'){
+  //     this.attr.moveX -= this.attr.speed;
+  //     this.attr._avatar.setDir(0);
+  //   } else if(abinding.actionKey == 'PICKUP'){
+  //     console.log('pickup action');
+  //     this.attr._avatar.pickupItem(this.attr._map, this.attr._avatar.getX(), this.attr._avatar.getY());
+  //   }else if(abinding.actionKey == 'PERSISTENCE'){
+  //     Game.switchUIMode(Game.UIMode.persistence);
+  //     return;
+  //   }else if(abinding.actionKey == 'SHOOT'){
+  //     var bullet = new Game.Entity(Game.EntityTemplates.Bullet);
+  //     bullet.attr.loopingChars.entityDec = 4;
+  //
+  //     var xoff = 0;
+  //     var yoff = 0;
+  //
+  //     switch(this.attr._avatar.attr.dir){
+  //       case 0: xoff = -1; break;
+  //       case 1: yoff = -1; break;
+  //       case 2: xoff = 1; break;
+  //       case 3: yoff = 1; break;
+  //     }
+  //
+  //     bullet.setPos(this.attr._avatar.getX() + xoff, this.attr._avatar.getY() + yoff);
+  //     bullet.attr.loopingChars.dir = this.attr._avatar.attr.dir;
+  //
+  //     this.attr._map.addEntity(bullet);
+  //   }else if(abinding.actionKey == 'BOMB'){
+  //     var bomb = new Game.Entity(Game.EntityTemplates.Bomb);
+  //
+  //     var xoff = 0;
+  //     var yoff = 0;
+  //
+  //     switch(this.attr._avatar.attr.dir){
+  //       case 0: xoff = -1; break;
+  //       case 1: yoff = -1; break;
+  //       case 2: xoff = 1; break;
+  //       case 3: yoff = 1; break;
+  //     }
+  //
+  //     bomb.setPos(this.attr._avatar.getX() + xoff, this.attr._avatar.getY() + yoff);
+  //
+  //     this.attr._map.addEntity(bomb);
+  //   }else{
+  //     return;
+  //   }
+  //
+  //   // Game.renderAll();
+  },
 };
 
 Game.UIMode.gameWin = {

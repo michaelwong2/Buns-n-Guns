@@ -23,3 +23,11 @@ Game.Item.prototype.setPos = function(x,y){
   this.attr._x = x;
   this.attr._y = y;
 }
+
+Game.Item.prototype.isConsumable = function(x,y) {
+  if (this.attr.hasOwnProperty('_Consumable_attr')) {
+    return true;
+  } else {
+    return false;
+  }
+}
