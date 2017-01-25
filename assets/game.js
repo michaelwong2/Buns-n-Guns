@@ -106,11 +106,6 @@ var Game = {
     Game.Message.render(this.getDisplay("message"));
   },
 
-  // renderAvatar: function() {
-  //   var d = this.display.avatar.o;
-  //   d.drawText(5, 0, "avatar");
-  // },
-
   renderAll: function(){
     this.renderMessage();
     this.renderMain();

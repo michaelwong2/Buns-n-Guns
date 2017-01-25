@@ -105,21 +105,14 @@ Game.EntityMixin.InventoryHolder = {
     mixinGroup: 'InventoryHolder',
     stateNamespace: '_InventoryHolder_attr',
     stateModel: {
-      items: {},
-      keys: {},
+      //inventory: [],
+      //keys: {},
       gun: 'PeaShooter',
       bomb: 'Melon Bomb',
       keyCount: 0,
-      spaceAvailable: true
+      //invSize: 8
     },
-
     init: function (template) {
-      // this.attr._InventoryHolder_attr.items = template.items || {};
-      // console.log(template.id);
-      // console.log(template.items);
-      // this.attr._InventoryHolder_attr.keys = template.keys || {};
-      // this.attr._InventoryHolder_attr.keyCount = template.keyCount || 0;
-      // this.attr._InventoryHolder_attr.spaceAvailable = template.spaceAvailable || true;
     }
   },
 
@@ -127,32 +120,46 @@ Game.EntityMixin.InventoryHolder = {
     return this.attr._InventoryHolder_attr.spaceAvailable;
   },
 
+  renderInv: function(display) {
+
+  },
+
   pickupItem: function (map,x,y) {
     var item = map.getItem(x, y);
     if ( item !== null) {
       if (item.attr._name == 'Key') {
-        this.attr._InventoryHolder_attr.keys[item._itemID] = item;
+        //this.attr._InventoryHolder_attr.keys[item._itemID] = item;
         this.attr._InventoryHolder_attr.keyCount++;
         Game.Message.send('You picked up a ' + item.attr._name + '! You now have ' + this.attr._InventoryHolder_attr.keyCount + ' keys.');
         // Game.PlayerStats.update('_keyCount',this.attr._InventoryHolder_attr.keyCount);
       } else {
-        this.attr._InventoryHolder_attr.items[item._itemID] = item;
+        this.attr._InventoryHolder_attr.inventory[item._itemID] = item;
       }
       map.updateItem(item);
     }
-    ;
+  },
+
+  useItem: function(itemId) {
+    item = this.getItem(itemId);
+    if (item.attr._name === 'Carrot') {
+      var newHp = this.attr._HitPoints_attr.curHp + 5;
+      if (newHp < this.attr._HitPoints_attr.maxHp)
+        return newHp;
+      else
+        return this.attr._HitPoints_attr.maxHp;
+    }
   },
 
   getItem: function (itemId) {
-    if (this.attr._InventoryHolder_attr.items[itemId]) {
+    if (this.attr._InventoryHolder_attr.inventory[itemId]) {
       return Game.DATASTORE.ITEMS[itemId];
     }
     return null;
   },
 
   dropItem: function (itemId) {
-    // var index = this.attr._InventoryHolder_attr.items.indexOf(itemId);
-    // this.attr._InventoryHolder_attr.items.splice(index,1);
+    // var index = this.attr._InventoryHolder_attr.inventory.indexOf(itemId);
+    // this.attr._InventoryHolder_attr.inventory.splice(index,1);
   },
 
   keyCount: function () {

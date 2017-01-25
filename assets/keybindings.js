@@ -119,9 +119,14 @@ Game.KeyBinding = {
       all: {label:'Esc' ,inputMatch:ROT.VK_ESCAPE     ,inputType:'keydown' ,inputMetaShift:false ,inputMetaCtrl:false}
     },
 
-    PICKUP : {action_group:'inventory' ,guid:Game.util.uniqueId() ,ordering:5.1 ,short:'pickup'  ,long :'pick up an item on the space where I stand' ,
+    PICKUP : {action_group:'inventory' ,guid:Game.util.uniqueId() ,ordering:5.1 ,short:'pickup'  ,long :'pick up an item on the space where I stand',
       arrows: {label:'c' ,inputMatch:ROT.VK_C ,inputType:'keydown' ,inputMetaShift:false ,inputMetaCtrl:false} ,
       wasd  : {label:'c' ,inputMatch:ROT.VK_C ,inputType:'keydown' ,inputMetaShift:false ,inputMetaCtrl:false}
+    },
+
+    INVENTORY : {action_group:'inventory' ,guid:Game.util.uniqueId() ,ordering:5.1 ,short:'inventory'  ,long :'switch to gameInventory',
+      arrows: {label:'v' ,inputMatch:ROT.VK_V ,inputType:'keydown' ,inputMetaShift:false ,inputMetaCtrl:false} ,
+      wasd  : {label:'v' ,inputMatch:ROT.VK_V ,inputType:'keydown' ,inputMetaShift:false ,inputMetaCtrl:false}
     },
 
     SHOOT: {action_group:'movement' ,guid:Game.util.uniqueId() ,ordering:5.1 ,short:'shoot'  ,long :'shoot please' ,
