@@ -446,3 +446,46 @@ Game.EntityTemplates.Bullet = {
     this.attr.loopingChars.count++;
   }
 };
+
+Game.EntityTemplates.SmokeParticle = {
+  name: 'Bomb',
+  chr:'#',
+  fg:'#fa0',
+  mixins:[Game.EntityMixin.runnable],
+  workattrs: {
+    wait: 0,
+    lim: 4,
+    state: Math.floor(Math.random()*1),
+    dx: 0,
+    dy: 0
+  },
+  work: function(){
+    // # * + .
+    if(this.attr.loopingChars.state > 2){
+      this.expire();
+    }else{
+      this.attr.loopingChars.state++;
+
+      switch(this.attr.loopingChars.state){
+        case 1: this.attr._char = '*'; break;
+        case 2: this.attr._char = '+'; break;
+        case 3: this.attr._char = '.'; break;
+      }
+
+      var targetX = this.attr.loopingChars.dx;
+      var targetY = this.attr.loopingChars.dy;
+
+      if(this.getX() < targetX){
+        this.attr._x++;
+      }else{
+        this.attr._x--;
+      }
+
+      if(this.getY() < targetY){
+        this.attr._y++;
+      }else{
+        this.attr._y--;
+      }
+    }
+  }
+}
