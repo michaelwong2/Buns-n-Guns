@@ -3,7 +3,7 @@ Game.EntityTemplates = {};
 Game.EntityTemplates.Avatar = {
   name: 'Avatar',
   chr:'@',
-  fg:'#bbc',
+  fg:'#ff0',
   dir: 0,
   maxHp: 20,
   mixins:[Game.EntityMixin.WalkerCorporeal, Game.EntityMixin.Chronicle, Game.EntityMixin.InventoryHolder, Game.EntityMixin.HitPoints],
@@ -371,7 +371,35 @@ Game.EntityTemplates.Bomb = {
       this.attr.loopingChars.count++;
     }
   }
-}
+};
+
+Game.EntityTemplates.Bombkin = {
+  name: 'Bombkin',
+  chr:'O',
+  fg:'#aa0',
+  mixins:[Game.EntityMixin.runnable, Game.EntityMixin.pexplode],
+  workattrs: {
+    wait: 0,
+    lim: 20,
+    count: 0,
+    trigger: 6,
+    radius: 5
+  },
+  work: function(){
+    if(this.attr.loopingChars.count >= this.attr.loopingChars.trigger){
+      this.pexplode(this.getMap(), this.getX(), this.getY());
+      this.expire();
+    }else{
+      if(this.attr.loopingChars.count % 2 == 0){
+        this.attr._fg = '#aa0';
+      }else{
+        this.attr._fg = '#f00';
+      }
+
+      this.attr.loopingChars.count++;
+    }
+  }
+};
 
 Game.EntityTemplates.Bullet = {
   name: 'Bullet',
@@ -468,8 +496,8 @@ Game.EntityTemplates.SmokeParticle = {
 
       switch(this.attr.loopingChars.state){
         case 1: this.attr._char = '*'; break;
-        case 2: this.attr._char = '.'; break;
-        case 3: this.attr._char = ' '; break;
+        case 2: this.attr._char = ','; break;
+        case 3: this.attr._char = '.'; break;
       }
 
       var targetX = this.attr.loopingChars.dx;

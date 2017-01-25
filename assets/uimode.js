@@ -167,7 +167,6 @@ Game.UIMode.gamePlay = {
       return;
     }else if(abinding.actionKey == 'SHOOT'){
       var bullet = new Game.Entity(Game.EntityTemplates.Bullet);
-      bullet.attr.loopingChars.entityDec = 5;
 
       var xoff = 0;
       var yoff = 0;
@@ -179,12 +178,40 @@ Game.UIMode.gamePlay = {
         case 3: yoff = 1; break;
       }
 
+      var gunequipped = Game.UIMode.gameInventory.attr.gun.attr._name;
+
+      if(gunequipped == "PeaShooter"){
+        bullet.attr._char = '.';
+        bullet.attr._fg = '#8f8';
+        bullet.attr.loopingChars.entityDec = 5;
+      }else if(gunequipped == "Cucumberer"){
+        bullet.attr._char = '•';
+        bullet.attr._fg = '#2f2';
+        bullet.attr.loopingChars.entityDec = 8;
+      }else if(gunequipped == "PotatoPistol"){
+        bullet.attr._char = '♦';
+        bullet.attr._fg = '#7a5230';
+        bullet.attr.loopingChars.entityDec = 15;
+      }else{
+        return;
+      }
+
       bullet.setPos(this.attr._avatar.getX() + xoff, this.attr._avatar.getY() + yoff);
       bullet.attr.loopingChars.dir = this.attr._avatar.attr.dir;
 
       this.attr._map.addEntity(bullet);
     }else if(abinding.actionKey == 'BOMB'){
-      var bomb = new Game.Entity(Game.EntityTemplates.Bomb);
+
+      var bombeq = Game.UIMode.gameInventory.attr.bomb.attr._name;
+      var bomb;
+
+      if(bombeq == "MelonBomb"){
+        bomb = new Game.Entity(Game.EntityTemplates.Bomb);
+      }else if(bombeq == "Bombkin"){
+        bomb = new Game.Entity(Game.EntityTemplates.Bombkin);
+      }else{
+        return;
+      }
 
       var xoff = 0;
       var yoff = 0;
