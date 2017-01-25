@@ -15,10 +15,31 @@ Game.ItemTemplates.Carrot = {
   mixins:[]
 };
 
+Game.ItemTemplates.PeaShooter = {
+  name: 'PeaShooter',
+  chr:'P',
+  fg:'#3cb371',
+  description: 'Shoots peas for damage. Peas hurt.',
+  equipment: true,
+  gun: true,
+  mixins:[]
+};
+
+Game.ItemTemplates.MelonBomb = {
+  name: 'Melon Bomb',
+  chr:'M',
+  fg:'#ff6347',
+  description: 'Melon seed shrapnels! More juicy than deadly tbh.',
+  equipment: true,
+  mixins:[]
+};
+
 Game.ItemTemplates.Cucumberer = {
   name: 'Cucumberer',
   chr:'C',
   fg:'#006400',
   description: 'Cucumbers hit harder than peas. Also good as detox mask.',
+  equipment: true,
+  gun: true,
   mixins:[]
 };

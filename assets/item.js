@@ -6,6 +6,8 @@ Game.Item = function(template){
     this.attr._y = template.y || 0;
 
     this.attr.description = template.description || null;
+    this.attr.equipment = template.equipment || false;
+    this.attr.gun = template.gun || false;
 
     this._itemID = template.id || Game.util.randomString(32);
 
@@ -24,4 +26,12 @@ Game.Item.prototype.getY = function(){
 Game.Item.prototype.setPos = function(x,y){
   this.attr._x = x;
   this.attr._y = y;
+}
+
+Game.Item.prototype.isEquipment = function(){
+  return this.attr.equipment;
+}
+
+Game.Item.prototype.isGun = function(){
+  return this.attr.gun;
 }

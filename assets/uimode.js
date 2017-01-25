@@ -189,6 +189,7 @@ Game.UIMode.gamePlay = {
     this.attr._avatar = new Game.Entity(Game.EntityTemplates.Avatar);
     localStorage.clear();
     this.setUpLevel(this.attr.level);
+    Game.UIMode.gameInventory.setUpWeapons();
   },
 
   setUpLevel: function (level) {
@@ -278,7 +279,9 @@ Game.UIMode.gameInventory = {
   attr:{
     inventory: [],
     maxLoad: 9,
-    selected: 0
+    selected: 0,
+    gun: null,
+    bomb: null
   },
   enter: function(){
     console.log("entered gameInventory");
@@ -286,6 +289,11 @@ Game.UIMode.gameInventory = {
 
   exit: function(){
     console.log("exited gameInventory");
+  },
+
+  setUpWeapons: function() {
+    this.attr.gun = new Game.Item(Game.ItemTemplates.PeaShooter);
+    this.attr.bomb = new Game.Item(Game.ItemTemplates.MelonBomb);
   },
 
   render: function(display){
@@ -312,9 +320,13 @@ Game.UIMode.gameInventory = {
         display.draw(7+7*k,y,item.attr._char,item.attr._fg);
       }
 
-      display.draw(7,y+1,'^','#f5f5dc','#2f4f4f');
-      Game.Message.send(this.attr.inventory[this.attr.selected].attr._name + ': ' + this.attr.inventory[this.attr.selected].attr.description);
+      this.pointer(0);
     }
+  },
+
+  pointer: function(selected) {
+    this.display.draw(7+7*selected,this.display._options.height-2,'^','#f5f5dc','#2f4f4f');
+    Game.Message.send(this.attr.inventory[selected].attr._name + ': ' + this.attr.inventory[selected].attr.description);
   },
 
   handleInput: function(inputType, inputData){
@@ -332,38 +344,42 @@ Game.UIMode.gameInventory = {
       } else {
         this.display.draw(7+7*this.attr.selected,this.display._options.height - 2,' ','#f5f5dc','#2f4f4f');
         this.attr.selected++;
-        this.display.draw(7+7*this.attr.selected,this.display._options.height - 2,'^','#f5f5dc','#2f4f4f');
-        Game.Message.send(this.attr.inventory[this.attr.selected].attr._name + ': ' + this.attr.inventory[this.attr.selected].attr.description);
+        this.pointer(this.attr.selected);
       }
+
     } else if(abinding.actionKey == 'MOVE_L'){
       if (this.attr.selected == 0) {
         return;
       } else {
         this.display.draw(7+7*this.attr.selected,this.display._options.height - 2,' ','#f5f5dc','#2f4f4f');
         this.attr.selected--;
-        this.display.draw(7+7*this.attr.selected,this.display._options.height - 2,'^','#f5f5dc','#2f4f4f');
-        Game.Message.send(this.attr.inventory[this.attr.selected].attr._name + ': ' + this.attr.inventory[this.attr.selected].attr.description);
+        this.pointer(this.attr.selected);
       }
+
     } else if(abinding.actionKey == 'BOMB'){
-      var selected = this.attr.selected;
       if (this.attr.inventory.length != 0) {
+        var selected = this.attr.selected;
+        var item = this.attr.inventory[selected];
         Game.UIMode.gamePlay.attr._avatar.consume(this.attr.inventory[selected]);
         this.attr.inventory.splice(selected, 1);
 
         if (this.attr.inventory.length == 0) {
           this.display.draw(7+7*selected,this.display._options.height - 2,' ','#f5f5dc','#2f4f4f');
           this.display.draw(7+7*selected,this.display._options.height - 3,' ');
+
         } else if (selected == this.attr.inventory.length) {
           this.display.draw(7+7*selected,this.display._options.height - 2,' ','#f5f5dc','#2f4f4f');
           this.display.draw(7+7*selected,this.display._options.height - 3,' ');
           this.attr.selected = --selected;
-          this.display.draw(7+7*selected,this.display._options.height - 2,'^','#f5f5dc','#2f4f4f');
+          this.pointer(selected);
+
         } else {
           for(var i = selected; i < this.attr.inventory.length; i++) {
             item = this.attr.inventory[i];
             this.display.draw(7+7*i,this.display._options.height - 3,item.attr._char,item.attr._fg);
           }
-          this.display.draw(7+7*(selected+1),this.display._options.height - 3,' ');
+          this.display.draw(7+7*this.attr.inventory.length,this.display._options.height - 3,' ');
+          this.pointer(selected);
         }
       } else {
         return;

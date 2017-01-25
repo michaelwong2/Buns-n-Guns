@@ -104,23 +104,10 @@ Game.EntityMixin.InventoryHolder = {
     mixinGroup: 'InventoryHolder',
     stateNamespace: '_InventoryHolder_attr',
     stateModel: {
-      //inventory: [],
-      //keys: {},
-      gun: 'PeaShooter',
-      bomb: 'Melon Bomb',
-      keyCount: 0,
-      //invSize: 8
+      keyCount: 0
     },
     init: function (template) {
     }
-  },
-
-  hasSpace: function () {
-    return this.attr._InventoryHolder_attr.spaceAvailable;
-  },
-
-  renderInv: function(display) {
-
   },
 
   pickupItem: function (map,x,y) {
