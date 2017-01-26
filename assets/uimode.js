@@ -26,9 +26,10 @@ Game.UIMode.gameMenu = {
       return false;
 
     if(abinding.actionKey == 'PERSISTENCE_NEW'){
-        Game.setRandomSeed(5 + Math.floor(ROT.RNG.getUniform()*100000));
-        Game.UIMode.gamePlay.attr._avatar = null;
-        Game.UIMode.gamePlay.setUpNewGame();
+
+      Game.setRandomSeed(5 + Math.floor(ROT.RNG.getUniform()*100000));
+      Game.UIMode.gamePlay.attr._avatar = null;
+      Game.UIMode.gamePlay.setUpNewGame();
 
     }else if(abinding.actionKey == 'PERSISTENCE_LOAD'){
 
@@ -77,6 +78,8 @@ Game.UIMode.gameMenu = {
       Game.UIMode.gameInventory.load(inventory);
 
       Game.UIMode.gamePlay.load(mapSeed,map_data,exitLocation,savePointLocation,level);
+    }else{
+      return;
     }
 
     Game.switchUIMode(Game.UIMode.gamePlay);
@@ -292,19 +295,19 @@ Game.UIMode.gamePlay = {
       this.attr._map.addItem(newItem);
     }
 
-    if(level == 3){
+    if(level == 4){
       var cuc = new Game.Item(Game.ItemTemplates.Cucumberer);
       var loc = this.attr._map.getWalkableLocation();
       cuc.setPos(loc.x, loc.y);
       this.attr._map.addItem(cuc);
-    }else if(level == 5){
+    }else if(level == 6){
       var pot = new Game.Item(Game.ItemTemplates.PotatoPistol);
       var loc = this.attr._map.getWalkableLocation();
       pot.setPos(loc.x, loc.y);
       this.attr._map.addItem(pot);
-    }else if(level == 7){
+    }else if(level == 3){
       var direc = new Game.Item(Game.ItemTemplates.ChileBomb);
-      var direc = this.attr._map.getWalkableLocation();
+      var loc = this.attr._map.getWalkableLocation();
       direc.setPos(loc.x, loc.y);
       this.attr._map.addItem(direc);
     }else if(level == 9){
