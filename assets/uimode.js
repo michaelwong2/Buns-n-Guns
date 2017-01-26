@@ -10,8 +10,6 @@ Game.UIMode.gameMenu = {
   },
   exit: function(){
     console.log("exited menu");
-    var music = new Audio("music.mp3");
-    music.play();
   },
   render: function(display){
 
