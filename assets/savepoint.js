@@ -25,6 +25,9 @@ Game.SavePoint = {
       var storableEntities = {};
       for(var k in Game.DATASTORE.ENTITIES){
         var thisEnt = Game.DATASTORE.ENTITIES[k];
+        if (thisEnt.attr._name == 'Bomb' || thisEnt.attr._name == 'Bombkin' || thisEnt.attr._name == 'Bullet' || thisEnt.attr._name == 'SmokeParticle') {
+          continue;
+        }
         storableEntities[thisEnt._entityID] = thisEnt.attr;
       }
       window.localStorage.setItem("savedentities", JSON.stringify(storableEntities));

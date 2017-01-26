@@ -4,8 +4,9 @@ Game.util = {
     var charSource = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'.split('');
     var res='';
     for (var i=0; i<len; i++) {
-        res += charSource.random();
+        res += charSource[Math.floor(Math.random() * charSource.length-1)];
     }
+    // console.log(res);
     return res;
   },
 

@@ -98,18 +98,19 @@ Game.mapGen = {
         oldmap.attr[i] = map_data[i];
     }
 
-    // console.log(oldmap.attr._locationsByEntity);
+    oldmap.attr._locationsByEntity = {};
+    oldmap.attr._entitiesByLocation = {};
 
-    for(var k in oldmap.attr._locationsByEntity){
-      if(oldmap.attr._locationsByEntity.hasOwnProperty(k) && Game.DATASTORE.ENTITIES[k]){
-        Game.DATASTORE.ENTITIES[k].setMap(oldmap);
-      }
+    for(var k in Game.DATASTORE.ENTITIES){
+      oldmap.addEntity(Game.DATASTORE.ENTITIES[k]);
     }
 
-
-    // for(var k in Game.DATASTORE.ITEMS){
-    //   oldmap.addItem(Game.DATASTORE.ITEMS[k]);
+    // for(var k in oldmap.attr._locationsByEntity){
+    //   if(oldmap.attr._locationsByEntity.hasOwnProperty(k) && Game.DATASTORE.ENTITIES[k]){
+    //     Game.DATASTORE.ENTITIES[k].setMap(oldmap);
+    //   }
     // }
+
 
     return oldmap;
   },
