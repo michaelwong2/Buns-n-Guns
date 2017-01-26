@@ -96,6 +96,8 @@ Game.UIMode.gamePause = {
   },
   render: function(display){
 
+    display.draw(35,8,"Paused");
+
     display.draw(35,12,"Quit      [ q ]");
     display.draw(35,13,"Continue  [esc]");
 
@@ -598,6 +600,7 @@ Game.UIMode.gameInventory = {
 Game.UIMode.gameWin = {
   enter: function(){
     console.log("entered gameWin");
+    window.location.href = "endscreen.jpg";
   },
   exit: function(){
     console.log("exited gameWin");
