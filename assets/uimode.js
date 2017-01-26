@@ -311,8 +311,8 @@ Game.UIMode.gamePlay = {
       direc.setPos(loc.x, loc.y);
       this.attr._map.addItem(direc);
     }else if(level == 9){
-      var pump = new Game.Item(Game.ItemTemplates.Bomkin);
-      var pump = this.attr._map.getWalkableLocation();
+      var pump = new Game.Item(Game.ItemTemplates.Bombkin);
+      var loc = this.attr._map.getWalkableLocation();
       pump.setPos(loc.x, loc.y);
       this.attr._map.addItem(pump);
     }
@@ -409,6 +409,8 @@ Game.UIMode.gamePlay = {
         this.attr._map.addEntity(newEnt);
       }
     }
+
+    Game.SavePoint.saveGame();
   }
 };
 
@@ -431,6 +433,19 @@ Game.UIMode.gameInventory = {
 
   load: function(inv){
     this.attr = inv;
+
+    // console.log(this);
+
+    for(var i = 0; i < this.attr.inventory.length; i++){
+      var item = new Game.Item(Game.ItemTemplates[this.attr.inventory[i].attr._name]);
+      this.attr.inventory[i] = item;
+    }
+
+    var gun = new Game.Item(Game.ItemTemplates[this.attr.gun.attr._name]);
+    this.attr.gun = gun;
+
+    var bomb = new Game.Item(Game.ItemTemplates[this.attr.bomb.attr._name]);
+    this.attr.bomb = bomb;
 
   },
 
@@ -503,6 +518,7 @@ Game.UIMode.gameInventory = {
       if (this.attr.inventory.length != 0) {
         var selected = this.attr.selected;
         var item = this.attr.inventory[selected];
+        // console.log(item);
         if (item.isEquipment() ) {
           if (item.isGun()) {
             var oldGun = this.attr.gun;
