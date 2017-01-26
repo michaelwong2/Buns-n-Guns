@@ -268,7 +268,7 @@ Game.UIMode.gamePlay = {
 
   setUpNewGame: function () {
     this.attr._avatar = new Game.Entity(Game.EntityTemplates.Avatar);
-    localStorage.clear();
+    //localStorage.clear();
     this.setUpLevel(this.attr.level);
     Game.UIMode.gameInventory.setUpWeapons();
   },
