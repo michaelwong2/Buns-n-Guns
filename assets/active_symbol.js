@@ -50,10 +50,12 @@ Game.ActiveSymbol.prototype.getStorable = function(){
 Game.ActiveSymbol.prototype.loadSavedState = function(sattr, template){
   this.attr = {};
 
+  this.loadMixins(template.mixins,template);
+
   for(var i in sattr){
     if(sattr.hasOwnProperty(i))
       this.attr[i] = sattr[i];
   }
 
-  this.loadMixins(template.mixins,template);
+
 }
