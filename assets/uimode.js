@@ -73,6 +73,9 @@ Game.UIMode.gameMenu = {
         loadedItem.loadSavedState(item_data[k], Game.ItemTemplates[item_data[k]._name]);
       }
 
+      var inventory = JSON.parse(window.localStorage.getItem('inventory'));
+      Game.UIMode.gameInventory.load(inventory);
+
       Game.UIMode.gamePlay.load(mapSeed,map_data,exitLocation,savePointLocation,level);
     }
 
@@ -395,6 +398,11 @@ Game.UIMode.gameInventory = {
     console.log("exited gameInventory");
   },
 
+  load: function(inv){
+    this.attr = inv;
+
+  },
+
   setUpWeapons: function() {
     this.attr.gun = new Game.Item(Game.ItemTemplates.PeaShooter);
     this.attr.bomb = new Game.Item(Game.ItemTemplates.MelonBomb);
@@ -484,12 +492,12 @@ Game.UIMode.gameInventory = {
           this.removeItem(selected);
         }
       }
-
-    } else if (abinding.actionKey == 'SHOOT') {
-      if (this.attr.inventory.length != 0) {
-        this.dropItem(this.attr.selected);
-      }
     }
+    // } else if (abinding.actionKey == 'SHOOT') {
+    //   if (this.attr.inventory.length != 0) {
+    //     this.dropItem(this.attr.selected);
+    //   }
+    // }
   },
 
   removeItem: function(selected) {
