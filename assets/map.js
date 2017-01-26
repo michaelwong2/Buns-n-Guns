@@ -101,6 +101,7 @@ Game.Map.prototype.updateEntity = function(entity){
   this.attr._entitiesByLocation[entity.getX() + "," + entity.getY()] = entity._entityID;
 }
 
+
 Game.Map.prototype.deleteEntity = function(entity){
   var uniqueid = entity._entityID;
 

@@ -10,6 +10,8 @@ Game.UIMode.gameMenu = {
   },
   exit: function(){
     console.log("exited menu");
+    var music = new Audio("music.mp3");
+    music.play();
   },
   render: function(display){
 
@@ -135,6 +137,7 @@ Game.UIMode.gamePlay = {
     Game._game_started = true;
     Game.KeyBinding.setKeyBinding('arrows');
     Game.initGameLoop();
+
   },
   exit: function(){
     console.log("exited gamePlay");
@@ -218,6 +221,18 @@ Game.UIMode.gamePlay = {
         bomb = new Game.Entity(Game.EntityTemplates.Bomb);
       }else if(bombeq == "Bombkin"){
         bomb = new Game.Entity(Game.EntityTemplates.Bombkin);
+      }else if(bombeq == "ChileBomb"){
+        bomb = new Game.Entity(Game.EntityTemplates.ChileBomb);
+
+        switch(this.attr._avatar.attr.dir){
+          case 0: bomb.attr._char = '<'; break;
+          case 1: bomb.attr._char = '^'; break;
+          case 2: bomb.attr._char = '>'; break;
+          case 3: bomb.attr._char = 'v'; break;
+        }
+
+        bomb.attr.loopingChars.dir = this.attr._avatar.attr.dir;
+
       }else{
         return;
       }
@@ -279,16 +294,26 @@ Game.UIMode.gamePlay = {
       this.attr._map.addItem(newItem);
     }
 
-    if(level == 4){
+    if(level == 3){
       var cuc = new Game.Item(Game.ItemTemplates.Cucumberer);
       var loc = this.attr._map.getWalkableLocation();
       cuc.setPos(loc.x, loc.y);
       this.attr._map.addItem(cuc);
-    }else if(level == 7){
+    }else if(level == 5){
       var pot = new Game.Item(Game.ItemTemplates.PotatoPistol);
       var loc = this.attr._map.getWalkableLocation();
       pot.setPos(loc.x, loc.y);
       this.attr._map.addItem(pot);
+    }else if(level == 7){
+      var direc = new Game.Item(Game.ItemTemplates.ChileBomb);
+      var direc = this.attr._map.getWalkableLocation();
+      direc.setPos(loc.x, loc.y);
+      this.attr._map.addItem(direc);
+    }else if(level == 9){
+      var pump = new Game.Item(Game.ItemTemplates.Bomkin);
+      var pump = this.attr._map.getWalkableLocation();
+      pump.setPos(loc.x, loc.y);
+      this.attr._map.addItem(pump);
     }
     // var melon = new Game.Item(Game.ItemTemplates.MelonBomb);
     // var loc1 = this.attr._map.getWalkableLocation();

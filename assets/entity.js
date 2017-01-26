@@ -91,6 +91,4 @@ Game.Entity.prototype.expire = function(){
     this.getMap().deleteEntity(this);
 
   }
-  // getMap().log('sth expired');
-  // console.log(this);
 }
