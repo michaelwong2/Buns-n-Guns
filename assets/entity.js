@@ -84,7 +84,7 @@ Game.Entity.prototype.distanceTo = function(ent){
 Game.Entity.prototype.expire = function(){
   if(this.attr._name == "Avatar"){
     this.attr._char = 'X';
-    Game.Message.send("You died :(");
+    Game.Message.send("I died :( brb Justin wait for me!");
     Game.stopGameLoop();
   }else if(this){
     delete Game.DATASTORE.ENTITIES[this._entityID];

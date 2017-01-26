@@ -30,7 +30,7 @@ Game.EntityMixin.WalkerCorporeal = {
           Game.Exit.unlock(this.keyCount());
           this.resetKeyCount();
         } else {
-          Game.Message.send('You need ' + Game.Exit.getLockSize() + ' key(s) to unlock this door.');
+          Game.Message.send('Hmm... I need ' + Game.Exit.getLockSize() + ' key(s) to unlock this door.');
         }
         return;
       }
@@ -96,7 +96,7 @@ Game.EntityMixin.HitPoints = {
     this.attr._HitPoints_attr.curHp -= amt;
 
     if(this.attr._HitPoints_attr.curHp <= 0){
-      Game.Message.send("You killed the bunny");
+      Game.Message.send("Bunny destroyed! For the hubby!");
 
       if(this.attr._name == "ShooterBunny" && Math.floor(Math.random()*100) > 50){
           var carrot = new Game.Item(Game.ItemTemplates.Carrot);
@@ -137,13 +137,14 @@ Game.EntityMixin.InventoryHolder = {
     if ( item !== null) {
       if (item.attr._name == 'Key') {
         this.attr._InventoryHolder_attr.keyCount++;
-        Game.Message.send('You picked up a ' + item.attr._name + '! You now have ' + this.attr._InventoryHolder_attr.keyCount + ' keys.');
+        Game.Message.send('Picked up a ' + item.attr._name + '! I now have ' + this.attr._InventoryHolder_attr.keyCount + ' key(s).');
       } else {
         if (Game.UIMode.gameInventory.isFull()) {
           Game.Message.send('My bag is full! But my life is still so empty...');
           return;
         } else {
           Game.UIMode.gameInventory.putItem(item);
+          Game.Message.send('Picked up a ' + item.attr._name + '!');
         }
       }
       map.updateItem(item);
