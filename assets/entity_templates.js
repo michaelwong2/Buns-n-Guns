@@ -106,7 +106,7 @@ Game.EntityTemplates.MeleeBunny = {
 
     if(entity != null && entity.attr._name == "Avatar"){
 
-      Game.Message.send("You took " + this.attr.loopingChars.damage + " damage");
+      Game.Message.send("I took " + this.attr.loopingChars.damage + " damage.");
       entity.takeHits(this.attr.loopingChars.damage);
 
       return;
@@ -237,7 +237,7 @@ Game.EntityTemplates.ShooterBunny = {
 
     if(entity != null && entity.attr._name == "Avatar"){
 
-      Game.Message.send("You took " + this.attr.loopingChars.damage + " damage");
+      Game.Message.send("I took " + this.attr.loopingChars.damage + " damage.");
       entity.takeHits(this.attr.loopingChars.damage);
 
       return;
@@ -334,7 +334,7 @@ Game.EntityTemplates.BomberBunny = {
 
     if(entity != null && entity.attr._name == "Avatar"){
 
-      Game.Message.send("You took " + this.attr.loopingChars.damage + " damage");
+      Game.Message.send("I took " + this.attr.loopingChars.damage + " damage.");
       entity.takeHits(this.attr.loopingChars.damage);
 
       return;
@@ -469,10 +469,10 @@ Game.EntityTemplates.Bullet = {
       if(Game.DATASTORE.ENTITIES[entity].hasMixin("HitPoints")){
           if(Game.DATASTORE.ENTITIES[entity].attr._name == "Avatar"){
             Game.DATASTORE.ENTITIES[entity].takeHits(this.attr.loopingChars.avatarDec);
-            Game.Message.send("You took " + this.attr.loopingChars.entityDec + " damage");
+            Game.Message.send("I took " + this.attr.loopingChars.entityDec + " damage.");
           }else{
             Game.DATASTORE.ENTITIES[entity].takeHits(this.attr.loopingChars.entityDec);
-            Game.Message.send("You did " + this.attr.loopingChars.entityDec + " damage");
+            Game.Message.send("I did " + this.attr.loopingChars.entityDec + " damage.");
           }
       }
 
