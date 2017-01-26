@@ -80,8 +80,8 @@ Game.Map.prototype.getEmptyLocation = function(){
 Game.Map.prototype.addEntity = function(entity){
     this.attr._entitiesByLocation[entity.getX() + "," + entity.getY()] = entity._entityID;
     this.attr._locationsByEntity[entity._entityID] = entity.getX() + "," + entity.getY();
-
-    entity.setMap(this);
+    // console.log(entity);
+    // entity.setMap(this);
 }
 
 Game.Map.prototype.pointTraversable = function(x,y){
@@ -101,10 +101,21 @@ Game.Map.prototype.updateEntity = function(entity){
   this.attr._entitiesByLocation[entity.getX() + "," + entity.getY()] = entity._entityID;
 }
 
-Game.Map.prototype.deleteEntity = function(entity){  
-  var oldloc = this.attr._locationsByEntity[entity._entityID];
-  delete this.attr._entitiesByLocation[oldloc];
-  delete this.attr._locationsByEntity[entity._entityID];
+
+Game.Map.prototype.deleteEntity = function(entity){
+  var uniqueid = entity._entityID;
+
+  delete this.attr._locationsByEntity[uniqueid];
+
+  for(var k in this.attr._entitiesByLocation) {
+    if (this.attr._entitiesByLocation[k] == uniqueid) {
+        delete this.attr._entitiesByLocation[k];
+        break;
+    }
+  }
+  // var oldloc = this.attr._locationsByEntity[entity._entityID];
+  // delete this.attr._entitiesByLocation[oldloc];
+  // delete this.attr._locationsByEntity[entity._entityID];
 }
 
 Game.Map.prototype.addItem = function(item){

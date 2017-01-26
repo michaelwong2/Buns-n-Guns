@@ -3,6 +3,9 @@ Game.Entity = function(template){
 
   this._entityID = template.id || Game.util.randomString(32);
 
+  // console.log(template.id);
+  // console.log(this._entityID);
+
   if(template.loadTemplateAgain != null){
     template = template.loadTemplateAgain;
   }
@@ -14,7 +17,7 @@ Game.Entity = function(template){
     this.attr._x = template.x || 0;
     this.attr._y = template.y || 0;
 
-    this.attr.map = null;
+    // this.attr.map = null;
 
     this.attr.dir = template.dir || 0;
 
@@ -29,12 +32,12 @@ Game.Entity.prototype.getX = function(){
   return this.attr._x;
 }
 
-Game.Entity.prototype.setMap = function(map){
-  this.attr.map = map;
-}
+// Game.Entity.prototype.setMap = function(map){
+//   this.attr.map = map;
+// }
 
 Game.Entity.prototype.getMap = function(){
-  return this.attr.map;
+  return Game.UIMode.gamePlay.attr._map;
 }
 
 Game.Entity.prototype.getY = function(){
@@ -84,8 +87,8 @@ Game.Entity.prototype.expire = function(){
     Game.Message.send("You died :(");
     Game.stopGameLoop();
   }else if(this){
-    this.getMap().deleteEntity(this);
     delete Game.DATASTORE.ENTITIES[this._entityID];
+    this.getMap().deleteEntity(this);
+
   }
-  // console.log(this);
 }

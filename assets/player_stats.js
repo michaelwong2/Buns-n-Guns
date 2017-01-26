@@ -16,6 +16,8 @@ Game.PlayerStats = {
       display.draw(w,y,' ','#8fbc8f','#8fbc8f');
     }
 
+    display.drawText(0,0,'%c{#800000}%b{#8fbc8f}Press [p] to pause');
+
     display.drawText(x,y,'%c{#800000}%b{#8fbc8f}HP: ' + '%c{#800000}%b{#8fbc8f}' + this.avatar.attr._HitPoints_attr.curHp + '%c{#800000}%b{#8fbc8f}/' + this.avatar.attr._HitPoints_attr.maxHp);
     display.drawText(x+15,y, '%c{#800000}%b{#8fbc8f}GUN: ' + '%c{#800000}%b{#8fbc8f}' + Game.UIMode.gameInventory.attr.gun.attr._name);
     display.drawText(x+35,y, '%c{#800000}%b{#8fbc8f}BOMB: ' + '%c{#800000}%b{#8fbc8f}' + Game.UIMode.gameInventory.attr.bomb.attr._name);

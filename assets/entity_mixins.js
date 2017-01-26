@@ -205,7 +205,10 @@ Game.EntityMixin.runnable = {
       }else{
         this.attr.loopingChars.wait++;
       }
-      this.getMap().updateEntity(this);
+
+      if(Game.DATASTORE.ENTITIES[this._entityID]){
+        this.getMap().updateEntity(this);
+      }
     }
 };
 

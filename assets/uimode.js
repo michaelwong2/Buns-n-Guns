@@ -98,6 +98,12 @@ Game.UIMode.gamePause = {
     display.draw(35,12,"Quit      [ q ]");
     display.draw(35,13,"Continue  [esc]");
 
+    display.draw(35,16,"Control");
+    display.draw(35,17,"Shoot      [ a ]");
+    display.draw(35,18,"Bomb       [ s ]");
+    display.draw(35,19,"Pick item  [ d ]");
+    display.draw(35,20,"Inventory  [ f ]");
+
   },
   handleInput: function(inputType, inputData){
 
@@ -273,9 +279,6 @@ Game.UIMode.gamePlay = {
 
     var map = Game.mapGen.newMap(Game.Levels.getHeight(), Game.Levels.getWidth());
     this.attr._map = map;
-    console.log(map);
-    console.log("Map before populating:");
-    console.log(this.attr._map);
 
     var Loc = this.attr._map.getWalkableLocation();
     this.attr._avatar.setPos(Loc.x,Loc.y);
@@ -330,7 +333,9 @@ Game.UIMode.gamePlay = {
         this.attr._map.addEntity(newEnt);
       }
     }
-
+    if (this.attr.level > 1) {
+      Game.SavePoint.saveGame();
+    }
   },
 
   load: function(seed,map_data,exit,savepoint,level){
@@ -439,7 +444,7 @@ Game.UIMode.gameInventory = {
     var y = display._options.height - 2;
 
     for (var w = 0; w < display._options.width; w++) {
-      for (var h = 0; h < 3; h++) {
+      for (var h = 0; h < 4; h++) {
         display.draw(w,y-h,' ','#2f4f4f','#2f4f4f');
       }
     }
@@ -448,7 +453,7 @@ Game.UIMode.gameInventory = {
     for (var i = 0; i < 9; i++) {
       display.draw(7 + 7*i,y,' ');
     }
-    display.drawText(30,y-1,'%c{#f5f5dc}%b{#2f4f4f}Inventory');
+    display.drawText(22,y-2,'%c{#f5f5dc}%b{#2f4f4f}Inventory: [ s ] to use');
 
     if(this.attr.inventory.length != 0) {
       var item = null;

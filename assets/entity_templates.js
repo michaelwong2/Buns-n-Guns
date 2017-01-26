@@ -19,6 +19,7 @@ Game.EntityTemplates.Bun = {
   name: 'Bun',
   chr:'&',
   fg:'#fff',
+  maxHp: 30,
   mixins:[],
   workattrs: {
     wait: 0,
@@ -88,7 +89,7 @@ Game.EntityTemplates.MeleeBunny = {
 
 
     // if the tile in front is out of bounds or not walkable, turn left or right
-    if(Game.util.outOfBounds(this.attr._x + cx, this.attr._y + cy, this.getMap().getWidth(), this.getMap().getHeight()) || !this.attr.map.getTileGrid()[this.attr._x + cx][this.attr._y + cy].isWalkable()){
+    if(Game.util.outOfBounds(this.attr._x + cx, this.attr._y + cy, this.getMap().getWidth(), this.getMap().getHeight()) || !this.getMap().getTileGrid()[this.attr._x + cx][this.attr._y + cy].isWalkable()){
       dir += Math.floor(Math.random()*100) > 50 ? 1 : -1;
 
       if(dir == 4)
@@ -219,7 +220,7 @@ Game.EntityTemplates.ShooterBunny = {
     }
 
     // if the tile in front is out of bounds or not walkable, turn left or right
-    if(Game.util.outOfBounds(this.attr._x + cx, this.attr._y + cy, this.getMap().getWidth(), this.getMap().getHeight()) || !this.attr.map.getTileGrid()[this.attr._x + cx][this.attr._y + cy].isWalkable()){
+    if(Game.util.outOfBounds(this.attr._x + cx, this.attr._y + cy, this.getMap().getWidth(), this.getMap().getHeight()) || !this.getMap().getTileGrid()[this.attr._x + cx][this.attr._y + cy].isWalkable()){
       dir += Math.floor(Math.random()*100) > 50 ? 1 : -1;
 
       if(dir == 4)
@@ -316,7 +317,7 @@ Game.EntityTemplates.BomberBunny = {
 
 
     // if the tile in front is out of bounds or not walkable, turn left or right
-    if(Game.util.outOfBounds(this.attr._x + cx, this.attr._y + cy, this.getMap().getWidth(), this.getMap().getHeight()) || !this.attr.map.getTileGrid()[this.attr._x + cx][this.attr._y + cy].isWalkable()){
+    if(Game.util.outOfBounds(this.attr._x + cx, this.attr._y + cy, this.getMap().getWidth(), this.getMap().getHeight()) || !this.getMap().getTileGrid()[this.attr._x + cx][this.attr._y + cy].isWalkable()){
       dir += Math.floor(Math.random()*100) > 50 ? 1 : -1;
 
       if(dir == 4)
@@ -461,7 +462,7 @@ Game.EntityTemplates.Bullet = {
     this.attr._x += cx;
     this.attr._y += cy;
 
-    var entity = this.attr.map.attr._entitiesByLocation[this.attr._x + "," + this.attr._y];
+    var entity = this.getMap().attr._entitiesByLocation[this.attr._x + "," + this.attr._y];
 
     if(entity != null && Game.DATASTORE.ENTITIES[entity]){
 
@@ -480,14 +481,14 @@ Game.EntityTemplates.Bullet = {
       return;
     }
 
-    if(Game.util.outOfBounds(this.attr._x, this.attr._y, this.getMap().getWidth(), this.getMap().getHeight()) || !this.attr.map.getTileGrid()[this.attr._x][this.attr._y].isWalkable()){
-      // this.attr.map.getTileGrid()[this.attr._x][this.attr._y] = Game.Tile.floorTile;
+    if(Game.util.outOfBounds(this.attr._x, this.attr._y, this.getMap().getWidth(), this.getMap().getHeight()) || !this.getMap().getTileGrid()[this.attr._x][this.attr._y].isWalkable()){
+      // this.getMap().getTileGrid()[this.attr._x][this.attr._y] = Game.Tile.floorTile;
       this.attr._char = "#";
       this.expire();
       return;
     }
 
-    if(this.attr._x <= 2 || this.attr._x >= this.attr.map.getWidth() - 2 || this.attr._y <= 2 || this.attr._y >= this.attr.map.getHeight() - 2){
+    if(this.attr._x <= 2 || this.attr._x >= this.getMap().getWidth() - 2 || this.attr._y <= 2 || this.attr._y >= this.getMap().getHeight() - 2){
       this.attr._char = '*';
       this.expire();
       return;
