@@ -53,9 +53,9 @@ Game.ItemTemplates.Bombkin = {
   mixins:[]
 };
 
-Game.ItemTemplates.TunnelBomb = {
-  name: 'TunnelBomb',
-  chr:'>',
+Game.ItemTemplates.ChileBomb = {
+  name: 'ChileBomb',
+  chr:'C',
   fg:'#f805a2',
   description: 'Melon seed shrapnels! More juicy than deadly tbh.',
   equipment: true,
