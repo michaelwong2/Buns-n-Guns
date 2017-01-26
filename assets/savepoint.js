@@ -43,6 +43,8 @@ Game.SavePoint = {
       window.localStorage.setItem('inventory',JSON.stringify(Game.UIMode.gameInventory.attr));
 
       window.localStorage.setItem("savedmessages", JSON.stringify(Game.Message.attr));
+
+      Game.Message.send('The current game is saved! But my husband is not!');
     }
   },
 

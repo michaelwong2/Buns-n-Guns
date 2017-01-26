@@ -402,8 +402,8 @@ Game.EntityTemplates.Bombkin = {
   }
 };
 
-Game.EntityTemplates.ChileBomb = {
-  name: 'ChileBomb',
+Game.EntityTemplates.ChiliBomb = {
+  name: 'ChiliBomb',
   chr:'=',
   fg:'#faa',
   mixins:[Game.EntityMixin.runnable, Game.EntityMixin.explode],

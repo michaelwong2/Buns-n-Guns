@@ -34,7 +34,7 @@ Game.UIMode.gameMenu = {
     }else if(abinding.actionKey == 'PERSISTENCE_LOAD'){
 
       if(window.localStorage.getItem('mapSeed') == null || window.localStorage.getItem("savedentities") == null){
-        Game.Message.send("No saved file data");
+        Game.Message.send("No saved file data!");
         return;
       }
 
@@ -222,8 +222,8 @@ Game.UIMode.gamePlay = {
         bomb = new Game.Entity(Game.EntityTemplates.Bomb);
       }else if(bombeq == "Bombkin"){
         bomb = new Game.Entity(Game.EntityTemplates.Bombkin);
-      }else if(bombeq == "ChileBomb"){
-        bomb = new Game.Entity(Game.EntityTemplates.ChileBomb);
+      }else if(bombeq == "ChiliBomb"){
+        bomb = new Game.Entity(Game.EntityTemplates.ChiliBomb);
 
         switch(this.attr._avatar.attr.dir){
           case 0: bomb.attr._char = '<'; break;
@@ -306,7 +306,7 @@ Game.UIMode.gamePlay = {
       pot.setPos(loc.x, loc.y);
       this.attr._map.addItem(pot);
     }else if(level == 3){
-      var direc = new Game.Item(Game.ItemTemplates.ChileBomb);
+      var direc = new Game.Item(Game.ItemTemplates.ChiliBomb);
       var loc = this.attr._map.getWalkableLocation();
       direc.setPos(loc.x, loc.y);
       this.attr._map.addItem(direc);
