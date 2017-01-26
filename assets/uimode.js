@@ -620,7 +620,8 @@ Game.UIMode.gameLose = {
   },
   render: function(display){
     console.log("rendered gameLose");
-    display.drawText(5,5,"You lose!");
+    Game.UIMode.gamePlay.render(display);
+    display.drawText(30,15,"You lose!");
   },
   handleInput: function(inputType, inputData){
     console.log("input for gameLose");
