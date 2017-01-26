@@ -86,7 +86,9 @@ Game.Entity.prototype.expire = function(){
     this.attr._char = 'X';
     Game.Message.send("I died :( brb Justin wait for me!");
     Game.stopGameLoop();
-    Game.switchUIMode(Game.UIMode.gameLose);
+    setTimeout(function(){
+      Game.switchUIMode(Game.UIMode.gameLose);
+    }, 2000);
   }else if(this){
     delete Game.DATASTORE.ENTITIES[this._entityID];
     this.getMap().deleteEntity(this);

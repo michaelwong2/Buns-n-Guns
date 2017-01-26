@@ -300,17 +300,17 @@ Game.UIMode.gamePlay = {
       var loc = this.attr._map.getWalkableLocation();
       cuc.setPos(loc.x, loc.y);
       this.attr._map.addItem(cuc);
-    }else if(level == 6){
+    // }else if(level == 4){
       var pot = new Game.Item(Game.ItemTemplates.PotatoPistol);
       var loc = this.attr._map.getWalkableLocation();
       pot.setPos(loc.x, loc.y);
       this.attr._map.addItem(pot);
-    }else if(level == 3){
+    // }else if(level == 4){
       var direc = new Game.Item(Game.ItemTemplates.ChiliBomb);
       var loc = this.attr._map.getWalkableLocation();
       direc.setPos(loc.x, loc.y);
       this.attr._map.addItem(direc);
-    }else if(level == 9){
+    // }else if(level == 4){
       var pump = new Game.Item(Game.ItemTemplates.Bombkin);
       var loc = this.attr._map.getWalkableLocation();
       pump.setPos(loc.x, loc.y);
@@ -621,9 +621,11 @@ Game.UIMode.gameLose = {
   render: function(display){
     console.log("rendered gameLose");
     Game.UIMode.gamePlay.render(display);
-    display.drawText(30,15,"You lose!");
+    display.drawText(35,12,"You lose!");
+    display.drawText(35,12,"Press any key to try again.");
   },
   handleInput: function(inputType, inputData){
     console.log("input for gameLose");
+    window.location.reload();
   }
 };
