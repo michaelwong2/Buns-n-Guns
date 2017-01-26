@@ -597,7 +597,7 @@ Game.UIMode.gameInventory = {
 
 Game.UIMode.gameWin = {
   enter: function(){
-    console.log("entered gameWin");
+    window.location.href = "endscreen.jpg";
   },
   exit: function(){
     console.log("exited gameWin");
