@@ -209,6 +209,18 @@ Game.UIMode.gamePlay = {
         bomb = new Game.Entity(Game.EntityTemplates.Bomb);
       }else if(bombeq == "Bombkin"){
         bomb = new Game.Entity(Game.EntityTemplates.Bombkin);
+      }else if(bombeq == "TunnelBomb"){
+        bomb = new Game.Entity(Game.EntityTemplates.TunnelBomb);
+
+        switch(this.attr._avatar.attr.dir){
+          case 0: bomb.attr._char = '<'; break;
+          case 1: bomb.attr._char = '^'; break;
+          case 2: bomb.attr._char = '>'; break;
+          case 3: bomb.attr._char = 'v'; break;
+        }
+
+        bomb.attr.loopingChars.dir = this.attr._avatar.attr.dir;
+
       }else{
         return;
       }

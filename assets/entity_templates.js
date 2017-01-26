@@ -382,7 +382,7 @@ Game.EntityTemplates.Bombkin = {
     wait: 0,
     lim: 20,
     count: 0,
-    trigger: 6,
+    trigger: 12,
     radius: 5
   },
   work: function(){
@@ -392,6 +392,35 @@ Game.EntityTemplates.Bombkin = {
     }else{
       if(this.attr.loopingChars.count % 2 == 0){
         this.attr._fg = '#aa0';
+      }else{
+        this.attr._fg = '#f00';
+      }
+
+      this.attr.loopingChars.count++;
+    }
+  }
+};
+
+Game.EntityTemplates.TunnelBomb = {
+  name: 'TunnelBomb',
+  chr:'=',
+  fg:'#faa',
+  mixins:[Game.EntityMixin.runnable, Game.EntityMixin.explode],
+  workattrs: {
+    wait: 0,
+    lim: 20,
+    count: 0,
+    trigger: 6,
+    radius: 2,
+    dir: 0
+  },
+  work: function(){
+    if(this.attr.loopingChars.count >= this.attr.loopingChars.trigger){
+      this.dirExplode(this.getMap(), this.getX(), this.getY(), this.attr.loopingChars.dir);
+      this.expire();
+    }else{
+      if(this.attr.loopingChars.count % 2 == 0){
+        this.attr._fg = '#faa';
       }else{
         this.attr._fg = '#f00';
       }

@@ -261,7 +261,7 @@ Game.EntityMixin.explode = {
           var entid = map.attr._entitiesByLocation[nx + "," + ny];
 
           if(entid != null && Game.DATASTORE.ENTITIES[entid] && Game.DATASTORE.ENTITIES[entid].hasMixin("HitPoints")){
-            Game.DATASTORE.ENTITIES[entid].takeHits(7);
+            Game.DATASTORE.ENTITIES[entid].takeHits(2);
           }
 
         }
@@ -273,6 +273,102 @@ Game.EntityMixin.explode = {
         particle.attr.loopingChars.dx = ox + Math.floor(Math.random()*5) - Math.floor(Math.random()*10);
         particle.attr.loopingChars.dy = oy + Math.floor(Math.random()*5) - Math.floor(Math.random()*10);
         this.getMap().addEntity(particle);
+      }
+    },
+    dirExplode: function(map,ox,oy,dir){
+      var tar = map.getTileGrid();
+
+      var rad = this.attr.loopingChars.radius;
+
+      var sx = ox;
+      var sy = oy;
+
+      switch(dir){
+        case 0: sy -= rad; break;
+        case 1: sx -= rad; break;
+        case 2: sy -= rad; break;
+        case 3: sx -= rad; break;
+      }
+
+      if(sx < 0){
+        sx = 0;
+      }
+
+      if(sy < 0){
+        sy = 0;
+      }
+
+      if(dir == 0 || dir == 2){
+        for(var x = 0; x < rad*5; x++){
+          var nx = sx;
+
+          if(dir == 0){
+            nx -= x;
+          }else{
+            nx += x;
+          }
+
+          if(nx <= 2 || nx >= tar.length-2){
+            continue;
+          }
+
+          for(var y = 0; y < rad*2 + 1; y++){
+            var ny = y + sy;
+
+            tar[nx][ny] = Game.Tile.floorTile;
+
+            var entid = map.attr._entitiesByLocation[nx + "," + ny];
+
+            if(entid != null && Game.DATASTORE.ENTITIES[entid] && Game.DATASTORE.ENTITIES[entid].hasMixin("HitPoints")){
+              Game.DATASTORE.ENTITIES[entid].takeHits(2);
+            }
+
+            var particle = new Game.Entity(Game.EntityTemplates.SmokeParticle);
+            particle.setPos(nx, ny);
+            particle.attr.loopingChars.dx = ny;
+            particle.attr.loopingChars.dy = ny;
+            this.getMap().addEntity(particle);
+
+
+          }
+        }
+      }else{
+        for(var y = 0; y < rad*4; y++){
+          var ny = sy;
+
+          if(dir == 3){
+            ny += y;
+          }else{
+            ny -= y;
+          }
+
+          if(ny <= 2 || ny >= tar.length-2){
+            continue;
+          }
+
+          for(var x = 0; x < rad*2 + 1; x++){
+            var nx = x + sx;
+
+            if(nx <= 2 || nx >= tar.length-2){
+              continue;
+            }
+
+            tar[nx][ny] = Game.Tile.floorTile;
+
+            var entid = map.attr._entitiesByLocation[nx + "," + ny];
+
+            if(entid != null && Game.DATASTORE.ENTITIES[entid] && Game.DATASTORE.ENTITIES[entid].hasMixin("HitPoints")){
+              Game.DATASTORE.ENTITIES[entid].takeHits(7);
+            }
+
+            var particle = new Game.Entity(Game.EntityTemplates.SmokeParticle);
+            particle.setPos(nx, ny);
+            particle.attr.loopingChars.dx = ny;
+            particle.attr.loopingChars.dy = ny;
+            this.getMap().addEntity(particle);
+
+          }
+        }
       }
     }
 };
