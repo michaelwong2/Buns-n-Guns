@@ -67,8 +67,7 @@ var Game = {
       this.DATASTORE = {
         MAP: {},
         ENTITIES: {},
-        ITEMS: {},
-        LEVELS: {}
+        ITEMS: {}
       };
   },
   eventHandler: function(eventType, evt){
@@ -106,11 +105,6 @@ var Game = {
   renderMessage: function() {
     Game.Message.render(this.getDisplay("message"));
   },
-
-  // renderAvatar: function() {
-  //   var d = this.display.avatar.o;
-  //   d.drawText(5, 0, "avatar");
-  // },
 
   renderAll: function(){
     this.renderMessage();

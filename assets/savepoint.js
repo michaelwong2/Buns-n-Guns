@@ -13,17 +13,21 @@ Game.SavePoint = {
     if(Game.localStorageAvailable()){
       //window.localStorage.setItem(Game._PERSISTENCE_NAMESPACE, JSON.stringify(Game.getGame()));
       // window.localStorage.setItem();
-      window.localStorage.setItem('randomSeed',JSON.stringify(Game.mapGen.getSeed()));
-
-      //save map & locations of exit and savepoint
+      window.localStorage.setItem('mapSeed',JSON.stringify(Game.mapGen.getSeed()));
+      console.log('map seed: ' + Game.mapGen.getSeed());
+      //save map & locations of exit and savepoint, level
       window.localStorage.setItem('savedmap',JSON.stringify(Game.DATASTORE.MAP));
       window.localStorage.setItem('savePointLocation',JSON.stringify(this.attr));
       window.localStorage.setItem('exitLocation',JSON.stringify(Game.Exit.getLocation()));
+      window.localStorage.setItem('level',JSON.stringify(Game.UIMode.gamePlay.getLevel()));
 
       //save entities
       var storableEntities = {};
       for(var k in Game.DATASTORE.ENTITIES){
         var thisEnt = Game.DATASTORE.ENTITIES[k];
+        if (thisEnt.attr._name == 'Bomb' || thisEnt.attr._name == 'Bombkin' || thisEnt.attr._name == 'Bullet' || thisEnt.attr._name == 'SmokeParticle') {
+          continue;
+        }
         storableEntities[thisEnt._entityID] = thisEnt.attr;
       }
       window.localStorage.setItem("savedentities", JSON.stringify(storableEntities));
@@ -36,7 +40,11 @@ Game.SavePoint = {
       }
       window.localStorage.setItem("saveditems", JSON.stringify(storableItems));
 
+      window.localStorage.setItem('inventory',JSON.stringify(Game.UIMode.gameInventory.attr));
+
       window.localStorage.setItem("savedmessages", JSON.stringify(Game.Message.attr));
+
+      Game.Message.send('The current game is saved! But my husband is not!');
     }
   },
 

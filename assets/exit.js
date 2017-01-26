@@ -26,7 +26,7 @@ Game.Exit = {
   },
 
   changeLockSize: function(level) {
-    this.attr.lockSize = 1 + level;
+    this.attr.lockSize = level;
   },
 
   getLockSize: function() {
@@ -35,12 +35,16 @@ Game.Exit = {
 
   unlock: function(keyCount) {
     if(this.attr.lockSize > 0){
-      this.attr.lockSize -= keyCount;
-      Game.Message.send("You used " + keyCount + " key(s) on the door. The door requires " + this.attr.lockSize + " more keys to open.");
-      if(this.attr.lockSize === 0){
+      if(keyCount < this.attr.lockSize) {
+        this.attr.lockSize -= keyCount;
+        Game.Message.send("Used " + keyCount + " key(s) on the door. I need " + this.attr.lockSize + " more.");
+      } else {
         this.open();
         Game.Message.send("The door has been unlocked!");
       }
+    } else if(this.attr.lockSize === 0){
+      this.open();
+      Game.Message.send("The door has been unlocked!");
     }
   },
 

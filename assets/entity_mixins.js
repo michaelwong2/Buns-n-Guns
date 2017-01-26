@@ -16,13 +16,21 @@ Game.EntityMixin.WalkerCorporeal = {
 
     if(Game.Exit.isExit(targetX, targetY)){
       if(Game.Exit.isOpen()){
-        Game.UIMode.gamePlay.setUpLevel(Game.UIMode.gamePlay.nextLevel());
+        Game.mapGen.genNewRandomSeed();
+        if(Game.UIMode.gamePlay.getLevel() <= 9){
+          Game.UIMode.gamePlay.setUpLevel(Game.UIMode.gamePlay.nextLevel());
+        }else if(Game.UIMode.gamePlay.getLevel() == 10){
+          Game.UIMode.gamePlay.nextLevel();
+          Game.UIMode.gamePlay.finalLevel();
+        }else if(Game.UIMode.gamePlay.getLevel() == 11){
+          Game.switchUIMode(Game.UIMode.gameWin);
+        }
       }else{
         if (this.keyCount() > 0) {
           Game.Exit.unlock(this.keyCount());
           this.resetKeyCount();
         } else {
-          Game.Message.send('You need ' + Game.Exit.getLockSize() + ' key(s) to unlock this door.');
+          Game.Message.send('Hmm... I need ' + Game.Exit.getLockSize() + ' key(s) to unlock this door.');
         }
         return;
       }
@@ -67,9 +75,8 @@ Game.EntityMixin.HitPoints = {
       curHp: 10
     },
     init: function (template) {
-
-      // this.attr._HitPoints_attr.maxHp = template.maxHp || 1;
-      // this.attr._HitPoints_attr.curHp = template.curHp || this.attr._HitPoints_attr.maxHp;
+      this.attr._HitPoints_attr.maxHp = template.maxHp || 1;
+      this.attr._HitPoints_attr.curHp = template.curHp || this.attr._HitPoints_attr.maxHp;
 
     }
   },
@@ -89,7 +96,14 @@ Game.EntityMixin.HitPoints = {
     this.attr._HitPoints_attr.curHp -= amt;
 
     if(this.attr._HitPoints_attr.curHp <= 0){
-      Game.Message.send("You killed the bunny");
+      Game.Message.send("Bunny destroyed! For the hubby!");
+
+      if(this.attr._name == "ShooterBunny" && Math.floor(Math.random()*100) > 50){
+          var carrot = new Game.Item(Game.ItemTemplates.Carrot);
+          carrot.setPos(this.getX(), this.getY());
+          this.getMap().addItem(carrot);
+      }
+
       this.expire();
     }
   },
@@ -104,22 +118,9 @@ Game.EntityMixin.InventoryHolder = {
     mixinGroup: 'InventoryHolder',
     stateNamespace: '_InventoryHolder_attr',
     stateModel: {
-      items: {},
-      keys: {},
-      gun: 'PeaShooter',
-      bomb: 'Melon Bomb',
-      bombCount: 5,
-      keyCount: 0,
-      spaceAvailable: true
+      keyCount: 0
     },
-
     init: function (template) {
-      // this.attr._InventoryHolder_attr.items = template.items || {};
-      // console.log(template.id);
-      // console.log(template.items);
-      // this.attr._InventoryHolder_attr.keys = template.keys || {};
-      // this.attr._InventoryHolder_attr.keyCount = template.keyCount || 0;
-      // this.attr._InventoryHolder_attr.spaceAvailable = template.spaceAvailable || true;
     }
   },
 
@@ -127,32 +128,49 @@ Game.EntityMixin.InventoryHolder = {
     return this.attr._InventoryHolder_attr.spaceAvailable;
   },
 
+  renderInv: function(display) {
+
+  },
+
   pickupItem: function (map,x,y) {
     var item = map.getItem(x, y);
     if ( item !== null) {
       if (item.attr._name == 'Key') {
-        this.attr._InventoryHolder_attr.keys[item._itemID] = item;
         this.attr._InventoryHolder_attr.keyCount++;
-        Game.Message.send('You picked up a ' + item.attr._name + '! You now have ' + this.attr._InventoryHolder_attr.keyCount + ' keys.');
-        // Game.PlayerStats.update('_keyCount',this.attr._InventoryHolder_attr.keyCount);
+        Game.Message.send('Picked up a ' + item.attr._name + '! I now have ' + this.attr._InventoryHolder_attr.keyCount + ' key(s).');
       } else {
-        this.attr._InventoryHolder_attr.items[item._itemID] = item;
+        if (Game.UIMode.gameInventory.isFull()) {
+          Game.Message.send('My bag is full! But my life is still so empty...');
+          return;
+        } else {
+          Game.UIMode.gameInventory.putItem(item);
+          Game.Message.send('Picked up a ' + item.attr._name + '!');
+        }
       }
       map.updateItem(item);
     }
-    ;
+  },
+
+  consume: function(item) {
+    switch(item.attr._name) {
+      case 'Carrot':
+        var newHp = this.attr._HitPoints_attr.curHp + 5;
+        if (newHp < this.attr._HitPoints_attr.maxHp) {
+          this.attr._HitPoints_attr.curHp = newHp;
+        } else {
+          this.attr._HitPoints_attr.curHp = this.attr._HitPoints_attr.maxHp;
+        }
+        Game.PlayerStats.render(Game.getDisplay('main'));
+        break;
+      default:
+    }
   },
 
   getItem: function (itemId) {
-    if (this.attr._InventoryHolder_attr.items[itemId]) {
+    if (this.attr._InventoryHolder_attr.inventory[itemId]) {
       return Game.DATASTORE.ITEMS[itemId];
     }
     return null;
-  },
-
-  dropItem: function (itemId) {
-    // var index = this.attr._InventoryHolder_attr.items.indexOf(itemId);
-    // this.attr._InventoryHolder_attr.items.splice(index,1);
   },
 
   keyCount: function () {
@@ -188,7 +206,10 @@ Game.EntityMixin.runnable = {
       }else{
         this.attr.loopingChars.wait++;
       }
-      this.getMap().updateEntity(this);
+
+      if(Game.DATASTORE.ENTITIES[this._entityID]){
+        this.getMap().updateEntity(this);
+      }
     }
 };
 
@@ -221,7 +242,6 @@ Game.EntityMixin.explode = {
       // console.log("starting coords: " + sx + ", " + sy + ", radius: " + rad);
 
       for(var x = 0; x < rad*2; x++){
-
         var nx = x + sx;
 
         if(nx <= 2 || nx >= tar.length-2){
@@ -240,10 +260,145 @@ Game.EntityMixin.explode = {
           var entid = map.attr._entitiesByLocation[nx + "," + ny];
 
           if(entid != null && Game.DATASTORE.ENTITIES[entid] && Game.DATASTORE.ENTITIES[entid].hasMixin("HitPoints")){
-            Game.DATASTORE.ENTITIES[entid].takeHits(7);
+            Game.DATASTORE.ENTITIES[entid].takeHits(2);
           }
 
         }
       }
+
+      for(var i = 0; i < 15; i++){
+        var particle = new Game.Entity(Game.EntityTemplates.SmokeParticle);
+        particle.setPos(ox, oy);
+        particle.attr.loopingChars.dx = ox + Math.floor(Math.random()*5) - Math.floor(Math.random()*10);
+        particle.attr.loopingChars.dy = oy + Math.floor(Math.random()*5) - Math.floor(Math.random()*10);
+        this.getMap().addEntity(particle);
+      }
+    },
+    dirExplode: function(map,ox,oy,dir){
+      var tar = map.getTileGrid();
+
+      var rad = this.attr.loopingChars.radius;
+
+      var sx = ox;
+      var sy = oy;
+
+      switch(dir){
+        case 0: sy -= rad; break;
+        case 1: sx -= rad; break;
+        case 2: sy -= rad; break;
+        case 3: sx -= rad; break;
+      }
+
+      if(sx < 0){
+        sx = 0;
+      }
+
+      if(sy < 0){
+        sy = 0;
+      }
+
+      if(dir == 0 || dir == 2){
+        for(var x = 0; x < rad*5; x++){
+          var nx = sx;
+
+          if(dir == 0){
+            nx -= x;
+          }else{
+            nx += x;
+          }
+
+          if(nx <= 2 || nx >= tar.length-2){
+            continue;
+          }
+
+          for(var y = 0; y < rad*2 + 1; y++){
+            var ny = y + sy;
+
+            tar[nx][ny] = Game.Tile.floorTile;
+
+            var entid = map.attr._entitiesByLocation[nx + "," + ny];
+
+            if(entid != null && Game.DATASTORE.ENTITIES[entid] && Game.DATASTORE.ENTITIES[entid].hasMixin("HitPoints")){
+              Game.DATASTORE.ENTITIES[entid].takeHits(2);
+            }
+
+            var particle = new Game.Entity(Game.EntityTemplates.SmokeParticle);
+            particle.setPos(nx, ny);
+            particle.attr.loopingChars.dx = ny;
+            particle.attr.loopingChars.dy = ny;
+            this.getMap().addEntity(particle);
+
+
+          }
+        }
+      }else{
+        for(var y = 0; y < rad*4; y++){
+          var ny = sy;
+
+          if(dir == 3){
+            ny += y;
+          }else{
+            ny -= y;
+          }
+
+          if(ny <= 2 || ny >= tar.length-2){
+            continue;
+          }
+
+          for(var x = 0; x < rad*2 + 1; x++){
+            var nx = x + sx;
+
+            if(nx <= 2 || nx >= tar.length-2){
+              continue;
+            }
+
+            tar[nx][ny] = Game.Tile.floorTile;
+
+            var entid = map.attr._entitiesByLocation[nx + "," + ny];
+
+            if(entid != null && Game.DATASTORE.ENTITIES[entid] && Game.DATASTORE.ENTITIES[entid].hasMixin("HitPoints")){
+              Game.DATASTORE.ENTITIES[entid].takeHits(7);
+            }
+
+            var particle = new Game.Entity(Game.EntityTemplates.SmokeParticle);
+            particle.setPos(nx, ny);
+            particle.attr.loopingChars.dx = ny;
+            particle.attr.loopingChars.dy = ny;
+            this.getMap().addEntity(particle);
+
+          }
+        }
+      }
+    }
+};
+
+Game.EntityMixin.pexplode = {
+  META: {
+      mixinName: 'pexplode',
+      mixinGroup: 'pexplode',
+      stateNamespace: 'pexplode_data',
+      stateModel: {
+      },
+      init: function () {
+      },
+    },
+    pexplode: function(map,ox,oy){
+      var tar = map.getTileGrid();
+
+      var cenbomb = new Game.Entity(Game.EntityTemplates.Bomb);
+
+      cenbomb.setPos(ox, oy);
+      cenbomb.attr.loopingChars.trigger = 0;
+
+      map.addEntity(cenbomb);
+
+      for(var i = 0; i < 5; i++){
+        var exbomb = new Game.Entity(Game.EntityTemplates.Bomb);
+        exbomb.setPos(Math.ceil(Math.random()*10) - Math.ceil(Math.random()*20) + ox, Math.ceil(Math.random()*8) - Math.ceil(Math.random()*20) + oy);
+        exbomb.attr.loopingChars.trigger = 1;
+
+        map.addEntity(exbomb);
+      }
+
     }
 };

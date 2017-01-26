@@ -18,6 +18,8 @@ Game.mapGen = {
     if(this._currSeed == null){
         this.genNewRandomSeed();
     }
+    console.log("Map seed:");
+    console.log(this._currSeed);
 
     var generator = new ROT.Map.Cellular(h, w);
     generator.randomize(0.5);
@@ -46,7 +48,42 @@ Game.mapGen = {
     Game.SavePoint.putSavePoint(tileArray);
     Game.Exit.lock();
 
-    return new Game.Map(tileArray);
+    var map = new Game.Map(tileArray);
+    return map;
+
+  },
+
+  finalMap: function(){
+    var h = 60;
+    var w = 60;
+
+    if(this._currSeed == null){
+        this.genNewRandomSeed();
+    }
+
+    var generator = new ROT.Map.Cellular(h, w);
+    generator.randomize(0.5);
+
+    for(var i = 0; i < 50; i++){
+      generator.create();
+    }
+
+    var tileArray = Game.util.init2DArray(h,w,Game.Tile.nullTile);
+
+    generator.create(function(x,y,val){
+      if(val === 0){
+        tileArray[x][y] = Game.Tile.wallTile;
+      }else{
+        tileArray[x][y] = Game.Tile.floorTile;
+      }
+    });
+
+    tileArray = Game.Exit.putExit(tileArray);
+    Game.SavePoint.putSavePoint(tileArray);
+    Game.Exit.lock();
+
+    var map = new Game.Map(tileArray);
+    return map;
   },
 
   loadPreviousMap: function(seed,map_data,exit,savepoint,x,y){
@@ -61,19 +98,19 @@ Game.mapGen = {
         oldmap.attr[i] = map_data[i];
     }
 
-    // console.log(oldmap.attr._locationsByEntity);
+    oldmap.attr._locationsByEntity = {};
+    oldmap.attr._entitiesByLocation = {};
 
-
-    for(var k in oldmap.attr._locationsByEntity){
-      if(oldmap.attr._locationsByEntity.hasOwnProperty(k) && Game.DATASTORE.ENTITIES[k]){
-        Game.DATASTORE.ENTITIES[k].setMap(oldmap);
-      }
+    for(var k in Game.DATASTORE.ENTITIES){
+      oldmap.addEntity(Game.DATASTORE.ENTITIES[k]);
     }
 
-
-    // for(var k in Game.DATASTORE.ITEMS){
-    //   oldmap.addItem(Game.DATASTORE.ITEMS[k]);
+    // for(var k in oldmap.attr._locationsByEntity){
+    //   if(oldmap.attr._locationsByEntity.hasOwnProperty(k) && Game.DATASTORE.ENTITIES[k]){
+    //     Game.DATASTORE.ENTITIES[k].setMap(oldmap);
+    //   }
     // }
+
 
     return oldmap;
   },
