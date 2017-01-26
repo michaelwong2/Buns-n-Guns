@@ -10,6 +10,8 @@ Game.UIMode.gameMenu = {
   },
   exit: function(){
     console.log("exited menu");
+    var music = new Audio("music.mp3");
+    music.play();
   },
   render: function(display){
 
@@ -129,6 +131,7 @@ Game.UIMode.gamePlay = {
     Game._game_started = true;
     Game.KeyBinding.setKeyBinding('arrows');
     Game.initGameLoop();
+
   },
   exit: function(){
     console.log("exited gamePlay");

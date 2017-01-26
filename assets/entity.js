@@ -87,4 +87,5 @@ Game.Entity.prototype.expire = function(){
     this.getMap().deleteEntity(this);
     delete Game.DATASTORE.ENTITIES[this._entityID];
   }
+  // console.log(this);
 }
